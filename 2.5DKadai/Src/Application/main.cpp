@@ -1,6 +1,7 @@
 ﻿#include "main.h"
 #include"Common/Input/Input.h"
 #include "Scene/SceneManager.h"
+#include"Editor/Editor.h"
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 // エントリーポイント
@@ -71,6 +72,8 @@ void Application::Update()
 
 	//入力チェック
 	Inp.Update(m_window.GetWndHandle());
+
+	EDITOR.Update();
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -79,6 +82,8 @@ void Application::Update()
 void Application::PostUpdate()
 {
 	SceneManager::Instance().PostUpdate();
+
+	
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -99,6 +104,7 @@ void Application::KdBeginDraw(bool usePostProcess)
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void Application::KdPostDraw()
 {
+	
 	// Imguiのレンダリング
 	KdDebugGUI::Instance().GuiProcess();
 
@@ -132,6 +138,8 @@ void Application::PostDraw()
 
 	// 現在のシーンのデバッグ描画
 	SceneManager::Instance().DrawDebug();
+
+
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -223,6 +231,8 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	// 例えばカーソルを消したい場合
 	//ShowCursor(false);
+
+	EDITOR.Init(m_window);
 
 	return true;
 }

@@ -133,6 +133,15 @@
     <Filter Include="Src\Application\Event">
       <UniqueIdentifier>{39a8362f-9419-40bd-9324-789bbdc5ec97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Common\Info">
+      <UniqueIdentifier>{efca324b-c2f2-4285-bf76-8ae7a1d91350}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Scene\EditorScene">
+      <UniqueIdentifier>{2b0c3971-63f7-4a09-b214-09aad97d52be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Common\Editor">
+      <UniqueIdentifier>{d69d0b7d-9bb3-4392-a171-a1b4c77bad22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -357,6 +366,15 @@
     <ClInclude Include="Src\Application\Event\Event.h">
       <Filter>Src\Application\Event</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Common\Info\Info.h">
+      <Filter>Src\Application\Common\Info</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Scene\EditorScene\EditorScene.h">
+      <Filter>Src\Application\Scene\EditorScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Editor\Editor.h">
+      <Filter>Src\Application\Common\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -550,6 +568,15 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Event\Event.cpp">
       <Filter>Src\Application\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Common\Info\Info.cpp">
+      <Filter>Src\Application\Common\Info</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Scene\EditorScene\EditorScene.cpp">
+      <Filter>Src\Application\Scene\EditorScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Editor\Editor.cpp">
+      <Filter>Src\Application\Common\Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

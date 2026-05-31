@@ -276,7 +276,9 @@
     <ClInclude Include="Src\Application\Common\CommonAPI.h" />
     <ClInclude Include="Src\Application\Common\CommonAsset\CommonAsset.h" />
     <ClInclude Include="Src\Application\Common\Feed\Feed.h" />
+    <ClInclude Include="Src\Application\Common\Info\Info.h" />
     <ClInclude Include="Src\Application\Common\Input\Input.h" />
+    <ClInclude Include="Src\Application\Editor\Editor.h" />
     <ClInclude Include="Src\Application\Event\Event.h" />
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\Object\Enemy\EnemyBase.h" />
@@ -290,6 +292,7 @@
     <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\TitleSceneUi.h" />
     <ClInclude Include="Src\Application\Object\Ui\UiBase.h" />
     <ClInclude Include="Src\Application\Scene\BaseScene\BaseScene.h" />
+    <ClInclude Include="Src\Application\Scene\EditorScene\EditorScene.h" />
     <ClInclude Include="Src\Application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="Src\Application\Scene\SceneManager.h" />
     <ClInclude Include="Src\Application\Scene\StageSelectScene\StageSelectScene.h" />
@@ -345,7 +348,9 @@
     <ClCompile Include="Src\Application\Common\CommonAPI.cpp" />
     <ClCompile Include="Src\Application\Common\CommonAsset\CommonAsset.cpp" />
     <ClCompile Include="Src\Application\Common\Feed\Feed.cpp" />
+    <ClCompile Include="Src\Application\Common\Info\Info.cpp" />
     <ClCompile Include="Src\Application\Common\Input\Input.cpp" />
+    <ClCompile Include="Src\Application\Editor\Editor.cpp" />
     <ClCompile Include="Src\Application\Event\Event.cpp" />
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\Object\Enemy\EnemyBase.cpp" />
@@ -359,6 +364,7 @@
     <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\TitleSceneUi.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\UiBase.cpp" />
     <ClCompile Include="Src\Application\Scene\BaseScene\BaseScene.cpp" />
+    <ClCompile Include="Src\Application\Scene\EditorScene\EditorScene.cpp" />
     <ClCompile Include="Src\Application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Src\Application\Scene\SceneManager.cpp" />
     <ClCompile Include="Src\Application\Scene\StageSelectScene\StageSelectScene.cpp" />

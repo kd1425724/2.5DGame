@@ -69,7 +69,7 @@ void Player::Update()
 		switch (m_jumppattern)
 		{
 		case Player::PlayerJumpPattern::None:
-			if (Inp.GetPlayerKey(PlayerKeyType::Jump) && Inp.GetPlayerKeyDown(PlayerKeyType::Jump))
+			if (Inp.GetPlayerKeyDown(PlayerKeyType::Jump))
 			{
 				//ジャンプ1段目
 				m_gravity = -m_onejumppow;
@@ -81,7 +81,7 @@ void Player::Update()
 			}
 			break;
 		case Player::PlayerJumpPattern::Jump1:
-			if (Inp.GetPlayerKey(PlayerKeyType::Jump) && Inp.GetPlayerKeyDown(PlayerKeyType::Jump))
+			if (Inp.GetPlayerKeyDown(PlayerKeyType::Jump))
 			{
 				//ジャンプ2段目
 				m_gravity = -m_twojumppow;
@@ -100,31 +100,47 @@ void Player::Update()
 		switch (m_attackpattern)
 		{
 		case Player::PlayerAttackPattern::None:
-			if (Inp.GetPlayerKey(PlayerKeyType::Attack) && Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
+			if (Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
 			{
 				m_attackpattern = PlayerAttackPattern::Attack1;
 
 				//通常攻撃1段目用アニメーション設定
+				UVRectControl(PlayerAnimeType::Attack1, [this]()
+					{
+						//1段目攻撃が終わったら（アニメーションが終わったら）待機状態に
+						m_attackpattern = PlayerAttackPattern::Standby;
 
-				//UVRectControl();
+						//待機時間
+						m_standbytime = StandbyTime;
+					});
 			}
 			break;
 		case Player::PlayerAttackPattern::Attack1:
-			if (Inp.GetPlayerKey(PlayerKeyType::Attack) && Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
+			if (Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
 			{
+				//入力保存
 				m_inputkeep = true;
 			}
-			//1段目攻撃が終わったら（アニメーションが終わったら）待機状態に
 
-			
 			break;
 		case Player::PlayerAttackPattern::Attack2:
 			break;
 		case Player::PlayerAttackPattern::Standby:
 			//既に入力されているか、待機状態中に入力したら
-			if (m_inputkeep ||!Inp.GetPlayerKey(PlayerKeyType::Attack) && Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
+			if (m_inputkeep || Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
 			{
+				//2段目攻撃
 				m_attackpattern = PlayerAttackPattern::Attack2;
+
+				//アニメーション
+				UVRectControl(PlayerAnimeType::Attack2, [this]()
+					{
+						//2段目攻撃が終わったらNoneに戻す
+						m_attackpattern = PlayerAttackPattern::None;
+						//入力保存用falseに
+						m_inputkeep = false;
+
+					});
 			}
 			//待機状態が終了したらNoneに戻す
 			m_standbytime--;
@@ -138,27 +154,13 @@ void Player::Update()
 			break;
 		}
 
-		//スキル処理
-		if (!Inp.GetPlayerKey(PlayerKeyType::Skill) && Inp.GetPlayerKeyDown(PlayerKeyType::Skill))
-		{
-			
-		}
-
-		//ループ中行動パターン
-		switch (m_looppattern)
-		{
-		case Player::PlayerLoopPattern::None:
-			
-			break;
-		case Player::PlayerLoopPattern::SpDash:
-
-			//スキル処理
-
-			break;
-		default:
-			break;
-		}
-
+		////スキル処理
+		//if (Inp.GetPlayerKeyDown(PlayerKeyType::Skill))
+		//{
+		//	UVRectControl(PlayerAnimeType::spDash);
+		//	//スキル発動時通常攻撃のpatternをNoneに
+		//	m_attackpattern = PlayerAttackPattern::None;
+		//}
 
 		break;
 	case Player::PlayerStatePattern::Death:
@@ -196,6 +198,22 @@ void Player::Update()
 void Player::PostUpdate()
 {
 	Hit();
+
+	//アニメーションが落下中以外かつ上書き可能なら判定
+	if (m_overwritable && m_nowanimtype != PlayerAnimeType::Fall)
+	{
+		//落下中か判定
+		if (m_gravity > 0 && !m_isground)
+		{
+			//落下中なら
+			UVRectControl(PlayerAnimeType::Fall);
+		}
+		//else
+		//{
+		//	//落下中ではないなら
+		//	UVRectControl(PlayerAnimeType::Dash);
+		//}
+	}
 }
 
 void Player::DrawLit()
@@ -263,9 +281,13 @@ void Player::Hit()
 
 		}
 
-		//				↓余剰分を反転させる
+		//			   ↓余剰分を反転させる
 		m_pos = hitPos -= Math::Vector3(groundpossurplusX, groundpossurplusY, 0);
 		m_gravity = 0;
+	}
+	else
+	{
+		m_isground = false;
 	}
 
 	//球（スフィア）判定地面との当たり判定
@@ -279,7 +301,7 @@ void Player::Hit()
 		sphere.m_sphere.Center = m_pos;
 		sphere.m_sphere.Center.y += spherepossurplusY;
 		sphere.m_sphere.Center.x += spherepossurplusX;
-		sphere.m_sphere.Radius = 0.3f;
+		sphere.m_sphere.Radius = 0.4f;
 		sphere.m_type = KdCollider::TypeGround;
 
 		//デバッグ
@@ -326,27 +348,16 @@ void Player::Hit()
 	}
 }
 
-void Player::UVRectControl(PlayerAnimeType _type, std::function<void()> _action)
+void Player::UVRectControl(PlayerAnimeType _type,std::function<void()> _action)
 {
-	//他のアニメーションが実行中ならジャンプアニメーションを行わない
-	if (m_jumppattern != PlayerJumpPattern::None)
-	{
-		if (m_looppattern != PlayerLoopPattern::None)
-		{
-			return;
-		}
-	}
+	//上書き不可なら実行しない
+	if (!m_overwritable)return;
 
 	m_anim = 0;
 
 	//始めに初期化
 	m_animid.clear();
 	m_action = nullptr;
-
-	float animtime = 0;
-	std::vector<int> animid = {};
-	int animcnt = 0;
-
 
 	switch (_type)
 	{
@@ -355,6 +366,9 @@ void Player::UVRectControl(PlayerAnimeType _type, std::function<void()> _action)
 		m_animtime = 30;
 		m_animid = m_animidkeep[(int)PlayerAnimeType::Dash];
 		m_loopmax = 1;
+
+		//上書き可能
+		m_overwritable = true;
 		break;
 	case Player::PlayerAnimeType::Jump:
 
@@ -364,28 +378,36 @@ void Player::UVRectControl(PlayerAnimeType _type, std::function<void()> _action)
 		
 		//上書きされる前提
 		m_loopmax = 999;
+		//上書き可能
+		m_overwritable = true;
 		break;
 	case Player::PlayerAnimeType::Fall:
 	
 		m_animtime = 60;
 
-		m_animid =m_animidkeep[(int)PlayerAnimeType::Jump];
+		m_animid = m_animidkeep[(int)PlayerAnimeType::Fall];
 		
 		//上書きされる前提
 		m_loopmax = 999;
+		//上書き可能
+		m_overwritable = true;
 
 		break;
 	case Player::PlayerAnimeType::Attack1:
-		m_animtime = 60;
+		m_animtime = 10;
 
 		m_animid = m_animidkeep[(int)PlayerAnimeType::Attack1];
 		m_loopmax = 1;
+		//上書き不可
+		m_overwritable = false;
 		break;
 	case Player::PlayerAnimeType::Attack2:
-		m_animtime = 60;
+		m_animtime = 20;
 
 		m_animid = m_animidkeep[(int)PlayerAnimeType::Attack2];
 		m_loopmax = 1;
+		//上書き不可
+		m_overwritable = false;
 		break;
 	case Player::PlayerAnimeType::spDash:
 		m_animtime = 60;
@@ -393,16 +415,19 @@ void Player::UVRectControl(PlayerAnimeType _type, std::function<void()> _action)
 		m_animid = m_animidkeep[(int)PlayerAnimeType::spDash];
 		m_loopmax = 1;
 
+		//上書き不可
+		m_overwritable = false;
+
 		break;
 	default:
 		//デフォルトはダッシュ
 		m_animtime = 30;
 		m_animid = m_animidkeep[(int)PlayerAnimeType::Dash];
 		m_loopmax = 1;
+		//上書き可能
+		m_overwritable = true;
 		break;
 	}
-
-	
 
 	//共通
 	m_animmax = m_animid.size();
@@ -430,22 +455,32 @@ void Player::UVRectControlUpdate()
 		//animcntが０になるまでループ
 		if (m_animcnt <= 0)
 		{
+			//アニメーション初期化
+			m_anim = 0;
+			//アニメーションフラグ初期化
+			m_animflg = false;
+			//上書き可能に戻す
+			m_overwritable = true;
+
+
 			if (m_action)
 			{
 				m_action();
-				m_animflg = false;
-				//アニメーション
-				UVRectControl(PlayerAnimeType::Dash);
-				return;
+			}
+			
+			//落下中か判定
+			if (m_gravity > 0 && !m_isground)
+			{
+				//落下中なら
+				UVRectControl(PlayerAnimeType::Fall);
 			}
 			else
 			{
-				m_anim = 0;
-				m_animflg = false;
-				//アニメーション
+				//落下中ではないなら
 				UVRectControl(PlayerAnimeType::Dash);
-				return;
 			}
+
+			return;
 		}
 
 		m_anim = 0;

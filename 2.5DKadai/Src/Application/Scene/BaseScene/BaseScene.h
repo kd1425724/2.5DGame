@@ -28,6 +28,9 @@ public :
 		m_objList.push_back(_obj);
 	}
 
+	//カメラ取得
+	KdCamera* GetCamera() { return m_camera.get(); }
+
 protected :
 
 	// 継承先シーンで必要ならオーバーライドする

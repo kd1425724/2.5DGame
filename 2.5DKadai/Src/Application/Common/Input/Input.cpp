@@ -1,5 +1,5 @@
 ﻿#include "Input.h"
-
+#include"../Info/Info.h"
 void C_Input::Release()
 {
 
@@ -135,14 +135,25 @@ void C_Input::DebugDefaultKeySet()
 
 void C_Input::GetMousePos(POINT* mousePos, HWND hwnd)
 {
-	//ディスプレイ上のマウス座標を取得(PC画面の左上が(0,0))
-	GetCursorPos(mousePos);
+	////ディスプレイ上のマウス座標を取得(PC画面の左上が(0,0))
+	//GetCursorPos(mousePos);
 
-	//指定のウィンドウ基準のマウス座標に変換(実行画面の左上が(0,0))
-	ScreenToClient(hwnd, mousePos);
+	////指定のウィンドウ基準のマウス座標に変換(実行画面の左上が(0,0))
+	//ScreenToClient(hwnd, mousePos);
 
-	//マウスの座標系を実行ウィンドウの座標系(中心が 0 , 0)に補正
-	/*mousePos->x -= INFO.ScrWidth / 2;
-	mousePos->y -= INFO.ScrHeight / 2;*/
-	mousePos->y *= -1;
+	//Math::Vector3 rayPos;
+	//Math::Vector3 rayDir;
+	//float rayRange;
+
+	//camera->GenerateRayInfoFromClientPos(
+	//	mousePos,
+	//	rayPos,
+	//	rayDir,
+	//	rayRange
+	//);
+
+	////マウスの座標系を実行ウィンドウの座標系(中心が 0 , 0)に補正
+	//mousePos->x -= INFO.ScrWidth / 2;
+	//mousePos->y -= INFO.ScrHeight / 2;
+	//mousePos->y *= -1;
 }

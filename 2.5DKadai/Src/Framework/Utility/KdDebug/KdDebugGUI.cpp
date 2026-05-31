@@ -2,6 +2,8 @@
 
 #include "KdDebugGUI.h"
 
+#include"../../../Application/Editor/Editor.h"
+
 KdDebugGUI::KdDebugGUI()
 {}
 KdDebugGUI::~KdDebugGUI()
@@ -72,6 +74,10 @@ void KdDebugGUI::GuiProcess()
 	//=====================================================
 
 //	KdDebugGUI::Instance().AddLog("TestLog\n");
+
+
+
+	EDITOR.Draw();
 
 	//===========================================================
 	// ここより上にImGuiの描画はする事

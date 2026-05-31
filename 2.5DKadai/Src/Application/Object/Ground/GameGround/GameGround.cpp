@@ -3,9 +3,7 @@
 void GameGround::Init()
 {
 	m_model = std::make_shared<KdModelData>();
-	m_model->Load("Asset/Models/Object/Ground/teststage/teststage.gltf");
-
-	m_pos = { 0,0,0 };
+	m_model->Load("Asset/Models/Object/Ground/testblock/testblock.gltf");
 
 	//当たり判定の設定
 	m_pCollider = std::make_unique<KdCollider>();
@@ -20,9 +18,7 @@ void GameGround::Init()
 
 void GameGround::Update()
 {
-	//Math::Matrix mscale = Math::Matrix::CreateScale(1.0f);
-	Math::Matrix mtrans = Math::Matrix::CreateTranslation(m_pos);
-	m_mWorld = mtrans;
+
 }
 
 void GameGround::DrawLit()

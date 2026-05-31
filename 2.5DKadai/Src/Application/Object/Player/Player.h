@@ -30,14 +30,6 @@ private:
 	//初期パターン設定
 	PlayerStatePattern m_statepattern = PlayerStatePattern::Loop;
 
-	//ループ中行動パターン
-	enum class PlayerLoopPattern
-	{
-		None,		//何もしない
-		SpDash,		//ダッシュ攻撃
-	};
-	PlayerLoopPattern m_looppattern = PlayerLoopPattern::None;
-
 	//ジャンプ管理用
 	enum class PlayerJumpPattern
 	{
@@ -93,12 +85,14 @@ private:
 		spDash,		//ダッシュ攻撃
 		AnimNum		//数
 	};
+	//現在のアニメーション
+	PlayerAnimeType m_nowanimtype=PlayerAnimeType::Dash;
 
 	float m_anim = 0;
 	//アニメーション制御用
-	//プレイヤーのアニメーションセット
-	//必要ならアクションセット
-	void UVRectControl(PlayerAnimeType _type, std::function<void()> action = nullptr);
+	//_type			...アニメーションのタイプを指定
+	//_action		...必要ならアクションセット
+	void UVRectControl(PlayerAnimeType _type,std::function<void()> action = nullptr);
 	//アニメーション常時通る
 	void UVRectControlUpdate();
 
@@ -117,6 +111,10 @@ private:
 
 	//アニメーションフラグ
 	bool m_animflg = false;
+
+	//上書き可能かどうかのフラグ
+	//ちゃんと設定しないとバグが起きるので注意
+	bool m_overwritable = true;
 
 	//アニメーションID保存用
 	std::vector<int> m_animidkeep[(int)PlayerAnimeType::AnimNum];

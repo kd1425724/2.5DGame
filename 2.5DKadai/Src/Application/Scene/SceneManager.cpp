@@ -9,6 +9,8 @@
 #include"../Common/Input/Input.h"
 #include"../Common/Feed/Feed.h"
 
+#include"../Editor/Editor.h"
+
 void SceneManager::PreUpdate()
 {
 	// シーン切替
@@ -69,6 +71,12 @@ const std::list<std::shared_ptr<KdGameObject>>& SceneManager::GetObjList()
 void SceneManager::AddObject(const std::shared_ptr<KdGameObject>& _obj)
 {
 	m_currentScene->AddObject(_obj);
+}
+
+KdCamera* SceneManager::GetCamera()
+{
+	//カメラ取得
+	return m_currentScene->GetCamera();
 }
 
 void SceneManager::Init()
