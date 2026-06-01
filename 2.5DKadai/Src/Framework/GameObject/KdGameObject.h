@@ -71,6 +71,17 @@ public:
 	bool Intersects(const KdCollider::BoxInfo& targetBox, std::list<KdCollider::CollisionResult>* pResults);
 	bool Intersects(const KdCollider::RayInfo& targetShape, std::list<KdCollider::CollisionResult>* pResults);
 
+	//オブジェクトの名前セット
+	void SetName(std::string _name) { m_name = _name; }
+	//ゲット
+	std::string GetName() const{ return m_name; }
+	
+
+	//InstanceIDセット
+	void SetInstanceID(int id) { m_instanceID = id; }
+	//InstanceIDゲット
+	int GetInstanceID() const { return m_instanceID; }
+
 protected:
 
 	void Release() {}
@@ -92,4 +103,11 @@ protected:
 
 	// デバッグ情報クラス
 	std::unique_ptr<KdDebugWireFrame> m_pDebugWire = nullptr;
+
+
+	//オブジェクトの名前
+	std::string m_name;
+
+	//InstanceID何回目に呼ばれたか
+	int m_instanceID = -1;
 };

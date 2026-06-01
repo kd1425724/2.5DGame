@@ -142,6 +142,9 @@
     <Filter Include="Src\Application\Common\Editor">
       <UniqueIdentifier>{d69d0b7d-9bb3-4392-a171-a1b4c77bad22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\RoomObject">
+      <UniqueIdentifier>{30827840-4c5a-44db-82d9-d10a1d52be75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -375,6 +378,9 @@
     <ClInclude Include="Src\Application\Editor\Editor.h">
       <Filter>Src\Application\Common\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\RoomObject\BaseRoomObject.h">
+      <Filter>Src\Application\Object\RoomObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -577,6 +583,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Editor\Editor.cpp">
       <Filter>Src\Application\Common\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\RoomObject\BaseRoomObject.cpp">
+      <Filter>Src\Application\Object\RoomObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

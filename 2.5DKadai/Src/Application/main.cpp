@@ -126,6 +126,8 @@ void Application::PreDraw()
 void Application::Draw()
 {
 	SceneManager::Instance().Draw();
+
+	EDITOR.DebagDraw();
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -232,7 +234,7 @@ bool Application::Init(int w, int h)
 	// 例えばカーソルを消したい場合
 	//ShowCursor(false);
 
-	EDITOR.Init(m_window);
+	EDITOR.Init();
 
 	return true;
 }

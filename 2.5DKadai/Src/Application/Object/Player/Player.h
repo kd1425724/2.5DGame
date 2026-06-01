@@ -14,6 +14,8 @@ public:
 
 	void DrawLit()override;
 
+	void SetPos(const Math::Vector3& pos) override { m_pos = pos; }
+
 private:
 
 	void PlayerDataLoad();

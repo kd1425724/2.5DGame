@@ -54,6 +54,28 @@ enum class DebugKeyDefaultType
     NINEKey = '9',  //プレイヤーの死亡フラグをONOFF
 };
 
+enum class EditorKeyType
+{
+	ModeChangeKey,
+	SelectKey,
+	UpKey,
+	DownKey,
+	LeftKey,
+	RightKey,
+	CreateKey,
+	EditorKeyNum,
+};
+enum class EditorKeyDefaultType
+{
+	ModeChangeKey	= VK_F1,
+	SelectKey		= VK_LBUTTON,
+	UpKey			= VK_UP,
+	DownKey			= VK_DOWN,
+	LeftKey			= VK_LEFT,
+	RightKey		= VK_RIGHT,
+	CreateKey		= '1',
+};
+
 class C_Input
 {
 public:
@@ -114,9 +136,29 @@ public:
         return m_debugkeyflg[(int)debugkeytype];
     }
 
+	//エディターのキー
+	bool GetEditorKey(EditorKeyType editorkeytype)
+	{
+		return m_editorkeyflg[(int)editorkeytype];
+	}
+
+	bool GetEditorKeyDown(EditorKeyType type)
+	{
+		return m_editorkeyflg[(int)type] &&
+			!m_oldeditorkeyflg[(int)type];
+	}
+
+	bool GetEditorKeyUp(EditorKeyType type)
+	{
+		return !m_editorkeyflg[(int)type] &&
+			m_oldeditorkeyflg[(int)type];
+	}
+
+
     void PlayerDefaultKeySet();
     void UserDefaultKeySet();
     void DebugDefaultKeySet();
+	void EditorDefaultKeySet();
 
 private:
 
@@ -125,6 +167,8 @@ private:
     // ===== マウス =====
     POINT mouse = { 0, 0 };
     bool m_mouseclickflg = false;
+
+	float m_mouseWheel = 0;
 
     // ===== キー =====
     int m_playerkey[(int)PlayerKeyType::PlayerKeyNum] = { 0 };
@@ -142,6 +186,11 @@ private:
 
     //デバッグキーが使えるかどうかのフラグ
 	bool m_olldebugkeyflg = false;
+
+	//エディターキー
+	int m_editorkey[(int)EditorKeyType::EditorKeyNum] = { 0 };
+	bool m_editorkeyflg[(int)EditorKeyType::EditorKeyNum] = { false };
+	bool m_oldeditorkeyflg[(int)EditorKeyType::EditorKeyNum] = { false };
 
 private:
 	C_Input() { Init(); }
