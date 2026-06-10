@@ -16,7 +16,12 @@ void SceneManager::PreUpdate()
 	// シーン切替
 	if (m_currentSceneType != m_nextSceneType)
 	{
-		ChangeScene(m_nextSceneType);
+		//フェード処理
+		FEED.FeedOutInit(30, [this]()
+		{
+			ChangeScene(m_nextSceneType);
+			FEED.FeedInInit(30);
+		});
 	}
 
 	m_currentScene->PreUpdate();
@@ -28,6 +33,9 @@ void SceneManager::Update()
 
 	if (FEED.GetFeedState() == FeedOut)return;
 
+	//エディター中オブジェクトの更新可能かどうか
+	if (EDITOR.IsEditMode() && !EDITOR.IsObjectUpdateMode())return;
+
 	m_currentScene->Update();
 
 	COMMONAPI.CreateButtonUpdate();
@@ -35,6 +43,9 @@ void SceneManager::Update()
 
 void SceneManager::PostUpdate()
 {
+	//エディター中オブジェクトの更新可能かどうか
+	if (EDITOR.IsEditMode() && !EDITOR.IsObjectUpdateMode())return;
+
 	m_currentScene->PostUpdate();
 }
 
@@ -81,35 +92,33 @@ KdCamera* SceneManager::GetCamera()
 
 void SceneManager::Init()
 {
-	m_currentScene = std::make_shared<TitleScene>();
 	// 開始シーンに切り替え
 	ChangeScene(m_currentSceneType);
 }
 
 void SceneManager::ChangeScene(SceneType _sceneType)
 {
-	/*FEED.FeedOutInit(30, [_sceneType,this]() 
-		{*/
-			// 次のシーンを作成し、現在のシーンにする
-			switch (_sceneType)
-			{
-			case SceneType::Title:
-				COMMONAPI.Clear();
-				m_currentScene = std::make_shared<TitleScene>();
-				break;
-			case SceneType::StageSelect:
-				COMMONAPI.Clear();
-				m_currentScene = std::make_shared<StageSelectScene>();
-				break;
-			case SceneType::Game:
-				COMMONAPI.Clear();
-				m_currentScene = std::make_shared<GameScene>();
-				break;
-			}
+	// 次のシーンを作成し、現在のシーンにする
+	switch (_sceneType)
+	{
+	case SceneType::Title:
+		COMMONAPI.Clear();
+		m_currentScene = std::make_shared<TitleScene>();
+		break;
+	case SceneType::StageSelect:
+		COMMONAPI.Clear();
+		m_currentScene = std::make_shared<StageSelectScene>();
+		break;
+	case SceneType::Game:
+		COMMONAPI.Clear();
+		m_currentScene = std::make_shared<GameScene>();
+		break;
+	}
 
-			// 現在のシーン情報を更新
-			m_currentSceneType = _sceneType;
+	// Sceneが確定していない状況でInit()でObjectListにObjectを保持しがちなので
+	// コントラクタでのInit()を禁止します！！！
+	m_currentScene->Init();
 
-		/*	FEED.FeedInInit(30);
-		});*/
+	// 現在のシーン情報を更新
+	m_currentSceneType = _sceneType;
 }

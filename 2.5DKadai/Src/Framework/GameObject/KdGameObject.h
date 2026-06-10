@@ -37,7 +37,17 @@ public:
 
 	virtual void SetAsset(const std::string&) {}
 
-	virtual void SetPos(const Math::Vector3& pos) { m_mWorld.Translation(pos); }
+	//変更
+	//virtual void SetPos(const Math::Vector3& pos) 
+	//{
+	//	m_mWorld.Translation(pos); 
+	//}
+
+	virtual void SetPos(const Math::Vector3& pos) 
+	{
+		m_pos = pos;
+		m_mWorld.Translation(m_pos); 
+	}
 	virtual Math::Vector3 GetPos() const { return m_mWorld.Translation(); }
 
 	// 拡大率を変更する関数
@@ -71,18 +81,56 @@ public:
 	bool Intersects(const KdCollider::BoxInfo& targetBox, std::list<KdCollider::CollisionResult>* pResults);
 	bool Intersects(const KdCollider::RayInfo& targetShape, std::list<KdCollider::CollisionResult>* pResults);
 
+	//privateここから下は自分で追加
+
 	//オブジェクトの名前セット
 	void SetName(std::string _name) { m_name = _name; }
 	//ゲット
 	std::string GetName() const{ return m_name; }
-	
-
 	//InstanceIDセット
 	void SetInstanceID(int id) { m_instanceID = id; }
 	//InstanceIDゲット
 	int GetInstanceID() const { return m_instanceID; }
+	//オブジェクトの種類
+	enum class ObjectTag
+	{
+		None,
+		Player,		//プレイヤー
+		Damage,		//ダメージ
+		Item,		//アイテム
+		RoomExit,	//部屋の出口
+		Goal,		//ゴール
+
+	};
+	//各当たり判定が必要なオブジェクトでoverride
+	virtual ObjectTag GetObjectTag() { return ObjectTag::None; }
+	//当たった時になにをするか
+	//other ... 衝突してきた相手
+	virtual void OnHit(KdGameObject* _other) {}
+
+
+	virtual void SetRot(const Math::Vector3& rot)
+	{
+		m_rot = rot;
+
+		Math::Matrix matRot =
+			Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(m_rot.x)) *
+			Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rot.y)) *
+			Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(m_rot.z));
+		Math::Matrix mtrans = Math::Matrix::CreateTranslation(m_pos);
+
+		m_mWorld = matRot * mtrans;
+	}
+
+	virtual Math::Vector3 GetRot() const
+	{
+		return m_rot;
+	}
 
 protected:
+
+	//回転
+	Math::Vector3 m_rot = {};
 
 	void Release() {}
 
@@ -98,12 +146,16 @@ protected:
 	// 3D空間に存在する機能
 	Math::Matrix	m_mWorld;
 
+	//座標
+	Math::Vector3 m_pos = {};
+
 	// 当たり判定クラス
 	std::unique_ptr<KdCollider> m_pCollider = nullptr;
 
 	// デバッグ情報クラス
 	std::unique_ptr<KdDebugWireFrame> m_pDebugWire = nullptr;
 
+	//protectedここから下は自分で追加
 
 	//オブジェクトの名前
 	std::string m_name;

@@ -142,8 +142,65 @@
     <Filter Include="Src\Application\Common\Editor">
       <UniqueIdentifier>{d69d0b7d-9bb3-4392-a171-a1b4c77bad22}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\RoomObject">
-      <UniqueIdentifier>{30827840-4c5a-44db-82d9-d10a1d52be75}</UniqueIdentifier>
+    <Filter Include="Src\Application\Object\Enemy\Bat">
+      <UniqueIdentifier>{779ec619-c5b1-4fc0-88ce-3c4e72f7bfea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\StageBlock">
+      <UniqueIdentifier>{89372405-e96f-4261-ab9c-b8afd92ed5cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Event">
+      <UniqueIdentifier>{62141a18-5f42-41bf-ae30-57d4f74ba5e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Event\RoomExit">
+      <UniqueIdentifier>{83810605-34c6-4728-bde0-af9e9ebefc50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Item">
+      <UniqueIdentifier>{bc96e865-4bcd-4c08-a250-eca7c889dc38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Item\Coin">
+      <UniqueIdentifier>{5a6540df-58e1-43ff-9f0a-18b9d3b57ebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Effect">
+      <UniqueIdentifier>{41085394-248c-4406-8fdc-fa3d5eb3c00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Common\Sound">
+      <UniqueIdentifier>{1f59fc43-7f29-4988-befb-bed7bd889f3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Event\Goal">
+      <UniqueIdentifier>{aa9752de-b181-4778-87f8-4435d0781ed3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Manager">
+      <UniqueIdentifier>{3e0082cf-2a62-4b84-b734-36e882ce6a98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Manager\StageManager">
+      <UniqueIdentifier>{2b1af507-2b9f-49c0-bf8e-4460f5cb741e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Manager\ScoreManager">
+      <UniqueIdentifier>{4b7dc718-2801-4de8-a652-c488a9ddee7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\BackGround">
+      <UniqueIdentifier>{d84425d0-0662-49db-bb98-bf5e010f1e15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\BackGround\GameSceneBackGround">
+      <UniqueIdentifier>{29e9c0d5-73f3-4e13-a2fb-6635c63f659c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Ui\TitleSceneUi\TitleLogo">
+      <UniqueIdentifier>{d58fe9e4-18b0-4250-bcc1-12b5a6c3d1b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Ui\TitleSceneUi\PressAny">
+      <UniqueIdentifier>{0a284d6c-9fe4-4ac0-9e8f-eb316b15fe94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\BackGround\TitleSceneBackGround">
+      <UniqueIdentifier>{25355b20-f82d-4fb5-9a6a-756b08efc09e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\BackGround\StageSelectBackGround">
+      <UniqueIdentifier>{00c1d480-f4a1-4db4-ae8f-86954bee0618}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\BackGround\ResultBackGround">
+      <UniqueIdentifier>{5722c031-5dc8-4812-a0db-64142b662f8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\StageBlock\DamageBlock">
+      <UniqueIdentifier>{2fd82815-2240-459f-85e5-a0bf32c58993}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -378,8 +435,65 @@
     <ClInclude Include="Src\Application\Editor\Editor.h">
       <Filter>Src\Application\Common\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\RoomObject\BaseRoomObject.h">
-      <Filter>Src\Application\Object\RoomObject</Filter>
+    <ClInclude Include="Src\Application\Object\Enemy\Bat\Bat.h">
+      <Filter>Src\Application\Object\Enemy\Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\StageBlock\BaseStageBlock.h">
+      <Filter>Src\Application\Object\StageBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Event\RoomExit\RoomExit.h">
+      <Filter>Src\Application\Object\Event\RoomExit</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Event\BaseEvent.h">
+      <Filter>Src\Application\Object\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Item\BaseItem.h">
+      <Filter>Src\Application\Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Item\Coin\Coin.h">
+      <Filter>Src\Application\Object\Item\Coin</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Effect\EffectManager.h">
+      <Filter>Src\Application\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Common\Sound\Sound.h">
+      <Filter>Src\Application\Common\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Event\Goal\Goal.h">
+      <Filter>Src\Application\Object\Event\Goal</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Manager\StageManager\StageManager.h">
+      <Filter>Src\Application\Manager\StageManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Manager\ScoreManager\ScoreManager.h">
+      <Filter>Src\Application\Manager\ScoreManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Effect\BaseEffect.h">
+      <Filter>Src\Application\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\BackGround\BaseBackGround.h">
+      <Filter>Src\Application\Object\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\BackGround\GameSceneBackGround\GameSceneBackGround.h">
+      <Filter>Src\Application\Object\BackGround\GameSceneBackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\TitleLogo\TitleLogo.h">
+      <Filter>Src\Application\Object\Ui\TitleSceneUi\TitleLogo</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\PressAny\PressAny.h">
+      <Filter>Src\Application\Object\Ui\TitleSceneUi\PressAny</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\BackGround\TitleSceneBackGround\TitleSceneBackGround.h">
+      <Filter>Src\Application\Object\BackGround\TitleSceneBackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\BackGround\StageSelectSceneBackGround\StageSelectSceneBackGround.h">
+      <Filter>Src\Application\Object\BackGround\StageSelectBackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\BackGround\ResultSceneBackGround\ResultSceneBackGround.h">
+      <Filter>Src\Application\Object\BackGround\ResultBackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\StageBlock\DamageBlock\DamageBlock.h">
+      <Filter>Src\Application\Object\StageBlock\DamageBlock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -584,8 +698,65 @@
     <ClCompile Include="Src\Application\Editor\Editor.cpp">
       <Filter>Src\Application\Common\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\RoomObject\BaseRoomObject.cpp">
-      <Filter>Src\Application\Object\RoomObject</Filter>
+    <ClCompile Include="Src\Application\Object\Enemy\Bat\Bat.cpp">
+      <Filter>Src\Application\Object\Enemy\Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\StageBlock\BaseStageBlock.cpp">
+      <Filter>Src\Application\Object\StageBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Event\RoomExit\RoomExit.cpp">
+      <Filter>Src\Application\Object\Event\RoomExit</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Event\BaseEvent.cpp">
+      <Filter>Src\Application\Object\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Item\BaseItem.cpp">
+      <Filter>Src\Application\Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Item\Coin\Coin.cpp">
+      <Filter>Src\Application\Object\Item\Coin</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Effect\EffectManager.cpp">
+      <Filter>Src\Application\Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Common\Sound\Sound.cpp">
+      <Filter>Src\Application\Common\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Event\Goal\Goal.cpp">
+      <Filter>Src\Application\Object\Event\Goal</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Manager\StageManager\StageManager.cpp">
+      <Filter>Src\Application\Manager\StageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Manager\ScoreManager\ScoreManager.cpp">
+      <Filter>Src\Application\Manager\ScoreManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Effect\BaseEffect.cpp">
+      <Filter>Src\Application\Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\BackGround\BaseBackGround.cpp">
+      <Filter>Src\Application\Object\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\BackGround\GameSceneBackGround\GameSceneBackGround.cpp">
+      <Filter>Src\Application\Object\BackGround\GameSceneBackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\TitleLogo\TitleLogo.cpp">
+      <Filter>Src\Application\Object\Ui\TitleSceneUi\TitleLogo</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\PressAny\PressAny.cpp">
+      <Filter>Src\Application\Object\Ui\TitleSceneUi\PressAny</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\BackGround\TitleSceneBackGround\TitleSceneBackGround.cpp">
+      <Filter>Src\Application\Object\BackGround\TitleSceneBackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\BackGround\StageSelectSceneBackGround\StageSelectSceneBackGround.cpp">
+      <Filter>Src\Application\Object\BackGround\StageSelectBackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\BackGround\ResultSceneBackGround\ResultSceneBackGround.cpp">
+      <Filter>Src\Application\Object\BackGround\ResultBackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\StageBlock\DamageBlock\DamageBlock.cpp">
+      <Filter>Src\Application\Object\StageBlock\DamageBlock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

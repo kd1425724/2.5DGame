@@ -4,7 +4,7 @@ class BaseScene
 {
 public :
 
-	BaseScene()			 { Init(); }
+	BaseScene()			 {}
 	virtual ~BaseScene() {}
 
 	void PreUpdate();
@@ -31,11 +31,13 @@ public :
 	//カメラ取得
 	KdCamera* GetCamera() { return m_camera.get(); }
 
+	virtual void Init();
+
 protected :
 
 	// 継承先シーンで必要ならオーバーライドする
 	virtual void Event();
-	virtual void Init();
+
 
 	std::unique_ptr<KdCamera> m_camera = nullptr;
 

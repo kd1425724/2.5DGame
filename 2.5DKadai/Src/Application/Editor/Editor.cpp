@@ -1,31 +1,69 @@
 ﻿#include "Editor.h"
 #include"../Common/Input/Input.h"
+#include"../Common/Info/Info.h"
 
 #include "../main.h"
 #include "../Scene/SceneManager.h"
 
-#include"../Object/Ground/GameGround/GameGround.h"
 #include"../Object/Player/Player.h"
+#include"../Object/StageBlock/BaseStageBlock.h"
+#include"../Object/Item/Coin/Coin.h"
+#include"../Object/Event/RoomExit/RoomExit.h"
+#include"../Object/Event/Goal/Goal.h"
+#include"../Object/StageBlock/DamageBlock/DamageBlock.h"
 
 void Editor::Init()
 {
 	//デバッグ用
 	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
-
-	//生成するオブジェクト追加
-	m_createObjInfo.push_back({ "Ground",[]()
-		{
-			std::shared_ptr<GameGround> ground = std::make_shared<GameGround>();
-			ground->Init();
-			return ground;
-		}});
 	
+	//////////生成するオブジェクト追加////////////
+	//プレイヤー
 	m_createObjInfo.push_back({ "Player", []() 
 		{
 			std::shared_ptr<Player> player = std::make_shared<Player>();
 			player->Init();
 			return player;
 		}});
+	//ブロック
+	m_createObjInfo.push_back({ "Block",[]()
+		{
+			std::shared_ptr<BaseStageBlock> block = std::make_shared<BaseStageBlock>();
+			block->SetAsset("Block");
+			block->Init();
+			return block;
+		} });
+	//棘
+	m_createObjInfo.push_back({ "Dorn",[]()
+		{
+			std::shared_ptr<DamageBlock> dorn = std::make_shared<DamageBlock>();
+			dorn->SetAsset("Dorn");
+			dorn->Init();
+			return dorn;
+		} });
+	//コイン
+	m_createObjInfo.push_back({ "Coin",[]()
+		{
+			std::shared_ptr<Coin> coin = std::make_shared<Coin>();
+			coin->Init();
+			return coin;
+		} });
+	//部屋の出口判定
+	m_createObjInfo.push_back({ "RoomExit",[]()
+		{
+			std::shared_ptr<RoomExit> roomexit = std::make_shared<RoomExit>();
+			roomexit->Init();
+			return roomexit;
+		} });
+	//ゴール判定
+	m_createObjInfo.push_back({ "Goal",[]()
+		{
+			std::shared_ptr<Goal> goal = std::make_shared<Goal>();
+			goal->Init();
+			return goal;
+		} });
+
+	///////////////////////////////////////////////
 }
 
 void Editor::Update()
@@ -40,6 +78,8 @@ void Editor::Update()
 	}
 
 	oldState = nowState;
+
+	if (!m_editMode) return;
 
 	//マウスドラッグ更新
 	MouseDragMoveUpdate();
@@ -84,55 +124,6 @@ void Editor::DebagDraw()
 	m_pDebugWire->Draw();
 }
 
-void Editor::LoadRoom(std::string _filename, int _InstanceId)
-{
-	FILE* fp = nullptr;
-
-	std::string path = "Asset/Data/StageData/RoomData/" + std::string(_filename) + ".csv";
-
-	fopen_s(&fp, path.c_str(), "r");
-
-	if (!fp) return;
-
-	char objName[256] = "";
-
-	float x, y, z;
-
-	while (fscanf_s(fp, "%255[^,],%f,%f,%f\n", objName, (unsigned)_countof(objName), &x, &y, &z) == 4)
-	{
-		for (auto& createInfo : m_createObjInfo)
-		{
-			if (createInfo.name == objName)
-			{
-				auto obj = createInfo.obj();
-
-				obj->SetName(createInfo.name);
-
-				obj->SetPos({ x,y,z });
-				//部屋の番号セット
-				obj->SetInstanceID(_InstanceId);
-				SceneManager::Instance().AddObject(obj);
-
-				break;
-			}
-		}
-	}
-}
-
-void Editor::UnLoadRoom(int _InstanceId)
-{
-	auto& objList = SceneManager::Instance().GetObjList();
-
-	for (auto& obj : objList)
-	{
-		//部屋の番号が同じオブジェクトを消去
-		if (obj->GetInstanceID() == _InstanceId)
-		{
-			obj->SetExpired();
-		}
-	}
-}
-
 void Editor::DrawMainWindow()
 {
 	ImGui::Begin("Editor");
@@ -158,6 +149,12 @@ void Editor::DrawMainWindow()
 	////////////////////////////////////
 
 
+	//オブジェクト更新可能かどうかの変更
+	ImGui::Checkbox(
+		"ObjectUpdateMode",
+		&m_objectupdatemode
+	);
+
 	//カメラの主導権変更
 	ImGui::Checkbox(
 		"Editor Camera",
@@ -171,10 +168,12 @@ void Editor::DrawMainWindow()
 	ImGui::Checkbox("Inspector", &m_showInspector);
 
 
+	//生成
 	for (auto objinfo : m_createObjInfo)
 	{
 		if (ImGui::Button(objinfo.name.c_str()))
 		{
+			//			↓初期化が完了したオブジェクトを返してる
 			auto obj = objinfo.obj();
 			//オブジェクトの名前セット
 			obj->SetName(objinfo.name);
@@ -182,6 +181,17 @@ void Editor::DrawMainWindow()
 			SceneManager::Instance().AddObject(obj);
 			m_selectObj = obj;
 		}
+	}
+
+	ImGui::Separator();
+
+	if (ImGui::Button("OLLRESET"))
+	{
+		for (auto obj : SceneManager::Instance().GetObjList())
+		{
+			obj->SetExpired();
+		}
+		m_selectObj.reset();
 	}
 
 	ImGui::End();
@@ -242,20 +252,22 @@ void Editor::DrawInspector()
 
 	ImGui::Separator();
 
-	ImGui::Text("1 Bloack +-2");
+	ImGui::InputFloat("MoveNum", &m_onemovenum);
+
+	ImGui::Text("Block +-%f",m_onemovenum);
 
 	//x座標
 	ImGui::Text("PositionX");
 	ImGui::SameLine();
 	if (ImGui::Button("+##X"))
 	{
-		pos.x += 2.0f;
+		pos.x += m_onemovenum;
 		obj->SetPos(pos);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("-##X"))
 	{
-		pos.x -= 2.0f;
+		pos.x -= m_onemovenum;
 		obj->SetPos(pos);
 	}
 
@@ -264,13 +276,13 @@ void Editor::DrawInspector()
 	ImGui::SameLine();
 	if (ImGui::Button("+##Y"))
 	{
-		pos.y += 2.0f;
+		pos.y += m_onemovenum;
 		obj->SetPos(pos);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("-##Y"))
 	{
-		pos.y -= 2.0f;
+		pos.y -= m_onemovenum;
 		obj->SetPos(pos);
 	}
 
@@ -279,14 +291,69 @@ void Editor::DrawInspector()
 	ImGui::SameLine();
 	if (ImGui::Button("+##Z"))
 	{
-		pos.z += 2.0f;
+		pos.z += m_onemovenum;
 		obj->SetPos(pos);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("-##Z"))
 	{
-		pos.z -= 2.0f;
+		pos.z -= m_onemovenum;
 		obj->SetPos(pos);
+	}
+
+	ImGui::Separator();
+
+	Math::Vector3 rot = obj->GetRot();
+
+	static float rotnum = 90.0f;
+
+	ImGui::InputFloat("RotNum", &rotnum);
+
+	ImGui::Text("Block +-%f", rotnum);
+
+	//x回転
+	ImGui::Text("RotationX");
+	ImGui::SameLine();
+	if (ImGui::Button("+##RotX"))
+	{
+		rot.x += rotnum;
+		obj->SetRot(rot);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("-##RotX"))
+	{
+		rot.x -= rotnum;
+		obj->SetRot(rot);
+	}
+
+	//y回転
+	ImGui::Text("RotationY");
+	ImGui::SameLine();
+	if (ImGui::Button("+##RotY"))
+	{
+		rot.y += rotnum;
+		obj->SetRot(rot);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("-##RotY"))
+	{
+		rot.y -= rotnum;
+		obj->SetRot(rot);
+	}
+
+	//z回転
+	ImGui::Text("RotationZ");
+	ImGui::SameLine();
+	if (ImGui::Button("+##RotZ"))
+	{
+		rot.z += rotnum;
+		obj->SetRot(rot);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("-##RotZ"))
+	{
+		rot.z -= rotnum;
+		obj->SetRot(rot);
 	}
 
 
@@ -367,8 +434,10 @@ void Editor::CameraUpdate()
 	// ホイールズーム
 	// ----------------------
 
-	m_cameraDistance -= Application::Instance().GetMouseWheelValue() *0.05f;
-
+	if (Inp.GetEditorKey(EditorKeyType::CtrlKey))
+	{
+		m_cameraDistance -= Application::Instance().GetMouseWheelValue() * 0.05f;
+	}
 	/*if (m_cameraDistance < 3.0f)
 	{
 		m_cameraDistance = 3.0f;
@@ -463,14 +532,14 @@ void Editor::ViewChange()
 	if (ImGui::Button("Reset"))
 	{
 		m_viewType = EditorViewType::Front;
-		m_cameraPos = { 0,0,-10 };
+		m_cameraPos = { 0,0,INFO.DefaultCameraPosZ };
 		m_cameraDistance = 0;
 	}
 
 	if (ImGui::Button("Top"))
 	{
 		m_viewType = EditorViewType::Top;
-		m_cameraPos.y = 10.0f;
+		m_cameraPos.y = -INFO.DefaultCameraPosZ;
 	}
 
 	ImGui::SameLine();
@@ -478,13 +547,13 @@ void Editor::ViewChange()
 	if (ImGui::Button("Bottom"))
 	{
 		m_viewType = EditorViewType::Bottom;
-		m_cameraPos.y =-10.0f;
+		m_cameraPos.y = INFO.DefaultCameraPosZ;
 	}
 
 	if (ImGui::Button("Front"))
 	{
 		m_viewType = EditorViewType::Front;
-		m_cameraPos.z = -10.0f;
+		m_cameraPos.z = INFO.DefaultCameraPosZ;
 	}
 
 	ImGui::SameLine();
@@ -492,13 +561,13 @@ void Editor::ViewChange()
 	if (ImGui::Button("Back"))
 	{
 		m_viewType = EditorViewType::Back;
-		m_cameraPos.z = 10.0f;
+		m_cameraPos.z = -INFO.DefaultCameraPosZ;
 	}
 
 	if (ImGui::Button("Left"))
 	{
 		m_viewType = EditorViewType::Left;
-		m_cameraPos.x = -10.0f;
+		m_cameraPos.x = INFO.DefaultCameraPosZ;
 	}
 
 	ImGui::SameLine();
@@ -506,7 +575,7 @@ void Editor::ViewChange()
 	if (ImGui::Button("Right"))
 	{
 		m_viewType = EditorViewType::Right;
-		m_cameraPos.x = 10.0f;
+		m_cameraPos.x = -INFO.DefaultCameraPosZ;
 	}
 
 	ImGui::Separator();
@@ -552,7 +621,7 @@ void Editor::KeyUpdate()
 		ray.m_pos = rayPos;
 		ray.m_dir = rayDir;
 		ray.m_range = rayRange;
-		ray.m_type = KdCollider::TypeGround;
+		ray.m_type = KdCollider::TypeGround | KdCollider::TypeDamage;
 
 		float nearest = FLT_MAX;
 		std::shared_ptr<KdGameObject> hitObj = nullptr;
@@ -591,26 +660,26 @@ void Editor::KeyUpdate()
 	// ← →
 	if (Inp.GetEditorKeyDown(EditorKeyType::LeftKey))
 	{
-		pos.x -= 2.0f;
+		pos.x -= m_onemovenum;
 		selectObj->SetPos(pos);
 	}
 
 	if (Inp.GetEditorKeyDown(EditorKeyType::RightKey))
 	{
-		pos.x += 2.0f;
+		pos.x += m_onemovenum;
 		selectObj->SetPos(pos);
 	}
 
 	// ↑ ↓
 	if (Inp.GetEditorKeyDown(EditorKeyType::UpKey))
 	{
-		pos.y += 2.0f;
+		pos.y += m_onemovenum;
 		selectObj->SetPos(pos);
 	}
 
 	if (Inp.GetEditorKeyDown(EditorKeyType::DownKey))
 	{
-		pos.y -= 2.0f;
+		pos.y -= m_onemovenum;
 		selectObj->SetPos(pos);
 	}
 
@@ -636,6 +705,14 @@ void Editor::KeyUpdate()
 				break;
 			}
 		}
+	}
+
+	// 選択中オブジェクト複製
+	if (Inp.GetEditorKeyDown(EditorKeyType::DeleteKey))
+	{
+		selectObj->SetExpired();
+
+		m_selectObj.reset();
 	}
 }
 
@@ -706,8 +783,8 @@ void Editor::Load()
 		{
 			if (createInfo.name == objName)
 			{
+				//			↓初期化が完了したオブジェクトを返してる
 				auto obj = createInfo.obj();
-
 				obj->SetName(createInfo.name);
 
 				obj->SetPos({ x,y,z });

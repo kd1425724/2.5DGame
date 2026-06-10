@@ -18,14 +18,13 @@ public:
 	{
 		return m_editorCameraMode;
 	}
+	//エディター中オブジェクトの更新をするかどうか
+	bool IsObjectUpdateMode()const
+	{
+		return m_objectupdatemode;
+	}
 
 	void DebagDraw();
-
-	//部屋ロード
-	void LoadRoom(std::string _filename, int _InstanceId);
-	//部屋消去
-	void UnLoadRoom(int _InstanceId);
-
 
 private:
 
@@ -59,6 +58,8 @@ private:
 	std::weak_ptr<KdGameObject> m_selectObj;
 
 	bool m_editMode = true;
+
+	bool m_objectupdatemode = false;
 
 	bool m_showHierarchy = true;
 	bool m_showInspector = true;
@@ -98,6 +99,8 @@ private:
 
 	//キーでの操作
 	void KeyUpdate();
+
+	float m_onemovenum = 1;
 
 
 private:

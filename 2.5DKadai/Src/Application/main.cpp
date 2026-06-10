@@ -233,7 +233,7 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	// 例えばカーソルを消したい場合
 	//ShowCursor(false);
-
+	SceneManager::Instance().Init();
 	EDITOR.Init();
 
 	return true;

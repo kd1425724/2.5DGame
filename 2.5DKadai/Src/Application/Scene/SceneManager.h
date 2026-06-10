@@ -37,11 +37,12 @@ public :
 
 	KdCamera* GetCamera();
 
+	// マネージャーの初期化
+	void Init();
+
 private :
 
-	// マネージャーの初期化
-	// インスタンス生成(アプリ起動)時にコンストラクタで自動実行
-	void Init();
+	
 
 	// シーン切り替え関数
 	void ChangeScene(SceneType _sceneType);
@@ -50,14 +51,14 @@ private :
 	std::shared_ptr<BaseScene> m_currentScene = nullptr;
 
 	// 現在のシーンの種類を保持している変数
-	SceneType m_currentSceneType = SceneType::Game;
+	SceneType m_currentSceneType = SceneType::Title;
 	
 	// 次のシーンの種類を保持している変数
 	SceneType m_nextSceneType = m_currentSceneType;
 
 private:
 
-	SceneManager() { Init(); }
+	SceneManager() {}
 	~SceneManager() {}
 
 public:

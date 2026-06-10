@@ -13,7 +13,8 @@ public:
 	Math::Vector2 GetPlayerRect() { return m_playerrect; }
 
 	//数字
-	std::shared_ptr<KdSquarePolygon> GetNumPoly() { return m_numpoly; }
+	std::shared_ptr<KdTexture> GetNumTex() { return m_numtex; }
+	Math::Rectangle GetNumRect() { return m_numrect; }
 
 	//ステージセレクト説明画像
 	//std::shared_ptr<KdSquarePolygon> GetStage1DescriptionPoly() { return m_Stage1DescriptionPoly; }
@@ -29,9 +30,8 @@ private:
 	Math::Vector2 m_playerrect;
 
 	//数字
-	std::shared_ptr<KdSquarePolygon> m_numpoly;
-	//分割数
-	Math::Vector2 m_numrect = { 10,1 };
+	std::shared_ptr<KdTexture> m_numtex;
+	Math::Rectangle m_numrect = { 0,0 ,100,10 };
 
 	//ステージセレクト説明画像
 	//std::shared_ptr<KdSquarePolygon> m_Stage1DescriptionPoly;

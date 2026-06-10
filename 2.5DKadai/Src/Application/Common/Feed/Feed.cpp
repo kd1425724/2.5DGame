@@ -7,6 +7,8 @@ void C_Feed::Release()
 
 void C_Feed::FeedInInit(float time)
 {
+	if (m_state != NoFeed)return;
+
 	m_alpha = 1.0f;
 	m_delta = 1.0f / time;
 	m_state = FeedIn;
@@ -18,6 +20,8 @@ void C_Feed::FeedInInit(float time)
 
 void C_Feed::FeedOutInit(float time, function<void()> finishpattern)
 {
+	if (m_state != NoFeed)return;
+
 	m_alpha = 0.0f;
 	m_delta = 1.0f / time;
 	m_state = FeedOut;

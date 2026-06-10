@@ -1,17 +1,14 @@
-#pragma once
+﻿#pragma once
 
-class TitleSceneUi:public KdGameObject
+class TitleSceneUi
 {
 public:
 	TitleSceneUi(){}
-	~TitleSceneUi()override{}
+	~TitleSceneUi(){}
+
+	void Init();
 
 private:
 
-	void Init()override;
-
-	void PreUpdate()override;
-	void Update() override;
-	void PostUpdate()override;
-
+	
 };

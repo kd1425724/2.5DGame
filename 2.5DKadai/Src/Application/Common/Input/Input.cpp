@@ -153,7 +153,9 @@ void C_Input::EditorDefaultKeySet()
 						(int)EditorKeyDefaultType::DownKey,
 						(int)EditorKeyDefaultType::LeftKey,
 						(int)EditorKeyDefaultType::RightKey,
-						(int)EditorKeyDefaultType::CreateKey};
+						(int)EditorKeyDefaultType::CreateKey,
+						(int)EditorKeyDefaultType::DeleteKey,
+						(int)EditorKeyDefaultType::CtrlKey };
 
 	for (int i = 0; i < num; i++)
 	{

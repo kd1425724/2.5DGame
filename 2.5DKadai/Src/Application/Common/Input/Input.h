@@ -63,6 +63,8 @@ enum class EditorKeyType
 	LeftKey,
 	RightKey,
 	CreateKey,
+	DeleteKey,
+	CtrlKey,
 	EditorKeyNum,
 };
 enum class EditorKeyDefaultType
@@ -74,6 +76,8 @@ enum class EditorKeyDefaultType
 	LeftKey			= VK_LEFT,
 	RightKey		= VK_RIGHT,
 	CreateKey		= '1',
+	DeleteKey		= '2',
+	CtrlKey			= VK_CONTROL
 };
 
 class C_Input

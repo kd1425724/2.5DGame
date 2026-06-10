@@ -1,21 +1,39 @@
 ﻿#include "StageSelectScene.h"
 #include"../../Object/Ui/StageSelectSceneUi/StageSelectSceneUi.h"
-
+#include"../SceneManager.h"
+#include"../../Object/BackGround/StageSelectSceneBackGround/StageSelectSceneBackGround.h"
+#include"../../Common/Info/Info.h"
+#include"../../Manager/StageManager/StageManager.h"
 void StageSelectScene::Event()
 {
-	//カメラ処理
-	Math::Vector3 camPos = { 0,0,-50 };
-	Math::Matrix transmat = Math::Matrix::CreateTranslation(camPos);
-	Math::Matrix mat = transmat;
-
-	m_camera->SetCameraMatrix(mat);
+	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	{
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Game);
+	}
 }
 
 void StageSelectScene::Init()
 {
-	//カメラの初期化
+	//カメラ
 	m_camera = std::make_unique<KdCamera>();
 
-	std::shared_ptr<StageSelectSceneUi> stageselectui = std::make_shared<StageSelectSceneUi>();
-	m_objList.push_back(stageselectui);
+	Math::Vector3 camerapos = { 0,0,INFO.DefaultCameraPosZ };
+	Math::Matrix mtrans = Math::Matrix::CreateTranslation(camerapos);
+	Math::Matrix mat = mtrans;
+
+	m_camera->SetCameraMatrix(mat);
+
+	//std::shared_ptr<StageSelectSceneUi> stageselectui = std::make_shared<StageSelectSceneUi>();
+	//m_objList.push_back(stageselectui);
+
+	//背景
+	std::shared_ptr<StageSelectSceneBackGround> background = std::make_shared<StageSelectSceneBackGround>();
+	background->Init();
+	m_objList.push_back(background);
+
+	//一部屋ロード
+	STAGEMANAGER.LoadRoom("Box");
+
+	//スクロールするかどうか
+	INFO.SetScrollFlg(false);
 }

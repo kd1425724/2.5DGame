@@ -4,38 +4,22 @@
 
 void Player::Init()
 {
+	m_name = "Player";
+
 	//デバッグ用のポインタを実体化
 	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
 
-	m_polygon = std::make_shared<KdSquarePolygon>();
-	m_polygon->SetMaterial("Asset/Textures/GameScene/Player/Player.png");
-	
-	//画像原点
-	m_polygon->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
-	m_polygon->SetScale(5);
-
-	//画像分割
-	//Math::Vector2 uvrect = { 14,8 };
-	Math::Vector2 uvrect = { 12,15 };
-	m_polygon->SetSplit(uvrect.x, uvrect.y);
-
-	m_polygon->SetUVRect(0);
-
+	m_model = std::make_shared<KdModelData>();
+	m_model->Load("Asset/Models/Object/Stage/Block/Block.gltf");
 
 	//座標
-	m_pos = {0,30};
+	m_pos = { 0,0 };
 	//移動スピード
-	m_speed = 0.3f;
+	m_speed = 0.2f;
 	//サイズ
 	m_scale = { 1,1,1 };
 
 	m_move = { 1,0,0 };
-
-	//アニメーションIDロード
-	PlayerDataLoad();
-
-	//通常アニメーション
-	UVRectControl(PlayerAnimeType::Dash);
 }
 
 void Player::PreUpdate()
@@ -43,19 +27,6 @@ void Player::PreUpdate()
 
 void Player::Update()
 {
-	static Math::Vector3 move = {};
-	move = {};
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-	{
-		move.x = 1.0f;
-	}
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-	{
-		move.x = -1.0f;
-	}
-	move.Normalize();
-	m_pos += move * m_speed;
-
 	switch (m_statepattern)
 	{
 	case Player::PlayerStatePattern::Start:
@@ -74,7 +45,7 @@ void Player::Update()
 				//ジャンプ1段目
 				m_gravity = -m_onejumppow;
 				m_jumppattern = PlayerJumpPattern::Jump1;
-				UVRectControl(PlayerAnimeType::Jump);
+				//UVRectControl(PlayerAnimeType::Jump);
 
 				//地面から離れた
 				m_isground = false;
@@ -86,7 +57,6 @@ void Player::Update()
 				//ジャンプ2段目
 				m_gravity = -m_twojumppow;
 				m_jumppattern = PlayerJumpPattern::Jump2;
-				UVRectControl(PlayerAnimeType::Jump);
 			}
 			break;
 		case Player::PlayerJumpPattern::Jump2:
@@ -97,62 +67,62 @@ void Player::Update()
 			break;
 		}
 
-		switch (m_attackpattern)
-		{
-		case Player::PlayerAttackPattern::None:
-			if (Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
-			{
-				m_attackpattern = PlayerAttackPattern::Attack1;
+		//switch (m_attackpattern)
+		//{
+		//case Player::PlayerAttackPattern::None:
+		//	if (Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
+		//	{
+		//		m_attackpattern = PlayerAttackPattern::Attack1;
 
-				//通常攻撃1段目用アニメーション設定
-				UVRectControl(PlayerAnimeType::Attack1, [this]()
-					{
-						//1段目攻撃が終わったら（アニメーションが終わったら）待機状態に
-						m_attackpattern = PlayerAttackPattern::Standby;
+		//		//通常攻撃1段目用アニメーション設定
+		//		//UVRectControl(PlayerAnimeType::Attack1, [this]()
+		//		//	{
+		//		//		//1段目攻撃が終わったら（アニメーションが終わったら）待機状態に
+		//		//		m_attackpattern = PlayerAttackPattern::Standby;
 
-						//待機時間
-						m_standbytime = StandbyTime;
-					});
-			}
-			break;
-		case Player::PlayerAttackPattern::Attack1:
-			if (Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
-			{
-				//入力保存
-				m_inputkeep = true;
-			}
+		//		//		//待機時間
+		//		//		m_standbytime = StandbyTime;
+		//		//	});
+		//	}
+		//	break;
+		//case Player::PlayerAttackPattern::Attack1:
+		//	if (Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
+		//	{
+		//		//入力保存
+		//		m_inputkeep = true;
+		//	}
 
-			break;
-		case Player::PlayerAttackPattern::Attack2:
-			break;
-		case Player::PlayerAttackPattern::Standby:
-			//既に入力されているか、待機状態中に入力したら
-			if (m_inputkeep || Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
-			{
-				//2段目攻撃
-				m_attackpattern = PlayerAttackPattern::Attack2;
+		//	break;
+		//case Player::PlayerAttackPattern::Attack2:
+		//	break;
+		//case Player::PlayerAttackPattern::Standby:
+		//	//既に入力されているか、待機状態中に入力したら
+		//	if (m_inputkeep || Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
+		//	{
+		//		//2段目攻撃
+		//		m_attackpattern = PlayerAttackPattern::Attack2;
 
-				//アニメーション
-				UVRectControl(PlayerAnimeType::Attack2, [this]()
-					{
-						//2段目攻撃が終わったらNoneに戻す
-						m_attackpattern = PlayerAttackPattern::None;
-						//入力保存用falseに
-						m_inputkeep = false;
+		//		//アニメーション
+		//		UVRectControl(PlayerAnimeType::Attack2, [this]()
+		//			{
+		//				//2段目攻撃が終わったらNoneに戻す
+		//				m_attackpattern = PlayerAttackPattern::None;
+		//				//入力保存用falseに
+		//				m_inputkeep = false;
 
-					});
-			}
-			//待機状態が終了したらNoneに戻す
-			m_standbytime--;
-			if (m_standbytime <= 0)
-			{
-				m_attackpattern = PlayerAttackPattern::None;
-			}
+		//			});
+		//	}
+		//	//待機状態が終了したらNoneに戻す
+		//	m_standbytime--;
+		//	if (m_standbytime <= 0)
+		//	{
+		//		m_attackpattern = PlayerAttackPattern::None;
+		//	}
 
-			break;
-		default:
-			break;
-		}
+		//	break;
+		//default:
+		//	break;
+		//}
 
 		////スキル処理
 		//if (Inp.GetPlayerKeyDown(PlayerKeyType::Skill))
@@ -182,12 +152,12 @@ void Player::Update()
 		//落下が始まった瞬間のみ実行
 		if (prevgravity <= 0 && m_gravity > 0)
 		{
-			UVRectControl(PlayerAnimeType::Fall);
+			//UVRectControl(PlayerAnimeType::Fall);
 		}
 	}
 
 	//アニメーション
-	UVRectControlUpdate();
+	//UVRectControlUpdate();
 
 	//行列
 	Math::Matrix mscale = Math::Matrix::CreateScale(m_scale);
@@ -198,27 +168,16 @@ void Player::Update()
 void Player::PostUpdate()
 {
 	Hit();
-
-	//アニメーションが落下中以外かつ上書き可能なら判定
-	if (m_overwritable && m_nowanimtype != PlayerAnimeType::Fall)
-	{
-		//落下中か判定
-		if (m_gravity > 0 && !m_isground)
-		{
-			//落下中なら
-			UVRectControl(PlayerAnimeType::Fall);
-		}
-		//else
-		//{
-		//	//落下中ではないなら
-		//	UVRectControl(PlayerAnimeType::Dash);
-		//}
-	}
 }
 
 void Player::DrawLit()
 {
-	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
+	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
+}
+
+void Player::GenerateDepthMapFromLight()
+{
+	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
 }
 
 
@@ -226,7 +185,7 @@ void Player::Hit()
 {
 	//プレイヤー座標調整地面判定用（プレイヤーの足元）
 	float groundpossurplusX = 0;
-	float groundpossurplusY = 1.8f;
+	float groundpossurplusY = -0.8f;
 
 	//レイ判定
 	KdCollider::RayInfo ray;
@@ -277,7 +236,6 @@ void Player::Hit()
 		{
 			m_isground = true;
 			m_jumppattern = PlayerJumpPattern::None;
-			UVRectControl(PlayerAnimeType::Dash);
 
 		}
 
@@ -294,14 +252,14 @@ void Player::Hit()
 	{
 		//プレイヤー座標調整壁判定用（プレイヤーの中心）
 		float spherepossurplusX = 0;
-		float spherepossurplusY = 2.6f;
+		float spherepossurplusY = 0;
 
 		//球判定の設定
 		KdCollider::SphereInfo sphere;
 		sphere.m_sphere.Center = m_pos;
 		sphere.m_sphere.Center.y += spherepossurplusY;
 		sphere.m_sphere.Center.x += spherepossurplusX;
-		sphere.m_sphere.Radius = 0.4f;
+		sphere.m_sphere.Radius = 0.8f;
 		sphere.m_type = KdCollider::TypeGround;
 
 		//デバッグ
@@ -348,149 +306,6 @@ void Player::Hit()
 	}
 }
 
-void Player::UVRectControl(PlayerAnimeType _type,std::function<void()> _action)
-{
-	//上書き不可なら実行しない
-	if (!m_overwritable)return;
-
-	m_anim = 0;
-
-	//始めに初期化
-	m_animid.clear();
-	m_action = nullptr;
-
-	switch (_type)
-	{
-	case Player::PlayerAnimeType::Dash:
-	
-		m_animtime = 30;
-		m_animid = m_animidkeep[(int)PlayerAnimeType::Dash];
-		m_loopmax = 1;
-
-		//上書き可能
-		m_overwritable = true;
-		break;
-	case Player::PlayerAnimeType::Jump:
-
-		m_animtime = 60;
-
-		m_animid =m_animidkeep[(int)PlayerAnimeType::Jump];
-		
-		//上書きされる前提
-		m_loopmax = 999;
-		//上書き可能
-		m_overwritable = true;
-		break;
-	case Player::PlayerAnimeType::Fall:
-	
-		m_animtime = 60;
-
-		m_animid = m_animidkeep[(int)PlayerAnimeType::Fall];
-		
-		//上書きされる前提
-		m_loopmax = 999;
-		//上書き可能
-		m_overwritable = true;
-
-		break;
-	case Player::PlayerAnimeType::Attack1:
-		m_animtime = 10;
-
-		m_animid = m_animidkeep[(int)PlayerAnimeType::Attack1];
-		m_loopmax = 1;
-		//上書き不可
-		m_overwritable = false;
-		break;
-	case Player::PlayerAnimeType::Attack2:
-		m_animtime = 20;
-
-		m_animid = m_animidkeep[(int)PlayerAnimeType::Attack2];
-		m_loopmax = 1;
-		//上書き不可
-		m_overwritable = false;
-		break;
-	case Player::PlayerAnimeType::spDash:
-		m_animtime = 60;
-
-		m_animid = m_animidkeep[(int)PlayerAnimeType::spDash];
-		m_loopmax = 1;
-
-		//上書き不可
-		m_overwritable = false;
-
-		break;
-	default:
-		//デフォルトはダッシュ
-		m_animtime = 30;
-		m_animid = m_animidkeep[(int)PlayerAnimeType::Dash];
-		m_loopmax = 1;
-		//上書き可能
-		m_overwritable = true;
-		break;
-	}
-
-	//共通
-	m_animmax = m_animid.size();
-	m_animcnt = m_loopmax;
-
-	if (_action)
-	{
-		m_action = _action;
-	}
-
-	m_animflg = true;
-}
-
-void Player::UVRectControlUpdate()
-{
-	if (!m_animflg)return;
-	if (m_loopmax <= 0)return;
-
-	m_anim += m_animmax / (float)m_animtime;
-
-	if (m_anim >= m_animmax)
-	{
-		m_animcnt--;
-
-		//animcntが０になるまでループ
-		if (m_animcnt <= 0)
-		{
-			//アニメーション初期化
-			m_anim = 0;
-			//アニメーションフラグ初期化
-			m_animflg = false;
-			//上書き可能に戻す
-			m_overwritable = true;
-
-
-			if (m_action)
-			{
-				m_action();
-			}
-			
-			//落下中か判定
-			if (m_gravity > 0 && !m_isground)
-			{
-				//落下中なら
-				UVRectControl(PlayerAnimeType::Fall);
-			}
-			else
-			{
-				//落下中ではないなら
-				UVRectControl(PlayerAnimeType::Dash);
-			}
-
-			return;
-		}
-
-		m_anim = 0;
-
-	}
-
-	//アニメーション
-	m_polygon->SetUVRect(m_animid[(int)m_anim]);
-}
-
 void Player::PlayerDataLoad()
 {
 	FILE* fp;
@@ -513,33 +328,6 @@ void Player::PlayerDataLoad()
 
 		//代入
 		m_pos = pos;
-
-		fgets(dummy, 255, fp);		//1行飛ばす
-		fgets(dummy, 255, fp);		//1行飛ばす
-		fgets(dummy, 255, fp);		//1行飛ばす
-
-		//アニメーションID読み込み
-		for (int i = 0; i < (int)PlayerAnimeType::AnimNum; i++)
-		{
-			//始めだけ飛ばす
-			fscanf_s(fp, "%*[^,]");
-
-			for (int j = 0; j < 20; j++)
-			{
-				//一個ずつ読み込む
-				fscanf_s(fp, ",%d", &animid);
-
-				//もし-1（最後まで読んだ）ならbreak
-				if (animid == -1)
-				{
-					fgets(dummy, 255, fp);		//1行飛ばす
-					break;
-				}
-
-				//一個ずつ格納
-				m_animidkeep[i].push_back(animid);
-			}
-		}
 
 		fclose(fp);
 	}

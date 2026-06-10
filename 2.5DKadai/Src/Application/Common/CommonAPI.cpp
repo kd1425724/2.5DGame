@@ -59,14 +59,13 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale, 
 	Math::Matrix t;
 	Math::Matrix mat;
 
+	Math::Rectangle Srect = ASSET.GetNumRect();
+
 	//マイナスなら強制＋に
 	if (num < 0)
 	{
 		num = abs(num);
 	}
-
-	//数字間隔
-	float Srect = 32.0f;
 
 	// 0対策（0の場合は0のみ表示）
 	if (num == 0)
@@ -75,20 +74,24 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale, 
 		t = Math::Matrix::CreateTranslation(startpos.x, startpos.y, 0);
 		mat = s * t;
 
-		
-		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*ASSET.GetNumPoly(), mat, color);
+		Math::Rectangle rect = { num * Srect.width,Srect.y,Srect.width,Srect.height };
+
+		KdShaderManager::Instance().m_spriteShader.SetMatrix(mat);
+		KdShaderManager::Instance().m_spriteShader.DrawTex(ASSET.GetNumTex(), 0, 0, &rect, &color);
+
 		for (int i = 1; i < maxdigits; i++)
 		{
 			Math::Vector2 pos = startpos;
-			pos.x -= Srect * scale.x * i;
+			pos.x -= Srect.width * scale.x * i;
 
 			s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 			t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 			mat = s * t;
-			
-			ASSET.GetNumPoly()->SetUVRect(num);
 
-			KdShaderManager::Instance().m_StandardShader.DrawPolygon(*ASSET.GetNumPoly(), mat, color);
+			Math::Rectangle rect = { 0 * Srect.width,Srect.y,Srect.width,Srect.height };
+
+			KdShaderManager::Instance().m_spriteShader.SetMatrix(mat);
+			KdShaderManager::Instance().m_spriteShader.DrawTex(ASSET.GetNumTex(), 0, 0, &rect, &color);
 		}
 
 		return;
@@ -115,17 +118,19 @@ void C_CommonAPI::NumDraw(int num, Math::Vector2 startpos, Math::Vector2 scale, 
 	for (int i = 0; i < digits.size(); i++)
 	{
 		Math::Vector2 pos = startpos;
-		pos.x -= Srect * scale.x * i;
+		pos.x -= Srect.width * scale.x * i;
 
 		s = Math::Matrix::CreateScale(scale.x, scale.y, 1);
 		t = Math::Matrix::CreateTranslation(pos.x, pos.y, 0);
 		mat = s * t;
 
-		ASSET.GetNumPoly()->SetUVRect(num);
+		Math::Rectangle rect = { digits[i] * Srect.width,Srect.y,Srect.width,Srect.height };
 
-		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*ASSET.GetNumPoly(), mat, color);
+		KdShaderManager::Instance().m_spriteShader.SetMatrix(mat);
+		KdShaderManager::Instance().m_spriteShader.DrawTex(ASSET.GetNumTex(), 0, 0, &rect, &color);
 	}
 }
+
 
 void C_CommonAPI::CreateButton(Math::Vector2 pos, Math::Rectangle rect, Math::Vector2 scale, std::shared_ptr<KdSquarePolygon> tex, 
 	Math::Color color, std::shared_ptr<KdSquarePolygon> frametex)
