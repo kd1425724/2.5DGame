@@ -94,9 +94,8 @@ void C_Input::PlayerDefaultKeySet()
 {
 	static const int num = (int)PlayerKeyType::PlayerKeyNum;
 
-	int defaultkey[num] = { (int)PlayerKeyDefaultType::Attack,
-						(int)PlayerKeyDefaultType::Jump,
-						(int)PlayerKeyDefaultType::Skill};
+	int defaultkey[num] = { (int)PlayerKeyDefaultType::Jump,
+						(int)PlayerKeyDefaultType::Plunge};
 
 	for (int i = 0; i < num; i++)
 	{

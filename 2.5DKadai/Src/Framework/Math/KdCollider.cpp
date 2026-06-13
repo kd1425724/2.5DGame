@@ -641,7 +641,7 @@ bool KdModelCollision::Intersects(const DirectX::BoundingSphere& target, const M
 
 		pRes->m_overlapDistance = DirectX::XMVector3Length(pRes->m_hitDir).m128_f32[0];
 
-		pRes->m_hitDir = DirectX::XMVector3Normalize(pRes->m_hitDir);
+		//pRes->m_hitDir = DirectX::XMVector3Normalize(pRes->m_hitDir);
 
 		// 最後に当たった面の法線が使用される
 		pRes->m_hitNDir = hitNDir;

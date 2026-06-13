@@ -12,6 +12,6 @@ void BaseEvent::PreUpdate()
 {
 	if (m_pDebugWire)
 	{
-		m_pDebugWire->AddDebugBox(m_mWorld, m_scale, {}, false, kRedColor);
+		m_pDebugWire->AddDebugBox(m_mWorld, {0.5,1,0.5f}, {}, false, kRedColor);
 	}
 }

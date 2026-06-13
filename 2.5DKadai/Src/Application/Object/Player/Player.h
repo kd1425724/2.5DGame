@@ -14,6 +14,7 @@ public:
 
 	void DrawLit()override;
 	void GenerateDepthMapFromLight()override;
+	void DrawBright()override;
 
 	ObjectTag GetObjectTag()override { return ObjectTag::Player; }
 
@@ -44,6 +45,7 @@ private:
 
 	
 	std::shared_ptr<KdModelData> m_model;
+	std::shared_ptr<KdModelData> m_coremodel;
 
 	//移動ベクトル
 	Math::Vector3 m_move = {};
@@ -60,4 +62,7 @@ private:
 
 	//地面に着地した瞬間の判定
 	bool m_isground = true;	
+
+	//ディゾルブ用
+	float m_dissolv = 0;
 };

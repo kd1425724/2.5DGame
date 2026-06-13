@@ -2,9 +2,8 @@
 
 enum class PlayerKeyType
 {
-	Attack,
 	Jump,
-	Skill,
+	Plunge,
 	PlayerKeyNum
 };
 
@@ -141,9 +140,8 @@ public:
 private:
 	enum class PlayerKeyDefaultType
 	{
-		Attack = 'Z',
-		Jump = 'X',
-		Skill = 'C',
+		Jump =VK_UP,
+		Plunge = VK_DOWN
 	};
 	enum class UserKeyDefaultType
 	{
@@ -172,8 +170,8 @@ private:
 		DownKey = VK_DOWN,
 		LeftKey = VK_LEFT,
 		RightKey = VK_RIGHT,
-		CreateKey = '1',
-		DeleteKey = '2',
+		CreateKey = 'U',
+		DeleteKey = VK_DELETE,
 		CtrlKey = VK_CONTROL
 	};
 

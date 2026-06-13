@@ -11,7 +11,10 @@ void Player::Init()
 	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
 
 	m_model = std::make_shared<KdModelData>();
-	m_model->Load("Asset/Models/Object/Stage/Block/Block.gltf");
+	m_model->Load("Asset/Models/Object/Player/Player.gltf");
+
+	m_coremodel = std::make_shared<KdModelData>();
+	m_coremodel->Load("Asset/Models/Object/Player/PlayerCore/PlayerCore.gltf");
 	
 	//座標
 	m_pos = { 0,0 };
@@ -28,6 +31,14 @@ void Player::PreUpdate()
 
 void Player::Update()
 {
+	//ポイントライト
+	KdShaderManager::Instance().WorkAmbientController().AddPointLight
+	(
+		{ 10,0,0 },							//色
+		3,									//半径
+		m_pos	//座標
+	);
+
 	switch (m_statepattern)
 	{
 	case Player::PlayerStatePattern::Start:
@@ -41,15 +52,19 @@ void Player::Update()
 		switch (m_jumppattern)
 		{
 		case Player::PlayerJumpPattern::None:
+			
 			if (Inp.GetPlayerKeyDown(PlayerKeyType::Jump))
 			{
 				//ジャンプ1段目
 				m_gravity = -m_onejumppow;
-				m_jumppattern = PlayerJumpPattern::Jump1;
-				//UVRectControl(PlayerAnimeType::Jump);
 
 				//地面から離れた
 				m_isground = false;
+			}
+			if (!m_isground)
+			{
+				//地面から離れてたらJump1に移行
+				m_jumppattern = PlayerJumpPattern::Jump1;
 			}
 			break;
 		case Player::PlayerJumpPattern::Jump1:
@@ -59,20 +74,30 @@ void Player::Update()
 				m_gravity = -m_twojumppow;
 				m_jumppattern = PlayerJumpPattern::Jump2;
 			}
-			m_rot.z -= 5;
-
 			break;
 		case Player::PlayerJumpPattern::Jump2:
 			//着地したらNoneに戻す
 			//当たり判定処理の部分に書いてる
-			m_rot.z -= 5;
 			break;
 		default:
 			break;
 		}
 
+		//地面から離れているとき回転
+		if (!m_isground)
+		{
+			m_rot.z -= 5;
+		}
+
+		if (Inp.GetPlayerKey(PlayerKeyType::Plunge))
+		{
+			m_gravity += 0.05f;
+		}
+
+		//重力が0以下（プレイヤーが上昇中）かつJumpキーが離れされたら
 		if (m_gravity < 0 && Inp.GetPlayerKeyUp(PlayerKeyType::Jump))
 		{
+			//重力を0に
 			m_gravity = 0;
 		}
 
@@ -181,12 +206,23 @@ void Player::PostUpdate()
 
 void Player::DrawLit()
 {
+	//ディゾルブ											↓０～１
+	KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolv);
+	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, m_mWorld);
+	KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolv);
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
 }
 
 void Player::GenerateDepthMapFromLight()
 {
+		//ディゾルブ											↓０～１
+	//KdShaderManager::Instance().m_StandardShader.SetDissolve(0.2f);
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
+}
+
+void Player::DrawBright()
+{
+	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, m_mWorld);
 }
 
 
@@ -269,7 +305,7 @@ void Player::Hit()
 		sphere.m_sphere.Center = m_pos;
 		sphere.m_sphere.Center.y += spherepossurplusY;
 		sphere.m_sphere.Center.x += spherepossurplusX;
-		sphere.m_sphere.Radius = 0.5f;
+		sphere.m_sphere.Radius = 0.40f;
 		sphere.m_type = KdCollider::TypeGround | KdCollider::TypeEvent;
 
 		//デバッグ
@@ -299,25 +335,6 @@ void Player::Hit()
 			//当たったTypeがイベントなら飛ばす
 			if (ret.m_hitType & KdCollider::TypeEvent)continue;
 
-			// 当たった方向
-			Math::Vector3 dir = ret.m_hitDir;
-
-			// 左右から当たった
-			//xの方が大きければ　abs...絶対値
-			if (abs(dir.x) > abs(dir.y))
-			{
-				//死亡演出へ
-				m_statepattern = PlayerStatePattern::Death;
-
-				//スクロール停止
-				INFO.SetScrollFlg(false);
-				return;
-			}
-			if (dir.y < 0)
-			{
-				// 下から当たった
-				m_gravity = 0;
-			}
 			//球にめり込んだ長さが一番長いものを探す
 			if (maxOverLap < ret.m_overlapDistance)
 			{
@@ -330,12 +347,30 @@ void Player::Hit()
 
 		if (hit)
 		{
+			hitDir.Normalize();
+
+			if (hitDir.y < -0.5f)
+			{
+				// 下から当たった
+				m_gravity = 0;
+			}
+			else if (hitDir.y > 0.5f)
+			{
+				//上から当たった
+				//何もしない
+			}
+			else if (hitDir.x < -0.5f)
+			{
+				// 左から当たった
+				m_statepattern = PlayerStatePattern::Death;
+				INFO.SetScrollFlg(false);
+				return;
+			}
+
 			//Z方向への押し戻し無効
 			hitDir.z = 0;
 			//正規化（長さ１にする）
 			hitDir.Normalize();
-
-			//押し戻し
 			m_pos += hitDir * maxOverLap;
 		}
 	}

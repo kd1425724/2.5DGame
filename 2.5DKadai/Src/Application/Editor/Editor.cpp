@@ -310,7 +310,15 @@ void Editor::DrawInspector()
 
 	ImGui::Separator();
 
+	
+	ImGui::Separator();
+
 	Math::Vector3 rot = obj->GetRot();
+
+	if (ImGui::DragFloat3("Rotation", &rot.x, 0.1f))
+	{
+		obj->SetRot(rot);
+	}
 
 	static float rotnum = 90.0f;
 
@@ -367,6 +375,11 @@ void Editor::DrawInspector()
 	Math::Vector3 size = obj->GetSize();
 
 	static float sizenum = 1.0f;
+
+	if (ImGui::DragFloat3("Size", &size.x, 0.1f))
+	{
+		obj->SetSize(size);
+	}
 
 	ImGui::InputFloat("SizeNum", &sizenum);
 

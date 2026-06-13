@@ -7,18 +7,18 @@ public:
 	void StageLoad(const std::string& _filename);
 	void ChangeRoom();
 
-	void LoadRoom(const std::string& _filename);
-
 	//特定のルームを一つだけ出したいとき用（タイトルなど）
-	//void LoadOneRoom(const std::string& _filename, const Math::Vector3& _pos = { 0,0,0 });
+	//部屋を座標｛0,0,0｝に生成
+	void LoadRoom(const std::string& _filename);
 
 private:
 
 	void Init();
 
-	//3つ目までのルーム（最初のルーム）をロード
+	//２つ目までのルーム（最初のルーム）をロード
 	void FirstRoomLoad();
 
+	//
 	void LoadRoom(const std::string& _filename ,int _instanceId);
 	void UnLoadRoom(int _instanceId);
 
@@ -41,7 +41,7 @@ private:
 	std::shared_ptr<KdGameObject> m_currentroomcenter;
 
 	//初期生成部屋数
-	static const int InitialRoomCount = 2;
+	static const int InitialRoomCount = 3;
 
 private:
 	StageManager() { Init(); }

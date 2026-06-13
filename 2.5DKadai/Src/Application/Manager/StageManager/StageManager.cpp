@@ -69,7 +69,11 @@ void StageManager::Init()
 
 void StageManager::StageLoad(const std::string& _filename)
 {
+	//始めに前のステージ情報初期化
 	m_currentRoomId = 0;
+	m_oldroomcenter = nullptr;
+	m_currentroomcenter = nullptr;
+	m_filename.clear();
 
 	FILE* fp = nullptr;
 
@@ -113,8 +117,12 @@ void StageManager::StageLoad(const std::string& _filename)
 
 void StageManager::FirstRoomLoad()
 {
-	if (m_filename.size() < InitialRoomCount)return;
-
+	if (m_filename.size() < InitialRoomCount)
+	{
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::StageSelect);
+		return;
+	}
+	
 	//初期生成数まで
 	//2つ目までのルーム（最初のルーム）をロード
 	for (int i = 0; i < InitialRoomCount; i++)
@@ -125,22 +133,33 @@ void StageManager::FirstRoomLoad()
 		m_currentRoomId++;
 	}
 
-	m_currentRoomId = InitialRoomCount;
+	//初期生成時に変更してしまっているがプレイヤーは0から始まらないといけないので0に戻す
+	m_currentRoomId = 0;
 }
 
 void StageManager::ChangeRoom()
 {
-	//2個先の部屋のID
-	int nextid = m_currentRoomId + 2;
+	//3個先の部屋のID
+	int nextid = m_currentRoomId + 3;
 	//2個前の部屋のID
 	int	previousid = m_currentRoomId - 2;
 
 	//2個前の部屋削除
 	UnLoadRoom(previousid);
 
-	//2個先の部屋生成
-	LoadRoom(m_filename[nextid],nextid);
+	//次の部屋が存在するときだけ生成
 
+	if (nextid < m_filename.size())
+	{
+		//3個先の部屋生成
+		LoadRoom(m_filename[nextid], nextid);
+	}
+	else
+	{
+		// 最後の部屋をもう一度生成
+		LoadRoom(m_filename.back(), nextid);
+	}
+	
 	//更新
 	m_currentRoomId++;
 }
@@ -214,7 +233,7 @@ void StageManager::LoadRoom(const std::string& _filename, int _instanceId)
 		}
 	}
 
-	//fclose(fp);
+	fclose(fp);
 
 	int id = KdRandom::GetInt(0, 5);
 
@@ -256,10 +275,8 @@ void StageManager::LoadRoom(const std::string& _filename, int _instanceId)
 				}
 			}
 		}
+		fclose(fp);
 	}
-
-	fclose(fp);
-
 	//部屋の中心座標更新
 	if (!m_currentroomcenter)return;
 	m_oldroomcenter = m_currentroomcenter;

@@ -6,7 +6,7 @@ public:
 	Goal(){}
 	~Goal()override{}
 
-	void Init()override {}
+	void Init()override;
 	void OnHit(KdGameObject* _other)override;
 
 	ObjectTag GetObjectTag()override { return ObjectTag::Goal; }
