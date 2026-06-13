@@ -11,6 +11,7 @@
 #include"../Object/Event/RoomExit/RoomExit.h"
 #include"../Object/Event/Goal/Goal.h"
 #include"../Object/StageBlock/DamageBlock/DamageBlock.h"
+#include"../Object/Event/RoomCenter/RoomCenter.h"
 
 void Editor::Init()
 {
@@ -61,6 +62,12 @@ void Editor::Init()
 			std::shared_ptr<Goal> goal = std::make_shared<Goal>();
 			goal->Init();
 			return goal;
+		} });
+	//部屋の中心
+	m_createObjInfo.push_back({ "RoomCenter",[]()
+		{
+			std::shared_ptr<RoomCenter> roomcenter = std::make_shared<RoomCenter>();
+			return roomcenter;
 		} });
 
 	///////////////////////////////////////////////
@@ -354,6 +361,60 @@ void Editor::DrawInspector()
 	{
 		rot.z -= rotnum;
 		obj->SetRot(rot);
+	}
+	ImGui::Separator();
+
+	Math::Vector3 size = obj->GetSize();
+
+	static float sizenum = 1.0f;
+
+	ImGui::InputFloat("SizeNum", &sizenum);
+
+	ImGui::Text("Block +-%f", sizenum);
+
+	//x回転
+	ImGui::Text("SizeX");
+	ImGui::SameLine();
+	if (ImGui::Button("+##SizeX"))
+	{
+		size.x += sizenum;
+		obj->SetSize(size);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("-##SizeX"))
+	{
+		size.x -= sizenum;
+		obj->SetSize(size);
+	}
+
+	//y回転
+	ImGui::Text("SizeY");
+	ImGui::SameLine();
+	if (ImGui::Button("+##SizeY"))
+	{
+		size.y += sizenum;
+		obj->SetSize(size);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("-##SizeY"))
+	{
+		size.y -= sizenum;
+		obj->SetSize(size);
+	}
+
+	//z回転
+	ImGui::Text("SizeZ");
+	ImGui::SameLine();
+	if (ImGui::Button("+##SizeZ"))
+	{
+		size.z += sizenum;
+		obj->SetSize(size);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("-##SizeZ"))
+	{
+		size.z -= sizenum;
+		obj->SetSize(size);
 	}
 
 
@@ -732,13 +793,21 @@ void Editor::Save()
 	for (auto& obj : objList)
 	{
 		Math::Vector3 pos = obj->GetPos();
+		Math::Vector3 rot = obj->GetRot();
+		Math::Vector3 size = obj->GetSize();
 
 		fprintf(fp,
-			"%s,%f,%f,%f\n",
+			"%s,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",
 			obj->GetName().c_str(),
 			pos.x,
 			pos.y,
-			pos.z);
+			pos.z,
+			rot.x,
+			rot.y,
+			rot.z,
+			size.x,
+			size.y,
+			size.z);
 	}
 
 	fclose(fp);
@@ -765,18 +834,26 @@ void Editor::Load()
 
 	char objName[256] = "";
 
-	float x, y, z;
+	Math::Vector3 pos = {};
+	Math::Vector3 rot = {};
+	Math::Vector3 scale = { 1,1,1 };
 
 	while (
 		fscanf_s(
 			fp,
-			"%255[^,],%f,%f,%f\n",
+			"%255[^,],%f,%f,%f,%f,%f,%f,%f,%f,%f\n",
 			objName,
 			(unsigned)_countof(objName),
-			&x,
-			&y,
-			&z
-		) == 4
+			&pos.x,
+			&pos.y,
+			&pos.z,
+			&rot.x,
+			&rot.y,
+			&rot.z,
+			&scale.x,
+			&scale.y,
+			&scale.z
+		) == 10
 		)
 	{
 		for (auto& createInfo : m_createObjInfo)
@@ -787,7 +864,9 @@ void Editor::Load()
 				auto obj = createInfo.obj();
 				obj->SetName(createInfo.name);
 
-				obj->SetPos({ x,y,z });
+				obj->SetPos(pos);
+				obj->SetRot(rot);
+				obj->SetScale(scale);
 
 				SceneManager::Instance().AddObject(obj);
 

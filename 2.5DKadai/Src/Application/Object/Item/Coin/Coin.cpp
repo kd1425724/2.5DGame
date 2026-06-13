@@ -26,6 +26,9 @@ void Coin::OnHit(KdGameObject * other)
 	//プレイヤーと当たったら
 	if (other->GetObjectTag() == ObjectTag::Player)
 	{
+		//取得
+		SCOREMANAGER.CoinUp();
+
 		//サウンド（未実装）
 
 
@@ -35,6 +38,7 @@ void Coin::OnHit(KdGameObject * other)
 		//スコアアップ
 		int upval = 100;
 		SCOREMANAGER.ScoreUp(upval);
+	
 
 		//消滅
 		m_isExpired = true;

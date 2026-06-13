@@ -18,9 +18,17 @@ public:
 	//スコア取得
 	Score GetScore() { return m_score; }
 
+	//コイン取得
+	void CoinUp() { m_coinnum++; }
+	//コイン取得数取得
+	UINT GetCoin() { return m_coinnum; }
+
 private:
 	//スコア用変数
 	Score m_score;
+
+	//コイン取得
+	UINT m_coinnum = 0;
 
 private:
 	ScoreManager() {}

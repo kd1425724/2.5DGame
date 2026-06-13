@@ -1,20 +1,40 @@
 ﻿#pragma once
 
-class StageSelectSceneUi :public KdGameObject
+class BaseButton;
+class Num;
+
+class StageSelectSceneUi
 {
 public:
-	StageSelectSceneUi() { Init(); }
-	~StageSelectSceneUi()override {}
+	StageSelectSceneUi() { }
+	~StageSelectSceneUi(){}
 
-	void Init()override;
-	void PreUpdate()override;
-	void Update() override;
-	void PostUpdate()override;
+	void Init();
+	void Update();
 
-	void DrawSprite()override;
+
+
+	void SelectButtonControll();
 
 private:
+	enum class StageSelectNumType
+	{
+		Coin,
+		//Score,
+		NumDrawNum
+	};
 
+	std::vector<std::shared_ptr<Num>> m_nums;
 
+	enum class StageSelectButton
+	{
+		Stage1,
+		Stage3,
+		Stage2,
+		ButtonNum
+	};
+	StageSelectButton m_selectbutton = StageSelectButton::Stage1;
+
+	std::vector<std::shared_ptr<BaseButton>> m_buttons;
 	
 };

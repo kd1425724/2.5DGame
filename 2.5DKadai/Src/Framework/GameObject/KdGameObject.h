@@ -43,11 +43,6 @@ public:
 	//	m_mWorld.Translation(pos); 
 	//}
 
-	virtual void SetPos(const Math::Vector3& pos) 
-	{
-		m_pos = pos;
-		m_mWorld.Translation(m_pos); 
-	}
 	virtual Math::Vector3 GetPos() const { return m_mWorld.Translation(); }
 
 	// 拡大率を変更する関数
@@ -108,18 +103,18 @@ public:
 	//other ... 衝突してきた相手
 	virtual void OnHit(KdGameObject* _other) {}
 
+	virtual void SetPos(const Math::Vector3& pos)
+	{
+		m_pos = pos;
+
+		MatrixUpdate();
+	}
 
 	virtual void SetRot(const Math::Vector3& rot)
 	{
 		m_rot = rot;
 
-		Math::Matrix matRot =
-			Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(m_rot.x)) *
-			Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rot.y)) *
-			Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(m_rot.z));
-		Math::Matrix mtrans = Math::Matrix::CreateTranslation(m_pos);
-
-		m_mWorld = matRot * mtrans;
+		MatrixUpdate();
 	}
 
 	virtual Math::Vector3 GetRot() const
@@ -127,10 +122,33 @@ public:
 		return m_rot;
 	}
 
-protected:
+	virtual void SetSize(const Math::Vector3& _size)
+	{
+		m_scale = _size;
 
-	//回転
-	Math::Vector3 m_rot = {};
+		MatrixUpdate();
+	}
+
+	Math::Vector3 GetSize()const
+	{
+		return m_scale;
+	}
+
+	void MatrixUpdate()
+	{
+		Math::Matrix mscale = Math::Matrix::CreateScale(m_scale);
+		Math::Matrix matRot =
+			Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(m_rot.x)) *
+			Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rot.y)) *
+			Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(m_rot.z));
+		Math::Matrix mtrans = Math::Matrix::CreateTranslation(m_pos);
+
+		m_mWorld = mscale * matRot * mtrans;
+	}
+
+	
+
+protected:
 
 	void Release() {}
 
@@ -146,9 +164,6 @@ protected:
 	// 3D空間に存在する機能
 	Math::Matrix	m_mWorld;
 
-	//座標
-	Math::Vector3 m_pos = {};
-
 	// 当たり判定クラス
 	std::unique_ptr<KdCollider> m_pCollider = nullptr;
 
@@ -156,6 +171,15 @@ protected:
 	std::unique_ptr<KdDebugWireFrame> m_pDebugWire = nullptr;
 
 	//protectedここから下は自分で追加
+
+	//座標
+	Math::Vector3 m_pos = {};
+
+	//サイズ
+	Math::Vector3 m_scale = { 1,1,1 };
+
+	//回転
+	Math::Vector3 m_rot = {};
 
 	//オブジェクトの名前
 	std::string m_name;

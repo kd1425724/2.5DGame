@@ -31,7 +31,7 @@ private:
 
 	//数字
 	std::shared_ptr<KdTexture> m_numtex;
-	Math::Rectangle m_numrect = { 0,0 ,100,10 };
+	Math::Rectangle m_numrect = { 0,0,30,40 };
 
 	//ステージセレクト説明画像
 	//std::shared_ptr<KdSquarePolygon> m_Stage1DescriptionPoly;

@@ -53,6 +53,13 @@ void C_Input::Update(HWND hwnd)
 		m_editorkeyflg[i] = (GetAsyncKeyState(m_editorkey[i]) & 0x8000);
 	}
 
+	//ユーザーキーのフラグ更新
+	for (int i = 0; i < (int)UserKeyType::UserKeyNum; i++)
+	{
+		m_olduserkeyflg[i] = m_userkeyflg[i];
+		m_userkeyflg[i] = (GetAsyncKeyState(m_userkey[i]) & 0x8000);
+	}
+
 	//アドレス渡しでマウス座標取得
 	GetMousePos(&mouse, hwnd);
 
@@ -64,18 +71,6 @@ void C_Input::Update(HWND hwnd)
 	else
 	{
 		m_mouseclickflg = false;
-	}
-
-	for (int i = 0; i < (int)UserKeyType::UserKeyNum; i++)
-	{
-		if (GetAsyncKeyState(m_userkey[i]) & 0x8000)
-		{
-			m_userkeyflg[i] = true;
-		}
-		else
-		{
-			m_userkeyflg[i] = false;
-		}
 	}
 
 	for (int i = 0; i < (int)DebugKeyType::DebugKeyNum; i++)
@@ -117,7 +112,7 @@ void C_Input::UserDefaultKeySet()
 						(int)UserKeyDefaultType::Bottom,
 						(int)UserKeyDefaultType::Left,
 						(int)UserKeyDefaultType::Right,
-						(int)UserKeyDefaultType::ZKey,
+						(int)UserKeyDefaultType::DecisionKey,
 						(int)UserKeyDefaultType::ESCAPE};
 
 	for (int i = 0; i < num; i++)

@@ -142,6 +142,9 @@ public:
 		Math::Vector3 m_hitDir;			// 対象からの方向ベクトル（押し返しなどに使う
 		Math::Vector3 m_hitNDir;		// HITした面の法線ベクトル
 		float m_overlapDistance = 0.0f; // 重なり量
+
+		//追加
+		UINT m_hitType = 0;             // 当たった形状のType
 	};
 
 	KdCollider() {}

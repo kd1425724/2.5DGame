@@ -202,6 +202,15 @@
     <Filter Include="Src\Application\Object\StageBlock\DamageBlock">
       <UniqueIdentifier>{2fd82815-2240-459f-85e5-a0bf32c58993}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\Ui\BaseButton">
+      <UniqueIdentifier>{93089ad0-ed6a-44a1-b9bf-964e695426b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Num">
+      <UniqueIdentifier>{5dedaccd-19d0-4653-93f9-c8aaf880061d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Event\RoomCenter">
+      <UniqueIdentifier>{e78f5cdf-0ee6-4932-b933-090fc6f9c42b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -495,6 +504,18 @@
     <ClInclude Include="Src\Application\Object\StageBlock\DamageBlock\DamageBlock.h">
       <Filter>Src\Application\Object\StageBlock\DamageBlock</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\BaseButton\BaseButton.h">
+      <Filter>Src\Application\Object\Ui\BaseButton</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\GameSceneUi\GameSceneUi.h">
+      <Filter>Src\Application\Object\Ui\GameSceneUi</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Num\Num.h">
+      <Filter>Src\Application\Object\Num</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Event\RoomCenter\RoomCenter.h">
+      <Filter>Src\Application\Object\Event\RoomCenter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -757,6 +778,18 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\StageBlock\DamageBlock\DamageBlock.cpp">
       <Filter>Src\Application\Object\StageBlock\DamageBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\BaseButton\BaseButton.cpp">
+      <Filter>Src\Application\Object\Ui\BaseButton</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\GameSceneUi\GameSceneUi.cpp">
+      <Filter>Src\Application\Object\Ui\GameSceneUi</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Num\Num.cpp">
+      <Filter>Src\Application\Object\Num</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Event\RoomCenter\RoomCenter.cpp">
+      <Filter>Src\Application\Object\Event\RoomCenter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

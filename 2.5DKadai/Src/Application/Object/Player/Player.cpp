@@ -1,4 +1,5 @@
 ﻿#include "Player.h"
+#include"../../Common/Info/Info.h"
 #include"../../Common/Input/Input.h"
 #include"../../Scene/SceneManager.h"
 
@@ -11,7 +12,7 @@ void Player::Init()
 
 	m_model = std::make_shared<KdModelData>();
 	m_model->Load("Asset/Models/Object/Stage/Block/Block.gltf");
-
+	
 	//座標
 	m_pos = { 0,0 };
 	//移動スピード
@@ -58,13 +59,21 @@ void Player::Update()
 				m_gravity = -m_twojumppow;
 				m_jumppattern = PlayerJumpPattern::Jump2;
 			}
+			m_rot.z -= 5;
+
 			break;
 		case Player::PlayerJumpPattern::Jump2:
 			//着地したらNoneに戻す
 			//当たり判定処理の部分に書いてる
+			m_rot.z -= 5;
 			break;
 		default:
 			break;
+		}
+
+		if (m_gravity < 0 && Inp.GetPlayerKeyUp(PlayerKeyType::Jump))
+		{
+			m_gravity = 0;
 		}
 
 		//switch (m_attackpattern)
@@ -134,6 +143,8 @@ void Player::Update()
 
 		break;
 	case Player::PlayerStatePattern::Death:
+		//死亡演出
+		m_isExpired = true;
 		break;
 	default:
 		break;
@@ -144,7 +155,7 @@ void Player::Update()
 
 	//重力処理
 	m_pos.y -= m_gravity;
-	m_gravity += m_gravitysubtractionValue;
+	m_gravity += m_gravitysubtractionvalue;
 
 	//地面から離れている間
 	if (!m_isground)
@@ -156,17 +167,15 @@ void Player::Update()
 		}
 	}
 
-	//アニメーション
-	//UVRectControlUpdate();
-
 	//行列
-	Math::Matrix mscale = Math::Matrix::CreateScale(m_scale);
-	Math::Matrix mtrans= Math::Matrix::CreateTranslation(m_pos);
-	m_mWorld = mscale * mtrans;
+	MatrixUpdate();
 }
 
 void Player::PostUpdate()
 {
+	//死亡演出中処理しない
+	if (m_statepattern == PlayerStatePattern::Death)return;
+
 	Hit();
 }
 
@@ -185,7 +194,7 @@ void Player::Hit()
 {
 	//プレイヤー座標調整地面判定用（プレイヤーの足元）
 	float groundpossurplusX = 0;
-	float groundpossurplusY = -0.8f;
+	float groundpossurplusY = -0.5f;
 
 	//レイ判定
 	KdCollider::RayInfo ray;
@@ -238,7 +247,8 @@ void Player::Hit()
 			m_jumppattern = PlayerJumpPattern::None;
 
 		}
-
+		//回転初期化
+		m_rot.z = 0;
 		//			   ↓余剰分を反転させる
 		m_pos = hitPos -= Math::Vector3(groundpossurplusX, groundpossurplusY, 0);
 		m_gravity = 0;
@@ -259,8 +269,8 @@ void Player::Hit()
 		sphere.m_sphere.Center = m_pos;
 		sphere.m_sphere.Center.y += spherepossurplusY;
 		sphere.m_sphere.Center.x += spherepossurplusX;
-		sphere.m_sphere.Radius = 0.8f;
-		sphere.m_type = KdCollider::TypeGround;
+		sphere.m_sphere.Radius = 0.5f;
+		sphere.m_type = KdCollider::TypeGround | KdCollider::TypeEvent;
 
 		//デバッグ
 		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
@@ -272,7 +282,10 @@ void Player::Hit()
 		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
 			//球と当たり判定
-			obj->Intersects(sphere, &retSphereList);
+			if (obj->Intersects(sphere, &retSphereList))
+			{
+				obj->OnHit(this);
+			}
 		}
 
 		//球に当たったリストから一番近いオブジェクトを探す
@@ -283,6 +296,28 @@ void Player::Hit()
 
 		for (auto& ret : retSphereList)
 		{
+			//当たったTypeがイベントなら飛ばす
+			if (ret.m_hitType & KdCollider::TypeEvent)continue;
+
+			// 当たった方向
+			Math::Vector3 dir = ret.m_hitDir;
+
+			// 左右から当たった
+			//xの方が大きければ　abs...絶対値
+			if (abs(dir.x) > abs(dir.y))
+			{
+				//死亡演出へ
+				m_statepattern = PlayerStatePattern::Death;
+
+				//スクロール停止
+				INFO.SetScrollFlg(false);
+				return;
+			}
+			if (dir.y < 0)
+			{
+				// 下から当たった
+				m_gravity = 0;
+			}
 			//球にめり込んだ長さが一番長いものを探す
 			if (maxOverLap < ret.m_overlapDistance)
 			{

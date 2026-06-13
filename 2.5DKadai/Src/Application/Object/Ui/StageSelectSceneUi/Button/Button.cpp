@@ -67,33 +67,33 @@ void StageSelectButton::Init()
 void StageSelectButton::Update()
 {
 
-	if (Inp.GetUserKey(UserKeyType::Left) && !Inp.GetUserKeyFlg(UserKeyType::Left))
-	{
-		if (m_button == StageSelectButtonInfo::Stage1)
-		{
-			m_button = (StageSelectButtonInfo)((int)m_button + 2);
-		}
-		else
-		{
-			m_button = (StageSelectButtonInfo)((int)m_button - 1);
-		}
-	}
-	if (Inp.GetUserKey(UserKeyType::Bottom) && !Inp.GetUserKeyFlg(UserKeyType::Right))
-	{
-		if (m_button == StageSelectButtonInfo::Back)
-		{
-			m_button = (StageSelectButtonInfo)((int)m_button - 2);
-		}
-		else
-		{
-			m_button = (StageSelectButtonInfo)((int)m_button + 1);
-		}
-	}
+	//if (Inp.GetUserKey(UserKeyType::Left) && !Inp.GetUserKeyFlg(UserKeyType::Left))
+	//{
+	//	if (m_button == StageSelectButtonInfo::Stage1)
+	//	{
+	//		m_button = (StageSelectButtonInfo)((int)m_button + 2);
+	//	}
+	//	else
+	//	{
+	//		m_button = (StageSelectButtonInfo)((int)m_button - 1);
+	//	}
+	//}
+	//if (Inp.GetUserKey(UserKeyType::Bottom) && !Inp.GetUserKeyFlg(UserKeyType::Right))
+	//{
+	//	if (m_button == StageSelectButtonInfo::Back)
+	//	{
+	//		m_button = (StageSelectButtonInfo)((int)m_button - 2);
+	//	}
+	//	else
+	//	{
+	//		m_button = (StageSelectButtonInfo)((int)m_button + 1);
+	//	}
+	//}
 
-	if (Inp.GetUserKey(UserKeyType::ZKey) && Inp.GetUserKeyFlg(UserKeyType::ZKey))
-	{
-		COMMONAPI.ButtonExecute((int)m_button);
-	}
+	//if (Inp.GetUserKey(UserKeyType::ZKey) && Inp.GetUserKeyFlg(UserKeyType::ZKey))
+	//{
+	//	COMMONAPI.ButtonExecute((int)m_button);
+	//}
 }
 
 void StageSelectButton::DrawSprite()

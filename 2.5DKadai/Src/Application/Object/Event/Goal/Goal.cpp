@@ -1,4 +1,5 @@
 ﻿#include "Goal.h"
+#include"../../../Common/Info/Info.h"
 
 void Goal::OnHit(KdGameObject* _other)
 {
@@ -7,7 +8,8 @@ void Goal::OnHit(KdGameObject* _other)
 	{
 		//サウンド（未実装）
 
-		//ゴール処理
+		//ゴール
+		INFO.SetGoalFlg(true);
 
 		//消滅
 		m_isExpired = true;

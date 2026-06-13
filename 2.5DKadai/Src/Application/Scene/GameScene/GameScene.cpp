@@ -11,11 +11,10 @@
 
 void GameScene::Event()
 {
-	//if (Inp.GetPlayerKeyDown(PlayerKeyType::Jump))
-	//{
-	//	//ステージ１をロード
-	//	STAGEMANAGER.StageLoad("1");
-	//}
+	if (Inp.GetUserKeyDown(UserKeyType::DecisionKey))
+	{
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::StageSelect);
+	}
 
 
 	//エディターがカメラの主導権を持っているなら処理しない

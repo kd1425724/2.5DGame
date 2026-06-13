@@ -8,6 +8,7 @@ public:
 
 	void Init()override {}
 	void Update()override;
+	void PreUpdate()override;
 	
 	void OnHit(KdGameObject* _other)override {}
 

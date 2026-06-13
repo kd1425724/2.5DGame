@@ -27,8 +27,6 @@ private:
 
 	void Init()override;
 
-	
-
 	StageSelectButtonInfo m_button = StageSelectButtonInfo::Stage1;
 
 	std::shared_ptr<KdSquarePolygon> m_buttontex[(int)StageSelectButtonInfo::ButtonNum];

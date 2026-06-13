@@ -10,15 +10,28 @@ public:
 	void Update()override;
 	void DrawLit()override;
 
+	static std::unordered_map<std::string, std::shared_ptr<KdModelData>> s_modelTable;
+
 	//SetAssetしてからInit
 	void SetAsset(const std::string& modelname)override
 	{
-		m_model = std::make_shared<KdModelData>();
-		std::string path = "Asset/Models/Object/Stage/" + modelname + "/" + modelname + ".gltf";
-		m_model->Load(path); 
+		auto& model = s_modelTable[modelname];
+
+		if (!model)
+		{
+			model = std::make_shared<KdModelData>();
+
+			std::string path =
+				"Asset/Models/Object/Stage/" +
+				modelname + "/" + modelname + ".gltf";
+
+			model->Load(path);
+		}
+
+		m_model = model;
 	}
 
-	virtual void OnPlayerHit(){}
+	void OnHit(KdGameObject* _other)override;
 
 protected:
 	std::shared_ptr<KdModelData> m_model;

@@ -7,12 +7,7 @@ enum class PlayerKeyType
 	Skill,
 	PlayerKeyNum
 };
-enum class PlayerKeyDefaultType
-{
-    Attack	= 'Z',
-    Jump	= 'X',
-	Skill	= 'C',
-};
+
 
 enum class UserKeyType
 {
@@ -20,18 +15,9 @@ enum class UserKeyType
     Bottom ,
     Left ,
     Right,
-    ZKey ,
+    DecisionKey ,
     ESCAPE,
     UserKeyNum
-};
-enum class UserKeyDefaultType
-{
-    Top = VK_UP,
-    Bottom = VK_DOWN,
-    Left = VK_LEFT,
-    Right = VK_RIGHT,
-    ZKey = 'Z',
-    ESCAPE=VK_ESCAPE,
 };
 
 enum class DebugKeyType
@@ -44,15 +30,7 @@ enum class DebugKeyType
     NINEKey,  //プレイヤーの死亡フラグをONOFF
     DebugKeyNum,
 };
-enum class DebugKeyDefaultType
-{
-    Pkey='P',   //レーザーに変更
-    Okey='O',   //バリアーに変更
-    Ikey='I',   //敵生成に変更
-    Ukey='U',   //次のシーンへ
-    ZEROKey = '0',  //ボスを倒す
-    NINEKey = '9',  //プレイヤーの死亡フラグをONOFF
-};
+
 
 enum class EditorKeyType
 {
@@ -67,18 +45,7 @@ enum class EditorKeyType
 	CtrlKey,
 	EditorKeyNum,
 };
-enum class EditorKeyDefaultType
-{
-	ModeChangeKey	= VK_F1,
-	SelectKey		= VK_LBUTTON,
-	UpKey			= VK_UP,
-	DownKey			= VK_DOWN,
-	LeftKey			= VK_LEFT,
-	RightKey		= VK_RIGHT,
-	CreateKey		= '1',
-	DeleteKey		= '2',
-	CtrlKey			= VK_CONTROL
-};
+
 
 class C_Input
 {
@@ -116,15 +83,22 @@ public:
             m_oldplayerkeyflg[(int)type];
     }
 
-    SHORT GetUserKey(UserKeyType userkeytype)
+    bool GetUserKey(UserKeyType _userkeytype)
     {
-        return GetAsyncKeyState(m_userkey[(int)userkeytype]) & 0x8000;
+        return m_userkeyflg[(int)_userkeytype];
     }
 
-    bool GetUserKeyFlg(UserKeyType userkeytype)
+    bool GetUserKeyDown(UserKeyType type)
     {
-        return m_userkeyflg[(int)userkeytype];
+        return m_userkeyflg[(int)type] &&
+            !m_olduserkeyflg[(int)type];
     }
+
+	bool GetUserKeyUp(UserKeyType type)
+	{
+		return !m_userkeyflg[(int)type] &&
+			m_olduserkeyflg[(int)type];
+	}
 
     SHORT GetDebugKey(DebugKeyType debugkeytype)
     {
@@ -165,6 +139,43 @@ public:
 	void EditorDefaultKeySet();
 
 private:
+	enum class PlayerKeyDefaultType
+	{
+		Attack = 'Z',
+		Jump = 'X',
+		Skill = 'C',
+	};
+	enum class UserKeyDefaultType
+	{
+		Top = VK_UP,
+		Bottom = VK_DOWN,
+		Left = VK_LEFT,
+		Right = VK_RIGHT,
+		DecisionKey = 'Z',
+		ESCAPE = VK_ESCAPE,
+	};
+
+	enum class DebugKeyDefaultType
+	{
+		Pkey = 'P',   //レーザーに変更
+		Okey = 'O',   //バリアーに変更
+		Ikey = 'I',   //敵生成に変更
+		Ukey = 'U',   //次のシーンへ
+		ZEROKey = '0',  //ボスを倒す
+		NINEKey = '9',  //プレイヤーの死亡フラグをONOFF
+	};
+	enum class EditorKeyDefaultType
+	{
+		ModeChangeKey = VK_F1,
+		SelectKey = VK_LBUTTON,
+		UpKey = VK_UP,
+		DownKey = VK_DOWN,
+		LeftKey = VK_LEFT,
+		RightKey = VK_RIGHT,
+		CreateKey = '1',
+		DeleteKey = '2',
+		CtrlKey = VK_CONTROL
+	};
 
 	void Release();
 
@@ -182,6 +193,7 @@ private:
     //ユーザーキー
     int m_userkey[(int)UserKeyType::UserKeyNum] = { 0 };
     bool m_userkeyflg[(int)UserKeyType::UserKeyNum] = { false };
+    bool m_olduserkeyflg[(int)UserKeyType::UserKeyNum] = { false };
 
 
     //デバッグキー

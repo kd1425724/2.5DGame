@@ -16,20 +16,14 @@ private:
 
 	void Init();
 
-	struct StageFileData
-	{
-		std::string filename = "";
-		Math::Vector3 pos = {};
-	};
-
 	//3つ目までのルーム（最初のルーム）をロード
 	void FirstRoomLoad();
 
-	void LoadRoom(const StageFileData& _filedata ,int _instanceId);
+	void LoadRoom(const std::string& _filename ,int _instanceId);
 	void UnLoadRoom(int _instanceId);
 
 	//ステージごとのなんのルームを呼び出すかを格納
-	std::vector<StageFileData> m_filedata;
+	std::vector<std::string> m_filename;
 
 	struct CreateObjInfo
 	{
@@ -41,6 +35,13 @@ private:
 
 	//部屋番号管理用
 	int m_currentRoomId = 0;
+
+	//一つ前の部屋の中心を保存
+	std::shared_ptr<KdGameObject> m_oldroomcenter;
+	std::shared_ptr<KdGameObject> m_currentroomcenter;
+
+	//初期生成部屋数
+	static const int InitialRoomCount = 2;
 
 private:
 	StageManager() { Init(); }

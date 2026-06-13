@@ -53,10 +53,10 @@ private:
 	Math::Vector3 m_scale = {};
 	//重力
 	float m_gravity = 0;
-	float m_gravitysubtractionValue = 0.005f;
+	float m_gravitysubtractionvalue = 0.006f;
 	//ジャンプ力
 	float m_onejumppow = 0.2f;
-	float m_twojumppow = 0.15f;
+	float m_twojumppow = 0.18f;
 
 	//地面に着地した瞬間の判定
 	bool m_isground = true;	

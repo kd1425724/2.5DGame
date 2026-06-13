@@ -74,7 +74,7 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
@@ -296,13 +296,17 @@
     <ClInclude Include="Src\Application\Object\Enemy\Slime\Slime.h" />
     <ClInclude Include="Src\Application\Object\Event\BaseEvent.h" />
     <ClInclude Include="Src\Application\Object\Event\Goal\Goal.h" />
+    <ClInclude Include="Src\Application\Object\Event\RoomCenter\RoomCenter.h" />
     <ClInclude Include="Src\Application\Object\Event\RoomExit\RoomExit.h" />
     <ClInclude Include="Src\Application\Object\Ground\GameGround\GameGround.h" />
     <ClInclude Include="Src\Application\Object\Item\BaseItem.h" />
     <ClInclude Include="Src\Application\Object\Item\Coin\Coin.h" />
+    <ClInclude Include="Src\Application\Object\Num\Num.h" />
     <ClInclude Include="Src\Application\Object\Player\Player.h" />
     <ClInclude Include="Src\Application\Object\StageBlock\BaseStageBlock.h" />
     <ClInclude Include="Src\Application\Object\StageBlock\DamageBlock\DamageBlock.h" />
+    <ClInclude Include="Src\Application\Object\Ui\BaseButton\BaseButton.h" />
+    <ClInclude Include="Src\Application\Object\Ui\GameSceneUi\GameSceneUi.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\Button\Button.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\Description\Description.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.h" />
@@ -388,13 +392,17 @@
     <ClCompile Include="Src\Application\Object\Enemy\Slime\Slime.cpp" />
     <ClCompile Include="Src\Application\Object\Event\BaseEvent.cpp" />
     <ClCompile Include="Src\Application\Object\Event\Goal\Goal.cpp" />
+    <ClCompile Include="Src\Application\Object\Event\RoomCenter\RoomCenter.cpp" />
     <ClCompile Include="Src\Application\Object\Event\RoomExit\RoomExit.cpp" />
     <ClCompile Include="Src\Application\Object\Ground\GameGround\GameGround.cpp" />
     <ClCompile Include="Src\Application\Object\Item\BaseItem.cpp" />
     <ClCompile Include="Src\Application\Object\Item\Coin\Coin.cpp" />
+    <ClCompile Include="Src\Application\Object\Num\Num.cpp" />
     <ClCompile Include="Src\Application\Object\Player\Player.cpp" />
     <ClCompile Include="Src\Application\Object\StageBlock\BaseStageBlock.cpp" />
     <ClCompile Include="Src\Application\Object\StageBlock\DamageBlock\DamageBlock.cpp" />
+    <ClCompile Include="Src\Application\Object\Ui\BaseButton\BaseButton.cpp" />
+    <ClCompile Include="Src\Application\Object\Ui\GameSceneUi\GameSceneUi.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\Button\Button.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\Description\Description.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.cpp" />

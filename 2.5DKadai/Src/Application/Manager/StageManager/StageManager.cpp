@@ -1,5 +1,6 @@
 ﻿#include "StageManager.h"
 #include"../../Scene/SceneManager.h"
+#include"../../Common/Info/Info.h"
 
 #include"../../Object/StageBlock/BaseStageBlock.h"
 #include"../../Object/Player/Player.h"
@@ -7,6 +8,7 @@
 #include"../../Object/Item/Coin/Coin.h"
 #include"../../Object/Event/RoomExit/RoomExit.h"
 #include"../../Object/Event/Goal/Goal.h"
+#include"../../Object/Event/RoomCenter/RoomCenter.h"
 
 void StageManager::Init()
 {
@@ -55,6 +57,12 @@ void StageManager::Init()
 			goal->Init();
 			return goal;
 		} });
+	//部屋の中心
+	m_createObjInfo.push_back({ "RoomCenter",[]()
+		{
+			std::shared_ptr<RoomCenter> roomcenter = std::make_shared<RoomCenter>();
+			return roomcenter;
+		} });
 
 	///////////////////////////////////////////////
 }
@@ -81,40 +89,19 @@ void StageManager::StageLoad(const std::string& _filename)
 
 	Math::Vector3  pos = {};
 	std::vector<Math::Vector3>  poskeeplist = {};
-	
-	while (fscanf_s(fp,"%*[^,],%*[^,],%f,%f,%f", &pos.x, &pos.y, &pos.z) == 3)
-	{
-		poskeeplist.push_back(pos);
-	}
-
-	fgets(dummy, 255, fp);		//1行飛ばす
-	fgets(dummy, 255, fp);		//1行飛ばす
 
 	char filename[256] = "";
-
-	StageFileData data;
-
-	int id = 1;
 
 	char line[256];
 
 	//一行読み込み
 	while (fgets(line, sizeof(line), fp))
 	{
-		//座標情報
-		//３項目読み込めたら
-		if (sscanf_s(line, "%*[^,],%*[^,],%f,%f,%f", &pos.x, &pos.y, &pos.z) == 3)
-		{
-			poskeeplist.push_back(pos);
-		}
 		//ルーム情報
-		//２項目読み込めたら
-		else if (sscanf_s(line,"%255[^,],%d",filename,(unsigned)_countof(filename),&id) == 2)
+		//１項目読み込めたら
+		if (sscanf_s(line,"%255[^,\n]",filename,(unsigned)_countof(filename)) == 1)
 		{
-			data.filename = filename;
-			data.pos = poskeeplist[id];
-
-			m_filedata.push_back(data);
+			m_filename.push_back(filename);
 		}
 	}
 
@@ -126,45 +113,49 @@ void StageManager::StageLoad(const std::string& _filename)
 
 void StageManager::FirstRoomLoad()
 {
-	if (m_filedata.size() < 3)return;
+	if (m_filename.size() < InitialRoomCount)return;
 
-	//3つ目までのルーム（最初のルーム）をロード
-	for (int i = 0; i < 3; i++)
+	//初期生成数まで
+	//2つ目までのルーム（最初のルーム）をロード
+	for (int i = 0; i < InitialRoomCount; i++)
 	{
 		//ルーム生成
-		LoadRoom(m_filedata[m_currentRoomId],m_currentRoomId);
+		LoadRoom(m_filename[i],m_currentRoomId);
 
-		//現在のルームID更新
 		m_currentRoomId++;
 	}
+
+	m_currentRoomId = InitialRoomCount;
 }
 
 void StageManager::ChangeRoom()
 {
 	//2個先の部屋のID
 	int nextid = m_currentRoomId + 2;
-	//1個前の部屋のID
-	int	previousid = m_currentRoomId - 1;
+	//2個前の部屋のID
+	int	previousid = m_currentRoomId - 2;
 
-	//1個前の部屋削除
+	//2個前の部屋削除
 	UnLoadRoom(previousid);
 
 	//2個先の部屋生成
-	LoadRoom(m_filedata[nextid],nextid);
+	LoadRoom(m_filename[nextid],nextid);
 
 	//更新
 	m_currentRoomId++;
 }
 
-void StageManager::LoadRoom(const StageFileData& _filedata, int _instanceId)
+void StageManager::LoadRoom(const std::string& _filename, int _instanceId)
 {
 	if (_instanceId < 0)return;
+
+	m_currentroomcenter = nullptr;
 
 	FILE* fp = nullptr;
 
 	std::string path =
 		"Asset/Data/StageData/RoomData/Room" +
-		_filedata.filename +
+		_filename +
 		".csv";
 
 	fopen_s(&fp, path.c_str(), "r");
@@ -173,9 +164,28 @@ void StageManager::LoadRoom(const StageFileData& _filedata, int _instanceId)
 
 	char objName[256] = "";
 
-	Math::Vector3 pos;
+	Math::Vector3 pos = {};
+	Math::Vector3 rot = {};
+	Math::Vector3 scale = {};
 
-	while (fscanf_s(fp,"%255[^,],%f,%f,%f\n",objName,(unsigned)_countof(objName),&pos.x,&pos.y,&pos.z) == 4)
+	//部屋の間隔
+	Math::Vector3 spacing =  Math::Vector3::Zero;
+	Math::Vector3 oldroomcenterpos = Math::Vector3::Zero;
+	//始めの部屋のみ座標調整不要
+	if (m_oldroomcenter)
+	{
+		spacing = INFO.GetRoomSpacing();
+		//一個前の部屋の中心座標取得
+		oldroomcenterpos = m_oldroomcenter->GetPos();
+	}
+
+	//座標調整最終
+	Math::Vector3 roomorigin = oldroomcenterpos + spacing;
+
+	while (fscanf_s(fp,"%255[^,],%f,%f,%f,%f,%f,%f,%f,%f,%f\n"
+		,objName,(unsigned)_countof(objName),&pos.x,&pos.y,&pos.z,
+		&rot.x,&rot.y,&rot.z,
+		&scale.x,&scale.y,&scale.z) == 10)
 	{
 		for (auto& createInfo : m_createObjInfo)
 		{
@@ -183,17 +193,28 @@ void StageManager::LoadRoom(const StageFileData& _filedata, int _instanceId)
 
 			auto obj = createInfo.obj();
 
-			obj->SetName(createInfo.name);
+			obj->SetName(createInfo.name);			
 
-			obj->SetPos(pos + _filedata.pos);
+			obj->SetPos(pos + roomorigin);
+
+			obj->SetSize(scale);
+			obj->SetRot(rot);
 
 			obj->SetInstanceID(_instanceId);
 
 			SceneManager::Instance().AddObject(obj);
 
+			//生成したのが部屋の中心なら
+			if (createInfo.name == "RoomCenter")
+			{
+				m_currentroomcenter = obj;
+			}
+
 			break;
 		}
 	}
+
+	//fclose(fp);
 
 	int id = KdRandom::GetInt(0, 5);
 
@@ -206,37 +227,42 @@ void StageManager::LoadRoom(const StageFileData& _filedata, int _instanceId)
 
 	fopen_s(&fp, path.c_str(), "r");
 
-	if (!fp)return;
-
-	char line[256];
-
-	//一行読み込み
-	while (fgets(line, sizeof(line), fp))
+	if (fp)
 	{
-		//４項目読み込めたら
-		if (sscanf_s(line, "%255[^,],%f,%f,%f\n", objName, (unsigned)_countof(objName), &pos.x, &pos.y, &pos.z) == 4)
+		char line[256];
+
+		//一行読み込み
+		while (fgets(line, sizeof(line), fp))
 		{
-			for (auto& createInfo : m_createObjInfo)
+			//４項目読み込めたら
+			if (sscanf_s(line, "%255[^,],%f,%f,%f\n", objName, (unsigned)_countof(objName), &pos.x, &pos.y, &pos.z) == 4)
 			{
-				if (createInfo.name != objName)continue;
+				for (auto& createInfo : m_createObjInfo)
+				{
+					if (createInfo.name != objName)continue;
 
-				auto obj = createInfo.obj();
+					auto obj = createInfo.obj();
 
-				obj->SetName(createInfo.name);
+					obj->SetName(createInfo.name);
 
-				obj->SetPos(pos + _filedata.pos);
+					obj->SetPos(pos + roomorigin);
 
-				obj->SetInstanceID(_instanceId);
+					obj->SetInstanceID(_instanceId);
 
-				SceneManager::Instance().AddObject(obj);
+					SceneManager::Instance().AddObject(obj);
 
-				break;
+					break;
 
+				}
 			}
 		}
 	}
 
 	fclose(fp);
+
+	//部屋の中心座標更新
+	if (!m_currentroomcenter)return;
+	m_oldroomcenter = m_currentroomcenter;
 }
 
 void StageManager::LoadRoom(const std::string& _filename)
@@ -254,9 +280,14 @@ void StageManager::LoadRoom(const std::string& _filename)
 
 	char objName[256] = "";
 
-	Math::Vector3 pos;
+	Math::Vector3 pos = {};
+	Math::Vector3 rot = {};
+	Math::Vector3 scale = {};
 
-	while (fscanf_s(fp, "%255[^,],%f,%f,%f\n", objName, (unsigned)_countof(objName), &pos.x, &pos.y, &pos.z) == 4)
+	while (fscanf_s(fp, "%255[^,],%f,%f,%f,%f,%f,%f,%f,%f,%f\n"
+		, objName, (unsigned)_countof(objName), &pos.x, &pos.y, &pos.z,
+		&rot.x, &rot.y, &rot.z,
+		&scale.x, &scale.y, &scale.z) == 10)
 	{
 		for (auto& createInfo : m_createObjInfo)
 		{
@@ -267,6 +298,8 @@ void StageManager::LoadRoom(const std::string& _filename)
 			obj->SetName(createInfo.name);
 
 			obj->SetPos(pos);
+			obj->SetSize(scale);
+			obj->SetRot(rot);
 
 			obj->SetInstanceID(-1);
 

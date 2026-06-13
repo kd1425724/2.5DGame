@@ -38,6 +38,12 @@ public:
 		Math::Color color,
 		std::shared_ptr<KdSquarePolygon> frametex);
 
+	void CreateButton(
+		Math::Vector3 _pos,
+		float _scale,
+		std::shared_ptr<KdModelData> _model,
+		Math::Color color);
+
 	void SetAction(int index,std::function<void()> action);
 
 	void CreateButtonUpdate();
