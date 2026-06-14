@@ -128,12 +128,20 @@ public:
 
 		MatrixUpdate();
 	}
+	virtual void SetSize(const float& _size)
+	{
+		m_scale = Math::Vector3(_size, _size, _size);
+
+		MatrixUpdate();
+	}
 
 	Math::Vector3 GetSize()const
 	{
 		return m_scale;
 	}
-
+	//スクロール
+	void Scroll();
+	//全ての行列更新
 	void MatrixUpdate()
 	{
 		Math::Matrix mscale = Math::Matrix::CreateScale(m_scale);
@@ -145,7 +153,6 @@ public:
 
 		m_mWorld = mscale * matRot * mtrans;
 	}
-
 	
 
 protected:

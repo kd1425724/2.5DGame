@@ -65,4 +65,18 @@ private:
 
 	//ディゾルブ用
 	float m_dissolv = 0;
+
+	//残像用
+	struct AfterImage
+	{
+		Math::Matrix mat;
+		float alpha = 1.0f;
+		float life = 0.0f;
+		Math::Vector3 offset = {};
+	};
+	std::deque<AfterImage> m_afterImages;
+
+	// 残像制御
+	float m_afterImageTimer = 0.0f;
+	float m_afterImageInterval = 4; // 基本間隔
 };

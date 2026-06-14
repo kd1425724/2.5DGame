@@ -10,11 +10,9 @@ public:
 	void Init()override;
 	void Update()override;
 	void DrawLit()override;
+	void GenerateDepthMapFromLight()override;
 
 	void OnHit(KdGameObject* other)override;
 
 private:
-
-	float m_rot = 0;
-
 };

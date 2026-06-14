@@ -18,6 +18,6 @@ private:
 	void Event() override;
 	
 
-	std::shared_ptr<Player> m_player;
+	std::weak_ptr<Player> m_player;
 
 };

@@ -17,7 +17,7 @@ void Player::Init()
 	m_coremodel->Load("Asset/Models/Object/Player/PlayerCore/PlayerCore.gltf");
 	
 	//座標
-	m_pos = { 0,0 };
+	m_pos = { -4,-4,0 };
 	//移動スピード
 	m_speed = 0.2f;
 	//サイズ
@@ -169,10 +169,47 @@ void Player::Update()
 		break;
 	case Player::PlayerStatePattern::Death:
 		//死亡演出
-		m_isExpired = true;
+		m_dissolv += 0.02f;
+		if (m_dissolv > 1.0f)
+		{
+			m_isExpired = true;
+			return;
+		}
 		break;
 	default:
 		break;
+	}
+
+
+
+	if (m_statepattern == PlayerStatePattern::Death)return;
+
+	m_afterImageTimer += 1.0f;
+
+	if (m_afterImageTimer >= m_afterImageInterval)
+	{
+		m_afterImageTimer = 0.0f;
+
+		AfterImage img;
+
+		Math::Vector3 scroll = { INFO.GetScrollSpeed(),0,0 };
+		Math::Matrix scale = Math::Matrix::CreateScale(0.7f);
+		Math::Matrix mtrans = Math::Matrix::CreateTranslation(m_mWorld.Translation());
+		img.mat = scale * mtrans;
+		img.offset = scroll;
+		img.alpha = 1.0f;
+
+		m_afterImages.push_front(img);
+
+		if (m_afterImages.size() > 15)
+			m_afterImages.pop_back();
+	}
+
+	// フェード
+	for (auto& img : m_afterImages)
+	{
+		img.alpha -= 0.005f;
+		img.mat *= Math::Matrix::CreateTranslation(-img.offset);
 	}
 
 	//前回のm_gravityの値を保存
@@ -182,22 +219,22 @@ void Player::Update()
 	m_pos.y -= m_gravity;
 	m_gravity += m_gravitysubtractionvalue;
 
-	//地面から離れている間
-	if (!m_isground)
-	{
-		//落下が始まった瞬間のみ実行
-		if (prevgravity <= 0 && m_gravity > 0)
-		{
-			//UVRectControl(PlayerAnimeType::Fall);
-		}
-	}
-
 	//行列
 	MatrixUpdate();
 }
 
 void Player::PostUpdate()
 {
+	
+	// 削除
+	m_afterImages.erase(
+		std::remove_if(m_afterImages.begin(), m_afterImages.end(),
+			[](const AfterImage& a)
+			{
+				return a.alpha <= 0.0f;
+			}),
+		m_afterImages.end());
+
 	//死亡演出中処理しない
 	if (m_statepattern == PlayerStatePattern::Death)return;
 
@@ -216,13 +253,23 @@ void Player::DrawLit()
 void Player::GenerateDepthMapFromLight()
 {
 		//ディゾルブ											↓０～１
-	//KdShaderManager::Instance().m_StandardShader.SetDissolve(0.2f);
+	KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolv);
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
 }
 
 void Player::DrawBright()
 {
+	KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolv);
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, m_mWorld);
+
+	// コア残像
+	for (auto& img : m_afterImages)
+	{
+		Math::Color color = { 1,0.1,0.1,img.alpha };
+
+		KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, img.mat, color);
+	}
+
 }
 
 
@@ -305,7 +352,7 @@ void Player::Hit()
 		sphere.m_sphere.Center = m_pos;
 		sphere.m_sphere.Center.y += spherepossurplusY;
 		sphere.m_sphere.Center.x += spherepossurplusX;
-		sphere.m_sphere.Radius = 0.40f;
+		sphere.m_sphere.Radius = 0.44f;
 		sphere.m_type = KdCollider::TypeGround | KdCollider::TypeEvent;
 
 		//デバッグ

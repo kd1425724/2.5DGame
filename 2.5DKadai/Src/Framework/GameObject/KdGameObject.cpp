@@ -1,5 +1,5 @@
 ﻿#include "KdGameObject.h"
-
+#include"../../Application/Common/Info/Info.h"
 void KdGameObject::DrawDebug()
 {
 	// 早期リターン
@@ -59,4 +59,9 @@ bool KdGameObject::Intersects(const KdCollider::RayInfo& targetShape, std::list<
 	if (!m_pCollider) { return false; }
 
 	return m_pCollider->Intersects(targetShape, m_mWorld, pResults);
+}
+
+void KdGameObject::Scroll()
+{
+	m_pos.x -= INFO.GetScrollSpeed();
 }

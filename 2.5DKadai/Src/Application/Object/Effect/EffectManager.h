@@ -1,32 +1,51 @@
 ﻿#pragma once
 
-enum class EffectType
-{
-    Explosion,
-};
-
 class EffectManager
 {
 public:
 
-	void AddEffect(
-		EffectType type,
-		Math::Vector3 pos = { 0,0,0 },
-		Math::Vector3 scale = { 1.0f, 1.0f, 1.0f },
-		int time = 0);
+	struct EffectData
+	{
+		std::string assetName="";
+
+		UINT splitX=1;
+		UINT splitY=1;
+
+		std::vector<int> anim = {};
+
+		float animSpeed=0.2f;
+
+		float scale = 1;
+
+		bool loop=false;
+	};
+
+	void Init();
+
+	void CreateEffect(
+		const std::string& name,
+		const Math::Vector3& pos);
 
 private:
 
+	std::unordered_map<
+		std::string,
+		EffectData
+	> m_effectTable;
+
 private:
-    EffectManager() {};
-    ~EffectManager() { }
+	EffectManager() { Init(); };
+	~EffectManager() {};
 
 public:
-    static EffectManager& GetInstance()
-    {
-        static EffectManager instance;
-        return instance;
-    }
+
+	static EffectManager& Instance()
+	{
+		static EffectManager instance;
+
+		return instance;
+	}
+
 };
 
-#define EFFECTMANAGER EffectManager::GetInstance()
+#define EFFECT EffectManager::Instance()

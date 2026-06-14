@@ -15,12 +15,9 @@ public:
 
 	void OnHit(KdGameObject* other)override{}
 
-	//Updateをし、行列計算をする場合行列にかける
-	//移動行列を返す
-	Math::Matrix Scroll();
-
 protected:
 
+	static std::shared_ptr<KdModelData> s_model;
 	std::shared_ptr<KdModelData> m_model;
 
 private:

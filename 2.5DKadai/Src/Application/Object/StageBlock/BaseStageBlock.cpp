@@ -35,6 +35,11 @@ void BaseStageBlock::DrawLit()
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
 }
 
+void BaseStageBlock::GenerateDepthMapFromLight()
+{
+	
+}
+
 void BaseStageBlock::OnHit(KdGameObject* _other)
 {
 	//プレイヤーと当たったら

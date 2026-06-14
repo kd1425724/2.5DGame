@@ -17,6 +17,13 @@ void TitleScene::Event()
 
 void TitleScene::Init()
 {
+	//Fog（霧）														↓距離　↓高さ
+	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
+	//距離フォグの設定													↓色	  ↓密度
+	//KdShaderManager::Instance().WorkAmbientController().SetDistanceFog({ 1,1,1 }, 0.05f);
+	//高さフォグの設定													↓色  ↓上↓下↓距離
+	KdShaderManager::Instance().WorkAmbientController().SetheightFog({ 1,1,1 }, -4, -8, 0);
+
 	//カメラ
 	m_camera = std::make_unique<KdCamera>();
 

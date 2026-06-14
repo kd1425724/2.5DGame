@@ -3,6 +3,8 @@
 
 void Goal::Init()
 {
+	m_scale = { 1,7,1 };
+
 	DirectX::BoundingBox box;
 	box.Center = m_pos;
 	box.Extents = { 1,1,1 };//m_scale / 2; // 半サイズ

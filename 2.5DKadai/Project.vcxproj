@@ -280,7 +280,6 @@
     <ClInclude Include="Src\Application\Common\Input\Input.h" />
     <ClInclude Include="Src\Application\Common\Sound\Sound.h" />
     <ClInclude Include="Src\Application\Editor\Editor.h" />
-    <ClInclude Include="Src\Application\Event\Event.h" />
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\Manager\ScoreManager\ScoreManager.h" />
     <ClInclude Include="Src\Application\Manager\StageManager\StageManager.h" />
@@ -376,7 +375,6 @@
     <ClCompile Include="Src\Application\Common\Input\Input.cpp" />
     <ClCompile Include="Src\Application\Common\Sound\Sound.cpp" />
     <ClCompile Include="Src\Application\Editor\Editor.cpp" />
-    <ClCompile Include="Src\Application\Event\Event.cpp" />
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\Manager\ScoreManager\ScoreManager.cpp" />
     <ClCompile Include="Src\Application\Manager\StageManager\StageManager.cpp" />

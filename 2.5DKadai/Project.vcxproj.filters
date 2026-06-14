@@ -130,9 +130,6 @@
     <Filter Include="Src\Application\Object\Enemy\Slime">
       <UniqueIdentifier>{24ef3206-afb3-4be6-be54-bba91f65a70b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Event">
-      <UniqueIdentifier>{39a8362f-9419-40bd-9324-789bbdc5ec97}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\Common\Info">
       <UniqueIdentifier>{efca324b-c2f2-4285-bf76-8ae7a1d91350}</UniqueIdentifier>
     </Filter>
@@ -432,9 +429,6 @@
     <ClInclude Include="Src\Application\Object\Enemy\Slime\Slime.h">
       <Filter>Src\Application\Object\Enemy\Slime</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Event\Event.h">
-      <Filter>Src\Application\Event</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Common\Info\Info.h">
       <Filter>Src\Application\Common\Info</Filter>
     </ClInclude>
@@ -706,9 +700,6 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Enemy\Slime\Slime.cpp">
       <Filter>Src\Application\Object\Enemy\Slime</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\Event\Event.cpp">
-      <Filter>Src\Application\Event</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Common\Info\Info.cpp">
       <Filter>Src\Application\Common\Info</Filter>

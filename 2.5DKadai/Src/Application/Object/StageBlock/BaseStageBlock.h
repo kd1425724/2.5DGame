@@ -9,6 +9,7 @@ public:
 	void Init()override;
 	void Update()override;
 	void DrawLit()override;
+	void GenerateDepthMapFromLight()override;
 
 	static std::unordered_map<std::string, std::shared_ptr<KdModelData>> s_modelTable;
 

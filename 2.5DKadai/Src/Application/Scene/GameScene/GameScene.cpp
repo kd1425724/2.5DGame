@@ -11,11 +11,10 @@
 
 void GameScene::Event()
 {
-	if (Inp.GetUserKeyDown(UserKeyType::DecisionKey))
+	if (m_player.expired()||Inp.GetUserKeyDown(UserKeyType::DecisionKey))
 	{
 		SceneManager::Instance().SetNextScene(SceneManager::SceneType::StageSelect);
 	}
-
 
 	//エディターがカメラの主導権を持っているなら処理しない
 	if (EDITOR.IsEditorCameraMode())return;
@@ -38,9 +37,10 @@ void GameScene::Init()
 
 	m_camera->SetCameraMatrix(mat);
 
-	m_player = std::make_shared<Player>();
-	m_player->Init();
-	m_objList.push_back(m_player);
+	auto player = std::make_shared<Player>();
+	player->Init();
+	m_objList.push_back(player);
+	m_player = player;
 
 	std::shared_ptr<GameSceneBackGround> background = std::make_shared<GameSceneBackGround>();
 	background->Init();

@@ -15,18 +15,24 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"\u7403"
+			"name":"Coin.tris",
+			"rotation":[
+				0,
+				0.7071068286895752,
+				0,
+				0.7071068286895752
+			]
 		}
 	],
 	"materials":[
 		{
 			"doubleSided":true,
-			"name":"\u30de\u30c6\u30ea\u30a2\u30eb.001",
+			"name":"\u30de\u30c6\u30ea\u30a2\u30eb",
 			"pbrMetallicRoughness":{
 				"baseColorFactor":[
 					0.8000074625015259,
-					0.004233730956912041,
-					0,
+					0.7736663222312927,
+					0.0009309700108133256,
 					1
 				],
 				"metallicFactor":0,
@@ -36,7 +42,7 @@
 	],
 	"meshes":[
 		{
-			"name":"\u7403.001",
+			"name":"Cylinder.004",
 			"primitives":[
 				{
 					"attributes":{
@@ -54,68 +60,68 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":559,
+			"count":236,
 			"max":[
-				0.5200001001358032,
-				0.5199999809265137,
-				0.5199998021125793
+				0.11397849768400192,
+				0.5010976791381836,
+				0.5020437240600586
 			],
 			"min":[
-				-0.5199998021125793,
-				-0.5199999809265137,
-				-0.520000159740448
+				-0.11583202332258224,
+				-0.4989023208618164,
+				-0.4979562759399414
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":559,
+			"count":236,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":559,
+			"count":236,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5123,
-			"count":2880,
+			"count":1140,
 			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":6708,
+			"byteLength":2832,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":6708,
-			"byteOffset":6708,
+			"byteLength":2832,
+			"byteOffset":2832,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":4472,
-			"byteOffset":13416,
+			"byteLength":1888,
+			"byteOffset":5664,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":5760,
-			"byteOffset":17888,
+			"byteLength":2280,
+			"byteOffset":7552,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":23648,
-			"uri":"PlayerCore.bin"
+			"byteLength":9832,
+			"uri":"coin.bin"
 		}
 	]
 }
