@@ -4,6 +4,7 @@
 #include "TitleScene/TitleScene.h"
 #include"StageSelectScene/StageSelectScene.h"
 #include "GameScene/GameScene.h"
+#include"ResultScene/ResultScene.h"
 
 #include"../Common/CommonAPI.h"
 #include"../Common/Input/Input.h"
@@ -29,6 +30,9 @@ void SceneManager::PreUpdate()
 
 void SceneManager::Update()
 {
+	KdDebugGUI::Instance().ClearLog();
+	KdDebugGUI::Instance().AddLog("%d", GetObjList().size());
+
 	FEED.Update();
 
 	if (FEED.GetFeedState() == FeedOut)return;
@@ -112,6 +116,10 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 	case SceneType::Game:
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<GameScene>();
+		break;
+	case SceneType::Result:
+		COMMONAPI.Clear();
+		m_currentScene = std::make_shared<ResultScene>();
 		break;
 	}
 

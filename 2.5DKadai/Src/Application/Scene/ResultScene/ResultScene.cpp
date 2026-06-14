@@ -1,10 +1,10 @@
-﻿#include "TitleScene.h"
+﻿#include "ResultScene.h"
 #include "../SceneManager.h"
 #include"../../Object/Ui/TitleSceneUi/TitleSceneUi.h"
 #include"../../Object/BackGround/TitleSceneBackGround/TitleSceneBackGround.h"
 #include"../../Manager/StageManager/StageManager.h"
 #include"../../Common/Info/Info.h"
-void TitleScene::Event()
+void ResultScene::Event()
 {
 	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 	{
@@ -15,15 +15,8 @@ void TitleScene::Event()
 	}
 }
 
-void TitleScene::Init()
+void ResultScene::Init()
 {
-	//Fog（霧）														↓距離　↓高さ
-	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
-	//距離フォグの設定													↓色	  ↓密度
-	//KdShaderManager::Instance().WorkAmbientController().SetDistanceFog({ 1,1,1 }, 0.05f);
-	//高さフォグの設定													↓色  ↓上↓下↓距離
-	KdShaderManager::Instance().WorkAmbientController().SetheightFog({ 1,1,1 }, -3, -8, 0);
-
 	//カメラ
 	m_camera = std::make_unique<KdCamera>();
 
@@ -32,9 +25,6 @@ void TitleScene::Init()
 	Math::Matrix mat = mtrans;
 
 	m_camera->SetCameraMatrix(mat);
-
-	//std::shared_ptr<TitleSceneUi> titlesceneui = std::make_shared<TitleSceneUi>();
-	//titlesceneui->Init();
 
 	//背景
 	std::shared_ptr<TitleSceneBackGround> background = std::make_shared<TitleSceneBackGround>();

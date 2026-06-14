@@ -168,6 +168,8 @@ void Player::Update()
 
 		break;
 	case Player::PlayerStatePattern::Death:
+		//スクロールを止める
+		INFO.SetScrollFlg(false);
 		//死亡演出
 		m_dissolv += 0.02f;
 		if (m_dissolv > 1.0f)
@@ -285,7 +287,7 @@ void Player::Hit()
 	ray.m_pos = m_pos;
 	ray.m_pos.y += groundpossurplusY;
 	ray.m_pos.x += groundpossurplusX;
-	float enableStepHigh = 0.2f;
+	float enableStepHigh = 0.3f;
 	ray.m_pos.y += enableStepHigh;
 	ray.m_dir = { 0,-1,0 };
 	ray.m_dir.Normalize();
@@ -293,7 +295,7 @@ void Player::Hit()
 	ray.m_type = KdCollider::TypeGround;
 
 	//デバッグ
-	m_pDebugWire->AddDebugLine(ray.m_pos, ray.m_dir, ray.m_range);
+	//m_pDebugWire->AddDebugLine(ray.m_pos, ray.m_dir, ray.m_range);
 
 	//レイに当たったオブジェクトを格納
 	std::list<KdCollider::CollisionResult> retRayList;
@@ -352,11 +354,11 @@ void Player::Hit()
 		sphere.m_sphere.Center = m_pos;
 		sphere.m_sphere.Center.y += spherepossurplusY;
 		sphere.m_sphere.Center.x += spherepossurplusX;
-		sphere.m_sphere.Radius = 0.44f;
-		sphere.m_type = KdCollider::TypeGround | KdCollider::TypeEvent;
+		sphere.m_sphere.Radius = 0.50f;
+		sphere.m_type = KdCollider::TypeGround | KdCollider::TypeEvent|KdCollider::TypeDamage;
 
 		//デバッグ
-		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+		//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
 
 		//球に当たったオブジェクト情報を格納するリスト
 		std::list<KdCollider::CollisionResult> retSphereList;
@@ -382,6 +384,15 @@ void Player::Hit()
 			//当たったTypeがイベントなら飛ばす
 			if (ret.m_hitType & KdCollider::TypeEvent)continue;
 
+			//ダメージTypeに当たったら
+			if (ret.m_hitType & KdCollider::TypeDamage)
+			{
+				//死亡
+				m_statepattern = PlayerStatePattern::Death;
+				//画面揺れ開始
+				SceneManager::Instance().GetCamera()->StartShake(0.3f, 20);
+				return;
+			}
 			//球にめり込んだ長さが一番長いものを探す
 			if (maxOverLap < ret.m_overlapDistance)
 			{
@@ -410,7 +421,8 @@ void Player::Hit()
 			{
 				// 左から当たった
 				m_statepattern = PlayerStatePattern::Death;
-				INFO.SetScrollFlg(false);
+				//画面揺れ開始
+				SceneManager::Instance().GetCamera()->StartShake(0.3f, 20);
 				return;
 			}
 

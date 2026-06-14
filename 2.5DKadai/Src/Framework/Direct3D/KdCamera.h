@@ -42,6 +42,13 @@ public:
 	// ワールド座標(3D座標)をスクリーン座標(2D座標)に変換する
 	void ConvertWorldToScreenDetail(const Math::Vector3& pos, Math::Vector3& result);
 
+	//追加
+	//カメラ揺れ開始
+	//power...揺れの強さ
+	//time ...揺れる時間
+	void StartShake(float power, int time);
+	//カメラ揺れ更新
+	void UpdateShake();
 protected:
 
 	// カメラ行列：3Dワールド空間上のカメラの行列情報
@@ -57,4 +64,13 @@ protected:
 	float m_focusDistance = 0.0f;
 	float m_focusForeRange = 0.0f;
 	float m_focusBackRange = 2000.0f;
+
+	//追加
+private:
+	//揺れ行列更新
+	DirectX::SimpleMath::Matrix GetShakeMatrix() const;
+
+	float m_shakePower = 0.0f;
+	int m_shakeTime = 0;
+
 };

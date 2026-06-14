@@ -3,7 +3,7 @@
 
 void BaseEffect::Init()
 {
-	m_drawType = eDrawTypeBright;
+	//m_drawType = eDrawTypeBright;
 
 	m_polygon = std::make_shared<KdSquarePolygon>();
 

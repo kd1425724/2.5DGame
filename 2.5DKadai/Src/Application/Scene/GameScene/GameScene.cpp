@@ -11,9 +11,16 @@
 
 void GameScene::Event()
 {
-	if (m_player.expired()||Inp.GetUserKeyDown(UserKeyType::DecisionKey))
+	if (m_player.expired()||Inp.GetUserKeyDown(UserKeyType::DecisionKey)&&INFO.GetGoalFlg())
 	{
-		SceneManager::Instance().SetNextScene(SceneManager::SceneType::StageSelect);
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
+		return;
+	}
+
+	//ゴールしたら
+	if (INFO.GetGoalFlg())
+	{
+
 	}
 
 	//エディターがカメラの主導権を持っているなら処理しない

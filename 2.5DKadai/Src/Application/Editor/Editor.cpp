@@ -695,7 +695,7 @@ void Editor::KeyUpdate()
 		ray.m_pos = rayPos;
 		ray.m_dir = rayDir;
 		ray.m_range = rayRange;
-		ray.m_type = KdCollider::TypeGround | KdCollider::TypeDamage;
+		ray.m_type = KdCollider::TypeGround | KdCollider::TypeDamage|KdCollider::TypeEvent;
 
 		float nearest = FLT_MAX;
 		std::shared_ptr<KdGameObject> hitObj = nullptr;

@@ -37,6 +37,12 @@ void BaseScene::Update()
 	{
 		obj->Update();
 	}
+
+	if (m_camera)
+	{
+		//カメラ揺れ更新
+		m_camera->UpdateShake();  
+	}
 }
 
 void BaseScene::PostUpdate()

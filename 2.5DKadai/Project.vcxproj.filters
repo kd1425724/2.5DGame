@@ -208,6 +208,9 @@
     <Filter Include="Src\Application\Object\Event\RoomCenter">
       <UniqueIdentifier>{e78f5cdf-0ee6-4932-b933-090fc6f9c42b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Scene\ResultScene">
+      <UniqueIdentifier>{1f10c559-484b-4abe-beec-b4f1c0adc0b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -510,6 +513,9 @@
     <ClInclude Include="Src\Application\Object\Event\RoomCenter\RoomCenter.h">
       <Filter>Src\Application\Object\Event\RoomCenter</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Scene\ResultScene\ResultScene.h">
+      <Filter>Src\Application\Scene\ResultScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -781,6 +787,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Event\RoomCenter\RoomCenter.cpp">
       <Filter>Src\Application\Object\Event\RoomCenter</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Scene\ResultScene\ResultScene.cpp">
+      <Filter>Src\Application\Scene\ResultScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

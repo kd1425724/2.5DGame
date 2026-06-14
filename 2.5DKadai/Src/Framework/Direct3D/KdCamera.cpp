@@ -9,8 +9,12 @@
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void KdCamera::SetToShader() const
 {
+	////////////カメラを揺らす処理/////////////////////
+	DirectX::SimpleMath::Matrix cam = GetShakeMatrix();
+	///////////////////////////////////////////////////
+
 	// カメラの情報をGPUへ転送
-	KdShaderManager::Instance().WriteCBCamera(m_mCam, m_mProj);
+	KdShaderManager::Instance().WriteCBCamera(cam, m_mProj);
 
 	// ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 	// 被写界深度（DepthOfField）加工に使うの情報も更新
@@ -124,4 +128,32 @@ void KdCamera::ConvertWorldToScreenDetail(const Math::Vector3& pos, Math::Vector
 	result.x = localPos.x * (vp.width * 0.5f);
 	result.y = localPos.y * (vp.height * 0.5f);
 	result.z = wvp._44;
+}
+
+//追加
+void KdCamera::StartShake(float power, int time)
+{
+	m_shakePower = power;
+	m_shakeTime = time;
+}
+
+void KdCamera::UpdateShake()
+{
+	if (m_shakeTime > 0)
+	{
+		m_shakeTime--;
+	}
+}
+
+DirectX::SimpleMath::Matrix KdCamera::GetShakeMatrix() const
+{
+	DirectX::SimpleMath::Vector3 shake = { 0,0,0 };
+
+	if (m_shakeTime > 0)
+	{
+		shake.x = ((rand() % 100) / 100.0f - 0.5f) * m_shakePower;
+		shake.y = ((rand() % 100) / 100.0f - 0.5f) * m_shakePower;
+	}
+
+	return DirectX::SimpleMath::Matrix::CreateTranslation(shake) * m_mCam;
 }
