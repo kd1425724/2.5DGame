@@ -4,10 +4,15 @@ class Info
 {
 public:
 
+	//px単位画面範囲
 	static const int ScrWidth = 1280;
 	static const int ScrHeight = 720;
 
+	//カメラのデフォルト値
 	const float DefaultCameraPosZ = -10.0f;
+
+	//奈落判定座標
+	static const int AbyssJudgmentPos = -7;
 
 	//スクロール速度セット
 	void SetScrollSpeed(const float& _speed = 0.5f) { m_scrollspeed = _speed; }

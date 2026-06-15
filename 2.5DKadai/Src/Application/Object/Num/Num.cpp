@@ -20,6 +20,8 @@ void Num::DrawSprite()
 
 	Math::Rectangle Srect = ASSET.GetNumRect();
 
+	s = Math::Matrix::CreateScale(m_scale.x / 11, m_scale.y, m_scale.z);
+
 	// 0対策（0の場合は0のみ表示）
 	if (m_num == 0)
 	{
@@ -37,7 +39,6 @@ void Num::DrawSprite()
 			Math::Vector3 pos = m_pos;
 			pos.x -= Srect.width * m_scale.x * i;
 
-			s = Math::Matrix::CreateScale(m_scale);
 			t = Math::Matrix::CreateTranslation(pos);
 			mat = s * t;
 
@@ -73,9 +74,8 @@ void Num::DrawSprite()
 	for (int i = 0; i < digits.size(); i++)
 	{
 		Math::Vector3 pos = m_pos;
-		pos.x -= Srect.width * m_scale.x * i*10;
+		pos.x -= Srect.width * m_scale.x * i;
 
-		s = Math::Matrix::CreateScale(m_scale);
 		t = Math::Matrix::CreateTranslation(pos);
 		mat = s * t;
 

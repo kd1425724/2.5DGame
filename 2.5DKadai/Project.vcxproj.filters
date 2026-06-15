@@ -211,6 +211,18 @@
     <Filter Include="Src\Application\Scene\ResultScene">
       <UniqueIdentifier>{1f10c559-484b-4abe-beec-b4f1c0adc0b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\Ui\ResultSceneUi">
+      <UniqueIdentifier>{dfc591fd-eebd-4d8c-bdda-325de0874729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Ui\ResultSceneUi\Rank">
+      <UniqueIdentifier>{16862812-ebdd-4c6d-8d18-a6cfa7a20a6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Ui\CommonUi">
+      <UniqueIdentifier>{bb07f6fe-c75d-4e38-8e28-f5441c1c491b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Ui\CommonUi\BlackBack">
+      <UniqueIdentifier>{b8ae0609-874e-4228-85a1-d3db78a118b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -516,6 +528,15 @@
     <ClInclude Include="Src\Application\Scene\ResultScene\ResultScene.h">
       <Filter>Src\Application\Scene\ResultScene</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\ResultSceneUi\ResultSceneUi.h">
+      <Filter>Src\Application\Object\Ui\ResultSceneUi</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\ResultSceneUi\Rank\Rank.h">
+      <Filter>Src\Application\Object\Ui\ResultSceneUi\Rank</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\CommonUi\BlackBack\BlackBack.h">
+      <Filter>Src\Application\Object\Ui\CommonUi\BlackBack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -790,6 +811,15 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Scene\ResultScene\ResultScene.cpp">
       <Filter>Src\Application\Scene\ResultScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\ResultSceneUi\ResultSceneUi.cpp">
+      <Filter>Src\Application\Object\Ui\ResultSceneUi</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\ResultSceneUi\Rank\Rank.cpp">
+      <Filter>Src\Application\Object\Ui\ResultSceneUi\Rank</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\CommonUi\BlackBack\BlackBack.cpp">
+      <Filter>Src\Application\Object\Ui\CommonUi\BlackBack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

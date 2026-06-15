@@ -9,6 +9,7 @@ class ScoreManager
 public:
 	
 	void Init();
+	void Update();
 
 	//スコアセット
 	void ScoreUp(const int& _val)
@@ -21,14 +22,21 @@ public:
 	//コイン取得
 	void CoinUp() { m_coinnum++; }
 	//コイン取得数取得
-	UINT GetCoin() { return m_coinnum; }
+	UINT GetCoin() { return (UINT)m_coinnum; }
+
+	//コイン減少
+	void CoinDown(int time, int num);
 
 private:
 	//スコア用変数
 	Score m_score;
 
 	//コイン取得
-	UINT m_coinnum = 0;
+	float m_coinnum = 0;
+
+	float m_coinDownSpd = 0.0f;
+	int m_targetCoin = 0;
+	bool m_coinDownFlg = false;
 
 private:
 	ScoreManager() {}

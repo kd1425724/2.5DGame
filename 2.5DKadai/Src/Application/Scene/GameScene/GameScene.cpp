@@ -8,19 +8,20 @@
 #include"../../Manager/StageManager/StageManager.h"
 #include"../../Common/Input/Input.h"
 #include"../../Object/BackGround/GameSceneBackGround/GameSceneBackGround.h"
+#include"../../Object/Ui/GameSceneUi/GameSceneUi.h"
 
 void GameScene::Event()
 {
-	if (m_player.expired()||Inp.GetUserKeyDown(UserKeyType::DecisionKey)&&INFO.GetGoalFlg())
+	//プレイヤーが死亡するかゴールしたら
+	if (m_player.expired()||INFO.GetGoalFlg())
 	{
 		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
 		return;
 	}
 
-	//ゴールしたら
-	if (INFO.GetGoalFlg())
+	if (m_gamesceneui)
 	{
-
+		m_gamesceneui->Update();
 	}
 
 	//エディターがカメラの主導権を持っているなら処理しない
@@ -52,6 +53,10 @@ void GameScene::Init()
 	std::shared_ptr<GameSceneBackGround> background = std::make_shared<GameSceneBackGround>();
 	background->Init();
 	m_objList.push_back(background);
+
+	//UI
+	m_gamesceneui = std::make_shared<GameSceneUi>();
+	m_gamesceneui->Init();
 
 	//ステージ１をロード
 	STAGEMANAGER.StageLoad("1");

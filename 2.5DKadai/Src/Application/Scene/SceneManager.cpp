@@ -12,6 +12,8 @@
 
 #include"../Editor/Editor.h"
 
+#include"../Manager/ScoreManager/ScoreManager.h"
+
 void SceneManager::PreUpdate()
 {
 	// シーン切替
@@ -34,6 +36,8 @@ void SceneManager::Update()
 	KdDebugGUI::Instance().AddLog("%d", GetObjList().size());
 
 	FEED.Update();
+
+	SCOREMANAGER.Update();
 
 	if (FEED.GetFeedState() == FeedOut)return;
 

@@ -468,9 +468,13 @@ void Editor::MouseDragMoveUpdate()
 
 		ScreenToClient(Application::Instance().GetWindowHandle(),&pt);
 
-		Math::Vector3 rayPos;
+		/*Math::Vector3 rayPos;
 		Math::Vector3 rayDir;
-		float rayRange = 0;
+		float rayRange = 0;*/
+
+		Math::Vector3	rayPos = cam->GetCameraMatrix().Translation();
+		Math::Vector3	rayDir = Math::Vector3::Zero;
+		float			rayRange = 2000.f;
 
 		cam->GenerateRayInfoFromClientPos(
 			pt,
@@ -587,7 +591,6 @@ void Editor::CameraUpdate()
 		break;
 	}
 
-
 	//行列
 	Math::Matrix rot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(camRot.x)) * 
 		Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(camRot.y)) * 
@@ -680,9 +683,9 @@ void Editor::KeyUpdate()
 
 		if (!cam) return;
 
-		Math::Vector3 rayPos;
-		Math::Vector3 rayDir;
-		float rayRange;
+		Math::Vector3	rayPos = cam->GetCameraMatrix().Translation();
+		Math::Vector3	rayDir = Math::Vector3::Zero;
+		float			rayRange = 2000.f;
 
 		cam->GenerateRayInfoFromClientPos(
 			pt,
@@ -691,11 +694,15 @@ void Editor::KeyUpdate()
 			rayRange
 		);
 
-		KdCollider::RayInfo ray;
-		ray.m_pos = rayPos;
-		ray.m_dir = rayDir;
-		ray.m_range = rayRange;
-		ray.m_type = KdCollider::TypeGround | KdCollider::TypeDamage|KdCollider::TypeEvent;
+
+
+		// 生成したRAY情報を基に実際にRAYを飛ばして当たり判定を取る！
+		//課題２：今いる地点からクリックした地点まで等速で移動
+		Math::Vector3 endRayPos = rayPos + (rayDir * rayRange);
+		KdCollider::RayInfo ray(
+			KdCollider::TypeGround | KdCollider::TypeDamage | KdCollider::TypeEvent,
+			rayPos,	//RAYの始点
+			endRayPos);//RAYの終点
 
 		float nearest = FLT_MAX;
 		std::shared_ptr<KdGameObject> hitObj = nullptr;

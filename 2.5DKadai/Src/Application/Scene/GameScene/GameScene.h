@@ -3,6 +3,7 @@
 #include"../BaseScene/BaseScene.h"
 
 class Player;
+class GameSceneUi;
 
 class GameScene : public BaseScene
 {
@@ -19,5 +20,7 @@ private:
 	
 
 	std::weak_ptr<Player> m_player;
+
+	std::shared_ptr<GameSceneUi> m_gamesceneui;
 
 };

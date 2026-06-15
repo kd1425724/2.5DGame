@@ -18,6 +18,9 @@ public:
 
 	ObjectTag GetObjectTag()override { return ObjectTag::Player; }
 
+	//当たり判定だけのプレイヤー生成
+	void SetShadowFlg() { m_shadowflg = true; }
+
 private:
 
 	void PlayerDataLoad();
@@ -79,4 +82,7 @@ private:
 	// 残像制御
 	float m_afterImageTimer = 0.0f;
 	float m_afterImageInterval = 4; // 基本間隔
+
+	//当たり判定だけのプレイヤー生成フラグ
+	bool m_shadowflg = false;
 };

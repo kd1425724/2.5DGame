@@ -2,6 +2,7 @@
 #include"../../Common/Info/Info.h"
 #include"../../Common/Input/Input.h"
 #include"../../Scene/SceneManager.h"
+#include"../Effect/EffectManager.h"
 
 void Player::Init()
 {
@@ -24,6 +25,8 @@ void Player::Init()
 	m_scale = { 1,1,1 };
 
 	m_move = { 1,0,0 };
+
+	m_shadowflg = false;
 }
 
 void Player::PreUpdate()
@@ -31,6 +34,8 @@ void Player::PreUpdate()
 
 void Player::Update()
 {
+	if (m_shadowflg)return;
+
 	//ポイントライト
 	KdShaderManager::Instance().WorkAmbientController().AddPointLight
 	(
@@ -57,6 +62,9 @@ void Player::Update()
 			{
 				//ジャンプ1段目
 				m_gravity = -m_onejumppow;
+
+				//エフェクト
+				EFFECT.CreateEffect("PlayerJump", {0,0,0});
 
 				//地面から離れた
 				m_isground = false;
@@ -227,15 +235,17 @@ void Player::Update()
 
 void Player::PostUpdate()
 {
-	
-	// 削除
-	m_afterImages.erase(
-		std::remove_if(m_afterImages.begin(), m_afterImages.end(),
-			[](const AfterImage& a)
-			{
-				return a.alpha <= 0.0f;
-			}),
-		m_afterImages.end());
+	if (!m_shadowflg)
+	{
+		// 削除
+		m_afterImages.erase(
+			std::remove_if(m_afterImages.begin(), m_afterImages.end(),
+				[](const AfterImage& a)
+				{
+					return a.alpha <= 0.0f;
+				}),
+			m_afterImages.end());
+	}
 
 	//死亡演出中処理しない
 	if (m_statepattern == PlayerStatePattern::Death)return;
@@ -245,6 +255,7 @@ void Player::PostUpdate()
 
 void Player::DrawLit()
 {
+	if (m_shadowflg)return;
 	//ディゾルブ											↓０～１
 	KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolv);
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, m_mWorld);
@@ -254,6 +265,7 @@ void Player::DrawLit()
 
 void Player::GenerateDepthMapFromLight()
 {
+	if (m_shadowflg)return;
 		//ディゾルブ											↓０～１
 	KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolv);
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
@@ -261,6 +273,7 @@ void Player::GenerateDepthMapFromLight()
 
 void Player::DrawBright()
 {
+	if (m_shadowflg)return;
 	KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolv);
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, m_mWorld);
 
@@ -432,6 +445,16 @@ void Player::Hit()
 			hitDir.Normalize();
 			m_pos += hitDir * maxOverLap;
 		}
+	}
+
+	//奈落判定
+	if (m_pos.y < INFO.AbyssJudgmentPos)
+	{
+		//死亡
+		m_statepattern = PlayerStatePattern::Death;
+		//画面揺れ開始
+		SceneManager::Instance().GetCamera()->StartShake(0.3f, 20);
+		return;
 	}
 }
 

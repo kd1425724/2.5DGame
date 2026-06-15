@@ -2,6 +2,8 @@
 
 #include"../BaseScene/BaseScene.h"
 
+class ResultSceneUi;
+
 class ResultScene : public BaseScene
 {
 public :
@@ -14,5 +16,8 @@ public :
 private :
 
 	void Event() override;
+
+	//UI
+	std::shared_ptr<ResultSceneUi> m_resultsceneui;
 
 };

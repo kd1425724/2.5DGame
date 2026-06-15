@@ -305,7 +305,10 @@
     <ClInclude Include="Src\Application\Object\StageBlock\BaseStageBlock.h" />
     <ClInclude Include="Src\Application\Object\StageBlock\DamageBlock\DamageBlock.h" />
     <ClInclude Include="Src\Application\Object\Ui\BaseButton\BaseButton.h" />
+    <ClInclude Include="Src\Application\Object\Ui\CommonUi\BlackBack\BlackBack.h" />
     <ClInclude Include="Src\Application\Object\Ui\GameSceneUi\GameSceneUi.h" />
+    <ClInclude Include="Src\Application\Object\Ui\ResultSceneUi\Rank\Rank.h" />
+    <ClInclude Include="Src\Application\Object\Ui\ResultSceneUi\ResultSceneUi.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\Button\Button.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\Description\Description.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.h" />
@@ -401,7 +404,10 @@
     <ClCompile Include="Src\Application\Object\StageBlock\BaseStageBlock.cpp" />
     <ClCompile Include="Src\Application\Object\StageBlock\DamageBlock\DamageBlock.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\BaseButton\BaseButton.cpp" />
+    <ClCompile Include="Src\Application\Object\Ui\CommonUi\BlackBack\BlackBack.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\GameSceneUi\GameSceneUi.cpp" />
+    <ClCompile Include="Src\Application\Object\Ui\ResultSceneUi\Rank\Rank.cpp" />
+    <ClCompile Include="Src\Application\Object\Ui\ResultSceneUi\ResultSceneUi.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\Button\Button.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\Description\Description.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.cpp" />
