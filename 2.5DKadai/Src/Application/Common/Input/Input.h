@@ -4,6 +4,8 @@ enum class PlayerKeyType
 {
 	Jump,
 	Plunge,
+	Left,
+	Right,
 	PlayerKeyNum
 };
 
@@ -141,7 +143,9 @@ private:
 	enum class PlayerKeyDefaultType
 	{
 		Jump =VK_UP,
-		Plunge = VK_DOWN
+		Plunge = VK_DOWN,
+		Left=VK_LEFT,
+		Right=VK_RIGHT,
 	};
 	enum class UserKeyDefaultType
 	{

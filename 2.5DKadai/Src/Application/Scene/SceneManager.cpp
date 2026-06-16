@@ -106,6 +106,9 @@ void SceneManager::Init()
 
 void SceneManager::ChangeScene(SceneType _sceneType)
 {
+	// 現在のシーン情報を更新
+	m_currentSceneType = _sceneType;
+
 	// 次のシーンを作成し、現在のシーンにする
 	switch (_sceneType)
 	{
@@ -118,6 +121,8 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 		m_currentScene = std::make_shared<StageSelectScene>();
 		break;
 	case SceneType::Game:
+		//スコアリセット
+		SCOREMANAGER.ScoreReset();
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<GameScene>();
 		break;
@@ -131,6 +136,5 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 	// コントラクタでのInit()を禁止します！！！
 	m_currentScene->Init();
 
-	// 現在のシーン情報を更新
-	m_currentSceneType = _sceneType;
+
 }

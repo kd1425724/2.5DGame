@@ -34,7 +34,7 @@ void Coin::Update()
 
 	Scroll();
 	//アニメーション
-	m_rot.y += 0.1f;
+	m_rot.y += 1.5f;
 	MatrixUpdate();
 }
 

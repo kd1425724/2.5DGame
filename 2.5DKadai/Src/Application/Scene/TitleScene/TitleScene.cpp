@@ -4,6 +4,7 @@
 #include"../../Object/BackGround/TitleSceneBackGround/TitleSceneBackGround.h"
 #include"../../Manager/StageManager/StageManager.h"
 #include"../../Common/Info/Info.h"
+#include"../../Object/Effect/EffectManager.h"
 void TitleScene::Event()
 {
 	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
@@ -17,6 +18,7 @@ void TitleScene::Event()
 
 void TitleScene::Init()
 {
+	//EFFECT.CreateEffect("Beacon", { 0,0,0 });
 	//Fog（霧）														↓距離　↓高さ
 	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
 	//距離フォグの設定													↓色	  ↓密度
@@ -33,14 +35,14 @@ void TitleScene::Init()
 
 	m_camera->SetCameraMatrix(mat);
 
-	//std::shared_ptr<TitleSceneUi> titlesceneui = std::make_shared<TitleSceneUi>();
-	//titlesceneui->Init();
+	m_titlesceneui = std::make_shared<TitleSceneUi>();
+	m_titlesceneui->Init();
 
 	//背景
 	std::shared_ptr<TitleSceneBackGround> background = std::make_shared<TitleSceneBackGround>();
 	background->Init();
 	m_objList.push_back(background);
-	STAGEMANAGER.LoadRoom("Box");
+	STAGEMANAGER.LoadRoom("Title");
 
 	//スクロールするかどうか
 	INFO.SetScrollFlg(false);

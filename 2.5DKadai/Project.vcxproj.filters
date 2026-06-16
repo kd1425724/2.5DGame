@@ -184,9 +184,6 @@
     <Filter Include="Src\Application\Object\Ui\TitleSceneUi\TitleLogo">
       <UniqueIdentifier>{d58fe9e4-18b0-4250-bcc1-12b5a6c3d1b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\Ui\TitleSceneUi\PressAny">
-      <UniqueIdentifier>{0a284d6c-9fe4-4ac0-9e8f-eb316b15fe94}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\Object\BackGround\TitleSceneBackGround">
       <UniqueIdentifier>{25355b20-f82d-4fb5-9a6a-756b08efc09e}</UniqueIdentifier>
     </Filter>
@@ -222,6 +219,9 @@
     </Filter>
     <Filter Include="Src\Application\Object\Ui\CommonUi\BlackBack">
       <UniqueIdentifier>{b8ae0609-874e-4228-85a1-d3db78a118b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Ui\TitleSceneUi\PressEnter">
+      <UniqueIdentifier>{4cbef22d-b200-46a3-bf1a-d42253cce968}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -498,9 +498,6 @@
     <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\TitleLogo\TitleLogo.h">
       <Filter>Src\Application\Object\Ui\TitleSceneUi\TitleLogo</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\PressAny\PressAny.h">
-      <Filter>Src\Application\Object\Ui\TitleSceneUi\PressAny</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Object\BackGround\TitleSceneBackGround\TitleSceneBackGround.h">
       <Filter>Src\Application\Object\BackGround\TitleSceneBackGround</Filter>
     </ClInclude>
@@ -536,6 +533,9 @@
     </ClInclude>
     <ClInclude Include="Src\Application\Object\Ui\CommonUi\BlackBack\BlackBack.h">
       <Filter>Src\Application\Object\Ui\CommonUi\BlackBack</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\PressEnter\PressEnter.h">
+      <Filter>Src\Application\Object\Ui\TitleSceneUi\PressEnter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -782,9 +782,6 @@
     <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\TitleLogo\TitleLogo.cpp">
       <Filter>Src\Application\Object\Ui\TitleSceneUi\TitleLogo</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\PressAny\PressAny.cpp">
-      <Filter>Src\Application\Object\Ui\TitleSceneUi\PressAny</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Object\BackGround\TitleSceneBackGround\TitleSceneBackGround.cpp">
       <Filter>Src\Application\Object\BackGround\TitleSceneBackGround</Filter>
     </ClCompile>
@@ -820,6 +817,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Ui\CommonUi\BlackBack\BlackBack.cpp">
       <Filter>Src\Application\Object\Ui\CommonUi\BlackBack</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\PressEnter\PressEnter.cpp">
+      <Filter>Src\Application\Object\Ui\TitleSceneUi\PressEnter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

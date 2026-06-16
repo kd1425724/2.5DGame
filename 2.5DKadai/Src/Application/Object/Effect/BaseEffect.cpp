@@ -50,8 +50,6 @@ void BaseEffect::Update()
 
 	m_polygon->SetUVRect(index);
 
-
-
 	MatrixUpdate();
 }
 
@@ -59,13 +57,11 @@ void BaseEffect::DrawBright()
 {
 	if (!m_polygon) return;
 
-	
-	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
 
-	
+	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
 }
 
-void BaseEffect::DrawLit()
+void BaseEffect::DrawEffect()
 {
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
 }

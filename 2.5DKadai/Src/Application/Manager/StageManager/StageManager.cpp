@@ -368,9 +368,6 @@ void StageManager::LoadRoom(const std::string& _filename)
 		}
 	}
 
-	
-
-
 	fclose(fp);
 }
 

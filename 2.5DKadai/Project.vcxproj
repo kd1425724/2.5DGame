@@ -313,7 +313,7 @@
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\Description\Description.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectSceneUi.h" />
-    <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\PressAny\PressAny.h" />
+    <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\PressEnter\PressEnter.h" />
     <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\TitleLogo\TitleLogo.h" />
     <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\TitleSceneUi.h" />
     <ClInclude Include="Src\Application\Object\Ui\UiBase.h" />
@@ -412,7 +412,7 @@
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\Description\Description.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectSceneUi.cpp" />
-    <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\PressAny\PressAny.cpp" />
+    <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\PressEnter\PressEnter.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\TitleLogo\TitleLogo.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\TitleSceneUi.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\UiBase.cpp" />

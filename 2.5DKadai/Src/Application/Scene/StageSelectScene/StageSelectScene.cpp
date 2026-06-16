@@ -38,7 +38,7 @@ void StageSelectScene::Init()
 	m_objList.push_back(background);
 
 	//一部屋ロード
-	STAGEMANAGER.LoadRoom("Box");
+	STAGEMANAGER.LoadRoom("StageSelect");
 
 	//スクロールするかどうか
 	INFO.SetScrollFlg(false);

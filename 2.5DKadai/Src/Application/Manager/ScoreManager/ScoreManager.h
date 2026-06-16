@@ -27,6 +27,12 @@ public:
 	//コイン減少
 	void CoinDown(int time, int num);
 
+	void ScoreReset()
+	{
+		m_score.score = 0;
+		m_coinnum = 0;
+	}
+
 private:
 	//スコア用変数
 	Score m_score;

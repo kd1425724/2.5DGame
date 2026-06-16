@@ -1,6 +1,6 @@
 ﻿#include "TitleSceneUi.h"
 #include"TitleLogo/TitleLogo.h"
-#include"PressAny/PressAny.h"
+#include"PressEnter/PressEnter.h"
 #include"../../../Scene/SceneManager.h"
 
 void TitleSceneUi::Init()
@@ -8,10 +8,10 @@ void TitleSceneUi::Init()
 	//タイトルロゴ
 	std::shared_ptr<TitleLogo> titlelogo = std::make_shared<TitleLogo>();
 	titlelogo->Init();
-	SceneManager::Instance().AddObject(titlelogo);
+	//SceneManager::Instance().AddObject(titlelogo);
 	
 	//PressAny
-	std::shared_ptr<PressAny> pressany = std::make_shared<PressAny>();
-	pressany->Init();
-	SceneManager::Instance().AddObject(pressany);
+	std::shared_ptr<PressEnter> pressenter = std::make_shared<PressEnter>();
+	pressenter->Init();
+	SceneManager::Instance().AddObject(pressenter);
 }

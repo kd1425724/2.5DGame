@@ -25,7 +25,6 @@ void Num::DrawSprite()
 	// 0対策（0の場合は0のみ表示）
 	if (m_num == 0)
 	{
-		s = Math::Matrix::CreateScale(m_scale);
 		t = Math::Matrix::CreateTranslation(m_pos);
 		mat = s * t;
 

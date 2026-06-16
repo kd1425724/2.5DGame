@@ -27,6 +27,17 @@ void Player::Init()
 	m_move = { 1,0,0 };
 
 	m_shadowflg = false;
+
+	m_damageflg = true;
+
+	auto sceneType = SceneManager::Instance().GetSceneType();
+
+	//ゲームとリザルト以外では自由に動ける
+	if (sceneType != SceneManager::SceneType::Game &&
+		sceneType != SceneManager::SceneType::Result)
+	{
+		m_damageflg = false;
+	}
 }
 
 void Player::PreUpdate()
@@ -35,6 +46,23 @@ void Player::PreUpdate()
 void Player::Update()
 {
 	if (m_shadowflg)return;
+
+	auto sceneType = SceneManager::Instance().GetSceneType();
+
+	//ゲームとリザルト以外では自由に動ける
+	if (sceneType != SceneManager::SceneType::Game &&
+		sceneType != SceneManager::SceneType::Result)
+	{
+		// 自由移動
+		if (Inp.GetPlayerKey(PlayerKeyType::Right))
+		{
+			m_pos.x += m_speed;
+		}
+		if (Inp.GetPlayerKey(PlayerKeyType::Left))
+		{
+			m_pos.x -= m_speed;
+		}
+	}
 
 	//ポイントライト
 	KdShaderManager::Instance().WorkAmbientController().AddPointLight
@@ -64,7 +92,7 @@ void Player::Update()
 				m_gravity = -m_onejumppow;
 
 				//エフェクト
-				EFFECT.CreateEffect("PlayerJump", {0,0,0});
+				EFFECT.CreateEffect("PlayerJump", m_pos + Math::Vector3(0, 0.5f, 0));
 
 				//地面から離れた
 				m_isground = false;
@@ -400,11 +428,14 @@ void Player::Hit()
 			//ダメージTypeに当たったら
 			if (ret.m_hitType & KdCollider::TypeDamage)
 			{
-				//死亡
-				m_statepattern = PlayerStatePattern::Death;
-				//画面揺れ開始
-				SceneManager::Instance().GetCamera()->StartShake(0.3f, 20);
-				return;
+				if (m_damageflg)
+				{
+					//死亡
+					m_statepattern = PlayerStatePattern::Death;
+					//画面揺れ開始
+					SceneManager::Instance().GetCamera()->StartShake(0.3f, 20);
+					return;
+				}
 			}
 			//球にめり込んだ長さが一番長いものを探す
 			if (maxOverLap < ret.m_overlapDistance)
@@ -420,7 +451,7 @@ void Player::Hit()
 		{
 			hitDir.Normalize();
 
-			if (hitDir.y < -0.5f)
+			if (m_gravity < 0 && hitDir.y < -0.5f)
 			{
 				// 下から当たった
 				m_gravity = 0;
@@ -432,11 +463,14 @@ void Player::Hit()
 			}
 			else if (hitDir.x < -0.5f)
 			{
-				// 左から当たった
-				m_statepattern = PlayerStatePattern::Death;
-				//画面揺れ開始
-				SceneManager::Instance().GetCamera()->StartShake(0.3f, 20);
-				return;
+				if (m_damageflg)
+				{
+					// 左から当たった
+					m_statepattern = PlayerStatePattern::Death;
+					//画面揺れ開始
+					SceneManager::Instance().GetCamera()->StartShake(0.3f, 20);
+					return;
+				}
 			}
 
 			//Z方向への押し戻し無効
@@ -450,11 +484,14 @@ void Player::Hit()
 	//奈落判定
 	if (m_pos.y < INFO.AbyssJudgmentPos)
 	{
-		//死亡
-		m_statepattern = PlayerStatePattern::Death;
-		//画面揺れ開始
-		SceneManager::Instance().GetCamera()->StartShake(0.3f, 20);
-		return;
+		if (m_damageflg)
+		{
+			//死亡
+			m_statepattern = PlayerStatePattern::Death;
+			//画面揺れ開始
+			SceneManager::Instance().GetCamera()->StartShake(0.3f, 20);
+			return;
+		}
 	}
 }
 

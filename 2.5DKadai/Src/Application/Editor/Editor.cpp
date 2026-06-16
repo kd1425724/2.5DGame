@@ -174,7 +174,6 @@ void Editor::DrawMainWindow()
 	ImGui::Checkbox("Hierarchy", &m_showHierarchy);
 	ImGui::Checkbox("Inspector", &m_showInspector);
 
-
 	//生成
 	for (auto objinfo : m_createObjInfo)
 	{

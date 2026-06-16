@@ -10,7 +10,7 @@ public:
 	void Init() override;
 	void Update() override;
 	void DrawBright() override;
-	void DrawLit()override;
+	void DrawEffect()override;
 
 	void SetAsset(const std::string& asset)
 	{

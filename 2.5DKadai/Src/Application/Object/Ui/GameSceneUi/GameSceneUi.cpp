@@ -16,11 +16,13 @@ void GameSceneUi::Init()
 void GameSceneUi::Update()
 {
 	//コイン
-	Math::Vector3 coinpos = { 600,300,0 };
+	Math::Vector3 coinpos = { 560,290,0 };
+	Math::Vector3 scale = { 2,2,2 };
 	m_nums[(int)GameNumType::Coin]->SetNumInfo
 	(
 		SCOREMANAGER.GetCoin(),
-		coinpos
+		coinpos,
+		scale
 	);
 
 }

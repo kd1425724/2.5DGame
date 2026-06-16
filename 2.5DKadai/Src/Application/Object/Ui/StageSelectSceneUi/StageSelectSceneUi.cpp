@@ -12,29 +12,33 @@
 
 void StageSelectSceneUi::Init()
 {
-	
 	//ボタン
 	m_buttons.resize((int)StageSelectButton::ButtonNum);
 	int i = 0;
+	constexpr float interval = 4.0f;
 	for (auto& button : m_buttons)
 	{
 		button=std::make_shared<BaseButton>();
 		//先に全部初期化
 		button->Init();
-		button->SetPos(Math::Vector3(-3 + (i * 3), 0, 0));
-
+		
+		button->SetPos(Math::Vector3(
+			-(interval * ((int)StageSelectButton::ButtonNum - 1) / 2.0f)
+			+ i * interval,
+			0,
+			0));
 		i++;
 	}
 	//ボタンの情報セット
-	m_buttons[(int)StageSelectButton::Stage1]->ButtonLoad("Stage1", []()
+	m_buttons[(int)StageSelectButton::Stage1]->ButtonLoad("One", []()
 		{
 			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Game);
 		});
-	m_buttons[(int)StageSelectButton::Stage2]->ButtonLoad("Stage2", []()
+	m_buttons[(int)StageSelectButton::Stage2]->ButtonLoad("Two", []()
 		{
 			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Game);
 		});
-	m_buttons[(int)StageSelectButton::Stage3]->ButtonLoad("Stage3", []()
+	m_buttons[(int)StageSelectButton::Stage3]->ButtonLoad("Three", []()
 		{
 			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Game);
 		});
@@ -49,6 +53,8 @@ void StageSelectSceneUi::Init()
 
 void StageSelectSceneUi::Update()
 {
+	//選択ボタン制御
+	SelectButtonControll();
 
 	m_buttons[(int)m_selectbutton]->SelectUpdate();
 
@@ -60,6 +66,30 @@ void StageSelectSceneUi::Update()
 
 void StageSelectSceneUi::SelectButtonControll()
 {
-	
+	if (Inp.GetUserKeyDown(UserKeyType::Right))
+	{
+		if (m_selectbutton == StageSelectButton::Stage3)
+		{
+			m_selectbutton = StageSelectButton::Stage1;
+		}
+		else
+		{
+			m_selectbutton =(StageSelectButton)((int)m_selectbutton + 1);
+		}
+	}
+
+	if (Inp.GetUserKeyDown(UserKeyType::Left))
+	{
+		if (m_selectbutton == StageSelectButton::Stage1)
+		{
+			m_selectbutton =
+				(StageSelectButton)((int)StageSelectButton::ButtonNum - 1);
+		}
+		else
+		{
+			m_selectbutton =
+				(StageSelectButton)((int)m_selectbutton - 1);
+		}
+	}
 }
 

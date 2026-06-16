@@ -1,10 +1,10 @@
 ﻿#pragma once
 #include"../../UiBase.h"
-class PressAny:public UiBase
+class PressEnter:public UiBase
 {
 public:
-	PressAny(){}
-	~PressAny()override{}
+	PressEnter(){}
+	~PressEnter()override{}
 
 	void Init()override;
 	void Update()override;

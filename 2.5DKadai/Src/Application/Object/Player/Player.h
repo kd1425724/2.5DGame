@@ -85,4 +85,7 @@ private:
 
 	//当たり判定だけのプレイヤー生成フラグ
 	bool m_shadowflg = false;
+
+	//ダメージを受けないようにするフラグ
+	bool m_damageflg = true;;
 };
