@@ -1,5 +1,14 @@
 ﻿#pragma once
 
+enum EffectFlag
+{
+	eNone = 0,
+	eBright = 1 << 0,
+	eHoming = 1 << 1,
+	eLoop = 1 << 2,
+	eScroll = 1 << 3
+};
+
 class BaseEffect : public KdGameObject
 {
 public:
@@ -33,9 +42,29 @@ public:
 		m_animSpeed = speed;
 	}
 
-	void SetLoop(bool loop)
+	void SetFlag(UINT flag)
 	{
-		m_loop = loop;
+		m_flag = flag;
+	}
+
+	bool CheckFlag(EffectFlag flag) const
+	{
+		return (m_flag & flag);
+	}
+
+	void SetTarget(const std::shared_ptr<KdGameObject>& target)
+	{
+		m_target = target;
+	}
+
+	void SetTargetPos(const Math::Vector3& pos)
+	{
+		m_targetPos = pos;
+	}
+
+	void SetHomingSpeed(float speed)
+	{
+		m_homingSpeed = speed;
 	}
 
 private:
@@ -53,7 +82,10 @@ private:
 
 	float m_animSpeed = 0.2f;
 
-	bool m_loop = false;
+	UINT m_flag = eNone;
 
+	Math::Vector3 m_targetPos;
+	std::weak_ptr<KdGameObject> m_target;
 
+	float m_homingSpeed = 10.0f;
 };

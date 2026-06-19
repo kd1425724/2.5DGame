@@ -10,7 +10,7 @@ void TitleSceneUi::Init()
 	titlelogo->Init();
 	//SceneManager::Instance().AddObject(titlelogo);
 	
-	//PressAny
+	//PressEnter
 	std::shared_ptr<PressEnter> pressenter = std::make_shared<PressEnter>();
 	pressenter->Init();
 	SceneManager::Instance().AddObject(pressenter);

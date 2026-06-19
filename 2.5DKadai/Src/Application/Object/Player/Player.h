@@ -4,7 +4,9 @@ class Player :public KdGameObject
 {
 public:
 	Player() {}
-	~Player()override{}
+	~Player()override
+	{
+	}
 
 	void Init()override;
 
@@ -87,5 +89,5 @@ private:
 	bool m_shadowflg = false;
 
 	//ダメージを受けないようにするフラグ
-	bool m_damageflg = true;;
+	bool m_damageflg = true;
 };

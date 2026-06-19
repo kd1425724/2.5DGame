@@ -1,6 +1,7 @@
 ﻿#include "Coin.h"
 #include"../../../Manager/ScoreManager/ScoreManager.h"
 #include"../../Effect/EffectManager.h"
+#include"../../Effect/BaseEffect.h"
 void Coin::Init()
 {
 	m_model = std::make_shared<KdModelData>();
@@ -31,8 +32,10 @@ void Coin::Init()
 void Coin::Update()
 {
 	//BaseItem::Update();
-
-	Scroll();
+	if (m_hitflg)
+	{
+		Scroll();
+	}
 	//アニメーション
 	m_rot.y += 1.5f;
 	MatrixUpdate();
@@ -45,11 +48,16 @@ void Coin::DrawLit()
 
 void Coin::GenerateDepthMapFromLight()
 {
+	if (!m_hitflg)return;
+
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
 }
 
+
 void Coin::OnHit(KdGameObject * other)
 {
+	if (!m_hitflg)return;
+
 	//プレイヤーと当たったら
 	if (other->GetObjectTag() == ObjectTag::Player)
 	{
@@ -60,7 +68,7 @@ void Coin::OnHit(KdGameObject * other)
 
 
 		//エフェクト発生
-		EFFECT.CreateEffect("CoinGet", m_pos);
+		EFFECT.CreateEffect("CoinGet", m_pos, eBright | eScroll);
 
 		//スコアアップ
 		int upval = 100;

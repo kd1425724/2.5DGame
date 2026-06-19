@@ -57,7 +57,7 @@ private:
 	//選択中オブジェクト
 	std::weak_ptr<KdGameObject> m_selectObj;
 
-	bool m_editMode = true;
+	bool m_editMode = false;
 
 	bool m_objectupdatemode = false;
 

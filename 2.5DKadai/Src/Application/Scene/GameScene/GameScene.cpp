@@ -9,9 +9,45 @@
 #include"../../Common/Input/Input.h"
 #include"../../Object/BackGround/GameSceneBackGround/GameSceneBackGround.h"
 #include"../../Object/Ui/GameSceneUi/GameSceneUi.h"
+#include"../../Common/Feed/Feed.h"
+#include"../../Object/CountDown/CountDown.h"
 
 void GameScene::Event()
 {
+	switch (m_gamepattern)
+	{
+	case GameScene::GamePattern::Stop:
+		//フェードインが終了したら
+		if (FEED.GetFeedState() == NoFeed)
+		{
+			m_gamepattern = GamePattern::CountDown;
+		}
+		break;
+	case GameScene::GamePattern::CountDown:
+		//カウントダウン処理
+		//GO!!が表示されたら開始
+		//カウントダウン処理をしている側で変更
+		if (m_countdown)
+		{
+			if (m_countdown->IsFinish())
+			{
+				m_gamepattern = GamePattern::Start;
+			}
+		}
+		break;
+	case GameScene::GamePattern::Start:
+		//開始(一度だけ通る)
+		INFO.SetScrollFlg(true);
+		INFO.SetScrollSpeed(INFO.GetDefaultScrollSpeed());
+		m_gamepattern = GamePattern::Game;
+		break;
+	case GameScene::GamePattern::Game:
+		//特に何もしなくていい
+		break;
+	default:
+		break;
+	}
+	
 	//プレイヤーが死亡するかゴールしたら
 	if (m_player.expired()||INFO.GetGoalFlg())
 	{
@@ -36,6 +72,7 @@ void GameScene::Event()
 
 void GameScene::Init()
 {
+	INFO.SetGoalFlg(false);
 	//カメラ
 	m_camera = std::make_unique<KdCamera>();
 
@@ -61,5 +98,12 @@ void GameScene::Init()
 	//ステージ１をロード
 	STAGEMANAGER.StageLoad("1");
 
-	INFO.SetScrollFlg(true);
+	m_gamepattern = GamePattern::Stop;
+
+	INFO.SetScrollFlg(false);
+
+	//カウントダウン処理
+	m_countdown = std::make_shared<CountDown>();
+	m_countdown->Init();
+	m_objList.push_back(m_countdown);
 }

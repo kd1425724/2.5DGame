@@ -32,7 +32,13 @@ void BaseStageBlock::Update()
 
 void BaseStageBlock::DrawLit()
 {
-	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
+	Math::Color color = { 1,1,1,1 }; 
+	if(!m_hitflg)
+	{ 
+		color = { 0.6,0.6,0.6,1 };
+	}
+	
+	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld, color);
 }
 
 void BaseStageBlock::GenerateDepthMapFromLight()

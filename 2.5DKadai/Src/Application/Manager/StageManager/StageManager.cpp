@@ -235,6 +235,7 @@ void StageManager::LoadRoom(const std::string& _filename, int _instanceId)
 
 	fclose(fp);
 
+	//背景
 	int id = KdRandom::GetInt(0, 5);
 
 	char buf[256];
@@ -267,6 +268,8 @@ void StageManager::LoadRoom(const std::string& _filename, int _instanceId)
 					obj->SetPos(pos + roomorigin);
 
 					obj->SetInstanceID(_instanceId);
+
+					obj->SetHitFlg(false);
 
 					SceneManager::Instance().AddObject(obj);
 
@@ -327,6 +330,7 @@ void StageManager::LoadRoom(const std::string& _filename)
 		}
 	}
 
+	//背景
 	int id = KdRandom::GetInt(0, 5);
 
 	char buf[256];
@@ -359,6 +363,8 @@ void StageManager::LoadRoom(const std::string& _filename)
 				obj->SetPos(pos);
 
 				obj->SetInstanceID(-1);
+
+				obj->SetHitFlg(false);
 
 				SceneManager::Instance().AddObject(obj);
 

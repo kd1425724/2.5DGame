@@ -29,7 +29,6 @@ void EffectManager::Init()
 		std::string anim;
 		std::string speed;
 		std::string scale;
-		std::string loop;
 
 		//','ごとに取り出す
 		std::getline(ss, name, ',');
@@ -39,7 +38,6 @@ void EffectManager::Init()
 		std::getline(ss, anim, ',');
 		std::getline(ss, speed, ',');
 		std::getline(ss, scale, ',');
-		std::getline(ss, loop);
 
 		EffectData data;
 
@@ -52,8 +50,6 @@ void EffectManager::Init()
 		data.animSpeed = std::stof(speed);
 		//サイズ
 		data.scale = std::stof(scale);
-		//(int)
-		data.loop = std::stoi(loop);
 
 		// アニメーション配列
 		//stringstream...文字列をファイルのように扱う
@@ -77,11 +73,67 @@ void EffectManager::Init()
 
 void EffectManager::CreateEffect(
 	const std::string& name,
-	const Math::Vector3& pos)
+	const Math::Vector3& pos,
+	UINT flag)
+{
+	auto effect = CreateBaseEffect(
+		name,
+		pos,
+		flag);
+
+	if (!effect) return;
+
+	SceneManager::Instance().AddObject(effect);
+}
+
+void EffectManager::CreateEffectHoming(
+	const std::string& name,
+	const Math::Vector3& pos,
+	const Math::Vector3& targetPos,
+	UINT flag,
+	float homingspeed)
+{
+	auto effect = CreateBaseEffect(
+		name,
+		pos,
+		flag|eHoming);
+
+	if (!effect) return;
+
+	effect->SetTargetPos(targetPos);
+	effect->SetHomingSpeed(homingspeed);
+
+	SceneManager::Instance().AddObject(effect);
+}
+
+void EffectManager::CreateEffectHoming(
+	const std::string& name,
+	const Math::Vector3& pos,
+	const std::shared_ptr<KdGameObject>& targetObj,
+	UINT flag,
+	float homingspeed)
+{
+	auto effect = CreateBaseEffect(
+		name,
+		pos,
+		flag | eHoming);
+
+	if (!effect) return;
+
+	effect->SetTarget(targetObj);
+	effect->SetHomingSpeed(homingspeed);
+
+	SceneManager::Instance().AddObject(effect);
+}
+
+std::shared_ptr<BaseEffect> EffectManager::CreateBaseEffect(
+	const std::string& name,
+	const Math::Vector3& pos,
+	UINT flag)
 {
 	auto it = m_effectTable.find(name);
 
-	if (it == m_effectTable.end()) return;
+	if (it == m_effectTable.end()) return nullptr;
 
 	auto effect = std::make_shared<BaseEffect>();
 
@@ -97,14 +149,13 @@ void EffectManager::CreateEffect(
 	effect->SetAnimSpeed(
 		it->second.animSpeed);
 
-	effect->SetLoop(
-		it->second.loop);
-
 	effect->SetPos(pos);
 
 	effect->SetSize(it->second.scale);
 
+	effect->SetFlag(flag);
+
 	effect->Init();
 
-	SceneManager::Instance().AddObject(effect);
+	return effect;
 }

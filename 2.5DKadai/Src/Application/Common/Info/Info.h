@@ -14,8 +14,16 @@ public:
 	//奈落判定座標
 	static const int AbyssJudgmentPos = -7;
 
+
+	//デフォルトスクロール速度取得
+	float GetDefaultScrollSpeed()const { return DefaultScrollSpeed; }
+
 	//スクロール速度セット
-	void SetScrollSpeed(const float& _speed = 0.5f) { m_scrollspeed = _speed; }
+	void SetScrollSpeed(const float& _speed) 
+	{
+		m_setscrollspeed = _speed;
+		m_scrollspeed = m_setscrollspeed;
+	}
 	//スクロール速度取得
 	float GetScrollSpeed() { return m_scrollspeed; }
 
@@ -25,7 +33,7 @@ public:
 		m_scrollflg = flg;
 		if (m_scrollflg)
 		{
-			m_scrollspeed = DefaultScrollSpeed;
+			m_scrollspeed = m_setscrollspeed;
 		}
 		else
 		{
@@ -41,12 +49,15 @@ public:
 
 	//部屋の間隔
 	Math::Vector3 GetRoomSpacing()const { return { 21,0,0 }; }
-
+	
 
 private:
 	float DefaultScrollSpeed = 0.2f;
 	//スクロール速度
 	float m_scrollspeed = DefaultScrollSpeed;
+	//スクロール速度設定用
+	float m_setscrollspeed = 0;;
+
 
 	//スクロールフラグ
 	bool m_scrollflg = true;

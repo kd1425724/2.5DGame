@@ -10,16 +10,11 @@ void StageSelectScene::Event()
 {
 	//UIまとめ
 	m_stageselectui->Update();
-
-	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
-	{
-		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Game);
-		return;
-	}
 }
 
 void StageSelectScene::Init()
 {
+
 	//カメラ
 	m_camera = std::make_unique<KdCamera>();
 

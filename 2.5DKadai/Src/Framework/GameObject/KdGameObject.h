@@ -153,6 +153,8 @@ public:
 
 		m_mWorld = mscale * matRot * mtrans;
 	}
+
+	void SetHitFlg(bool flg) { m_hitflg = flg; }
 	
 
 protected:
@@ -193,4 +195,6 @@ protected:
 
 	//InstanceID何回目に呼ばれたか
 	int m_instanceID = -1;
+
+	bool m_hitflg = true;;
 };

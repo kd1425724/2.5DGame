@@ -47,6 +47,7 @@ void KdAmbientController::Init()
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void KdAmbientController::Update()
 {
+	int a = m_pointLights.size();
 	m_pointLights.clear();
 }
 

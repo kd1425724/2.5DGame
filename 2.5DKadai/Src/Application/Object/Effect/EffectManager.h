@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+class BaseEffect;
+
 class EffectManager
 {
 public:
@@ -16,15 +18,28 @@ public:
 		float animSpeed=0.2f;
 
 		float scale = 1;
-
-		bool loop=false;
 	};
 
 	void Init();
 
 	void CreateEffect(
 		const std::string& name,
-		const Math::Vector3& pos);
+		const Math::Vector3& pos,
+		UINT flag = 0);
+
+	void CreateEffectHoming(
+		const std::string& name,
+		const Math::Vector3& pos,
+		const Math::Vector3& targetPos,
+		UINT flag = 0,
+		float homingspeed = 0.2f);
+
+	void CreateEffectHoming(
+		const std::string& name,
+		const Math::Vector3& pos,
+		const std::shared_ptr<KdGameObject>& targetObj,
+		UINT flag = 0,
+		float homingspeed = 0.2f);
 
 private:
 
@@ -32,6 +47,11 @@ private:
 		std::string,
 		EffectData
 	> m_effectTable;
+
+	std::shared_ptr<BaseEffect> CreateBaseEffect(
+		const std::string& name,
+		const Math::Vector3& pos,
+		UINT flag);
 
 private:
 	EffectManager() { Init(); };

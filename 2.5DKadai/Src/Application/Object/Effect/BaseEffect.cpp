@@ -21,9 +21,10 @@ void BaseEffect::Init()
 
 void BaseEffect::Update()
 {
-	m_pos.x -= INFO.GetScrollSpeed();
-
-	m_animCnt += m_animSpeed;
+	if ((m_flag & eScroll))
+	{
+		m_pos.x -= INFO.GetScrollSpeed();
+	}
 
 	if (m_anim.empty())
 	{
@@ -31,9 +32,39 @@ void BaseEffect::Update()
 		return;
 	}
 
+
+	// ホーミング
+	if (m_flag & eHoming)
+	{
+		if (!m_target.expired())
+		{
+			auto targrt = m_target.lock();
+
+			m_targetPos = targrt->GetPos();
+		}
+
+		Math::Vector3 dir = m_targetPos - m_pos;
+
+		float len = dir.Length();
+
+		if (len > m_homingSpeed)
+		{
+			dir /= len;
+			m_pos += dir * m_homingSpeed;
+		}
+		else
+		{
+			m_pos = m_targetPos;
+			SetExpired();   // 到着したら消える
+		}
+	}
+
+	m_animCnt += m_animSpeed;
+
 	if ((int)m_animCnt >= m_anim.size())
 	{
-		if (m_loop)
+		//ループ
+		if (m_flag & eLoop)
 		{
 			while ((int)m_animCnt >= m_anim.size())
 			{
@@ -55,14 +86,19 @@ void BaseEffect::Update()
 
 void BaseEffect::DrawBright()
 {
-	if (!m_polygon) return;
+	if (!(m_flag & eBright)) return;
 
+	if (!m_polygon) return;
 
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
 }
 
 void BaseEffect::DrawEffect()
 {
+	if (m_flag & eBright) return;
+
+	if (!m_polygon) return;
+
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
 }
 

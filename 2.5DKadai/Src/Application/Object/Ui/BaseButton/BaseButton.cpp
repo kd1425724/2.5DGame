@@ -24,14 +24,14 @@ void BaseButton::Update()
 {
 	if (!m_selectflg)
 	{
-		/*SetSize(1.3f);
+		SetSize(1.3f);
 
 		m_time = 0;
 
 		Math::Vector3 dir = {};
 
 		dir = (m_basepos - m_pos);
-		m_pos += dir * m_speed;*/
+		m_pos += dir * m_speed;
 	}
 
 	MatrixUpdate();
@@ -72,10 +72,11 @@ void BaseButton::SelectUpdate()
 
 void BaseButton::ButtonLoad(const std::string & _filename, std::function<void()> _action)
 {
+	//std::string path = "Asset/Models/Object/Button/Block/Block.gltf";
 	std::string path = "Asset/Models/Object/Button/" + _filename + "Block/" + _filename + "Block.gltf";
 
 	m_model = std::make_shared<KdModelData>();
-	m_model->Load(path);
+	m_model = KdAssets::Instance().m_modeldatas.GetData(path);
 
 	m_name = _filename;
 

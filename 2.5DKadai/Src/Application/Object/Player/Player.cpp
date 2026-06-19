@@ -16,7 +16,7 @@ void Player::Init()
 
 	m_coremodel = std::make_shared<KdModelData>();
 	m_coremodel->Load("Asset/Models/Object/Player/PlayerCore/PlayerCore.gltf");
-	
+
 	//座標
 	m_pos = { -4,-4,0 };
 	//移動スピード
@@ -64,6 +64,7 @@ void Player::Update()
 		}
 	}
 
+
 	//ポイントライト
 	KdShaderManager::Instance().WorkAmbientController().AddPointLight
 	(
@@ -85,14 +86,11 @@ void Player::Update()
 		switch (m_jumppattern)
 		{
 		case Player::PlayerJumpPattern::None:
-			
+
 			if (Inp.GetPlayerKeyDown(PlayerKeyType::Jump))
 			{
 				//ジャンプ1段目
 				m_gravity = -m_onejumppow;
-
-				//エフェクト
-				EFFECT.CreateEffect("PlayerJump", m_pos + Math::Vector3(0, 0.5f, 0));
 
 				//地面から離れた
 				m_isground = false;
@@ -137,71 +135,6 @@ void Player::Update()
 			m_gravity = 0;
 		}
 
-		//switch (m_attackpattern)
-		//{
-		//case Player::PlayerAttackPattern::None:
-		//	if (Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
-		//	{
-		//		m_attackpattern = PlayerAttackPattern::Attack1;
-
-		//		//通常攻撃1段目用アニメーション設定
-		//		//UVRectControl(PlayerAnimeType::Attack1, [this]()
-		//		//	{
-		//		//		//1段目攻撃が終わったら（アニメーションが終わったら）待機状態に
-		//		//		m_attackpattern = PlayerAttackPattern::Standby;
-
-		//		//		//待機時間
-		//		//		m_standbytime = StandbyTime;
-		//		//	});
-		//	}
-		//	break;
-		//case Player::PlayerAttackPattern::Attack1:
-		//	if (Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
-		//	{
-		//		//入力保存
-		//		m_inputkeep = true;
-		//	}
-
-		//	break;
-		//case Player::PlayerAttackPattern::Attack2:
-		//	break;
-		//case Player::PlayerAttackPattern::Standby:
-		//	//既に入力されているか、待機状態中に入力したら
-		//	if (m_inputkeep || Inp.GetPlayerKeyDown(PlayerKeyType::Attack))
-		//	{
-		//		//2段目攻撃
-		//		m_attackpattern = PlayerAttackPattern::Attack2;
-
-		//		//アニメーション
-		//		UVRectControl(PlayerAnimeType::Attack2, [this]()
-		//			{
-		//				//2段目攻撃が終わったらNoneに戻す
-		//				m_attackpattern = PlayerAttackPattern::None;
-		//				//入力保存用falseに
-		//				m_inputkeep = false;
-
-		//			});
-		//	}
-		//	//待機状態が終了したらNoneに戻す
-		//	m_standbytime--;
-		//	if (m_standbytime <= 0)
-		//	{
-		//		m_attackpattern = PlayerAttackPattern::None;
-		//	}
-
-		//	break;
-		//default:
-		//	break;
-		//}
-
-		////スキル処理
-		//if (Inp.GetPlayerKeyDown(PlayerKeyType::Skill))
-		//{
-		//	UVRectControl(PlayerAnimeType::spDash);
-		//	//スキル発動時通常攻撃のpatternをNoneに
-		//	m_attackpattern = PlayerAttackPattern::None;
-		//}
-
 		break;
 	case Player::PlayerStatePattern::Death:
 		//スクロールを止める
@@ -231,7 +164,7 @@ void Player::Update()
 		AfterImage img;
 
 		Math::Vector3 scroll = { INFO.GetScrollSpeed(),0,0 };
-		Math::Matrix scale = Math::Matrix::CreateScale(0.7f);
+		Math::Matrix scale = Math::Matrix::CreateScale(0.5f);
 		Math::Matrix mtrans = Math::Matrix::CreateTranslation(m_mWorld.Translation());
 		img.mat = scale * mtrans;
 		img.offset = scroll;

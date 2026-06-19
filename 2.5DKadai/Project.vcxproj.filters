@@ -112,9 +112,6 @@
     <Filter Include="Src\Application\Object\Ui\StageSelectSceneUi\Description">
       <UniqueIdentifier>{e6f69e77-822e-46ba-9337-9d87b8c5e6d0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\Ui\StageSelectSceneUi\Button">
-      <UniqueIdentifier>{8fbd06b9-3239-41f0-8715-1d6b672d3b38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\Object\Enemy">
       <UniqueIdentifier>{33af6290-27e9-4e88-bbf0-d1337fc1d228}</UniqueIdentifier>
     </Filter>
@@ -222,6 +219,15 @@
     </Filter>
     <Filter Include="Src\Application\Object\Ui\TitleSceneUi\PressEnter">
       <UniqueIdentifier>{4cbef22d-b200-46a3-bf1a-d42253cce968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Ui\ResultSceneUi\Result">
+      <UniqueIdentifier>{44b3bf29-7bc6-45da-9ce4-8f46d34d0b20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\CountDown">
+      <UniqueIdentifier>{b32d6511-ed97-412d-b60d-ddcc84e5e33b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelect">
+      <UniqueIdentifier>{e95a906d-c9c9-404e-a2a6-b9f9d7846023}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -429,9 +435,6 @@
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\Description\Description.h">
       <Filter>Src\Application\Object\Ui\StageSelectSceneUi\Description</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\Button\Button.h">
-      <Filter>Src\Application\Object\Ui\StageSelectSceneUi\Button</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.h">
       <Filter>Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround</Filter>
     </ClInclude>
@@ -536,6 +539,15 @@
     </ClInclude>
     <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\PressEnter\PressEnter.h">
       <Filter>Src\Application\Object\Ui\TitleSceneUi\PressEnter</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\ResultSceneUi\Result\Result.h">
+      <Filter>Src\Application\Object\Ui\ResultSceneUi\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\CountDown\CountDown.h">
+      <Filter>Src\Application\Object\CountDown</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelect\StageSelect.h">
+      <Filter>Src\Application\Object\Ui\StageSelectSceneUi\StageSelect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -713,9 +725,6 @@
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\Description\Description.cpp">
       <Filter>Src\Application\Object\Ui\StageSelectSceneUi\Description</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\Button\Button.cpp">
-      <Filter>Src\Application\Object\Ui\StageSelectSceneUi\Button</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.cpp">
       <Filter>Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround</Filter>
     </ClCompile>
@@ -820,6 +829,15 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\PressEnter\PressEnter.cpp">
       <Filter>Src\Application\Object\Ui\TitleSceneUi\PressEnter</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\ResultSceneUi\Result\Result.cpp">
+      <Filter>Src\Application\Object\Ui\ResultSceneUi\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\CountDown\CountDown.cpp">
+      <Filter>Src\Application\Object\CountDown</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelect\StageSelect.cpp">
+      <Filter>Src\Application\Object\Ui\StageSelectSceneUi\StageSelect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

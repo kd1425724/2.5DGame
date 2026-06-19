@@ -11,6 +11,14 @@ public:
 	void Update()override{}
 	void DrawSprite()override;
 
+	void SetAsset(const std::string& texturelname)override
+	{
+		std::string path = texturelname;
+
+		m_tex = std::make_shared<KdTexture>();
+		m_tex = KdAssets::Instance().m_textures.GetData(path);
+	}
+
 	//別のオブジェクト情報が必要な時
 	virtual void SetObjInfo(std::shared_ptr<KdGameObject> obj) { m_objinfo = obj; }
 

@@ -18,5 +18,4 @@ private :
 	void Event() override;
 
 	std::shared_ptr<TitleSceneUi> m_titlesceneui;
-
 };

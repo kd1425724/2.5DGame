@@ -1,6 +1,6 @@
 ﻿#include "ResultScene.h"
 #include "../SceneManager.h"
-#include"../../Object/BackGround/TitleSceneBackGround/TitleSceneBackGround.h"
+#include"../../Object/BackGround/ResultSceneBackGround/ResultSceneBackGround.h"
 #include"../../Manager/StageManager/StageManager.h"
 #include"../../Common/Info/Info.h"
 #include"../../Object/Player/Player.h"
@@ -15,11 +15,26 @@ void ResultScene::Event()
 		);
 	}
 
-	
+	if (m_resultsceneui)
+	{
+		m_resultsceneui->Update();
+	}
 }
 
 void ResultScene::Init()
 {
+	////平行光（ディレクショナルライト）								 　↓光方向　　↓色
+	//KdShaderManager::Instance().WorkAmbientController().SetDirLight({ 0,-1,0.1 }, { 1,1,1 });
+	////環境光（アンビエントライト）										 　↓RGBA
+	//KdShaderManager::Instance().WorkAmbientController().SetAmbientLight({ 0.1f,0.1f,0.1f,1 });
+
+	//Fog（霧）														↓距離　↓高さ
+	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
+	//距離フォグの設定													↓色	  ↓密度
+	//KdShaderManager::Instance().WorkAmbientController().SetDistanceFog({ 1,1,1 }, 0.05f);
+	//高さフォグの設定													↓色  ↓上↓下↓距離
+	KdShaderManager::Instance().WorkAmbientController().SetheightFog({ 0.8,0.8,0.8 }, -3, -8, 0);
+
 	//カメラ
 	m_camera = std::make_unique<KdCamera>();
 
@@ -30,7 +45,7 @@ void ResultScene::Init()
 	m_camera->SetCameraMatrix(mat);
 
 	//背景
-	std::shared_ptr<TitleSceneBackGround> background = std::make_shared<TitleSceneBackGround>();
+	std::shared_ptr<ResultSceneBackGround> background = std::make_shared<ResultSceneBackGround>();
 	background->Init();
 	m_objList.push_back(background);
 
@@ -60,4 +75,5 @@ void ResultScene::Init()
 	STAGEMANAGER.StageLoad("Result");
 
 	INFO.SetScrollFlg(true);
+	INFO.SetScrollSpeed(0.15f);
 }

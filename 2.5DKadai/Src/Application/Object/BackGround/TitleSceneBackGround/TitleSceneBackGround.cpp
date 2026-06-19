@@ -16,6 +16,6 @@ void TitleSceneBackGround::Update()
 
 void TitleSceneBackGround::DrawUnLit()
 {
-	Math::Color color = { 0.7f,0.7f,0.7f,1.0f };
+	Math::Color color = { 0.8f,0.8f,0.8f,1.0f };
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon,m_mWorld,color);
 }

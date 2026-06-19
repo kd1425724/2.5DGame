@@ -153,7 +153,7 @@ private:
 		Bottom = VK_DOWN,
 		Left = VK_LEFT,
 		Right = VK_RIGHT,
-		DecisionKey = 'Z',
+		DecisionKey = VK_RETURN,
 		ESCAPE = VK_ESCAPE,
 	};
 

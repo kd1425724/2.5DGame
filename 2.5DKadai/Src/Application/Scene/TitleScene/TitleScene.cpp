@@ -5,9 +5,12 @@
 #include"../../Manager/StageManager/StageManager.h"
 #include"../../Common/Info/Info.h"
 #include"../../Object/Effect/EffectManager.h"
+#include"../../Object/Effect/BaseEffect.h"
+#include"../../Common/Input/Input.h"
+
 void TitleScene::Event()
 {
-	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	if (Inp.GetUserKeyDown(UserKeyType::DecisionKey))
 	{
 		SceneManager::Instance().SetNextScene
 		(
@@ -18,7 +21,6 @@ void TitleScene::Event()
 
 void TitleScene::Init()
 {
-	//EFFECT.CreateEffect("Beacon", { 0,0,0 });
 	//Fog（霧）														↓距離　↓高さ
 	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
 	//距離フォグの設定													↓色	  ↓密度
@@ -42,6 +44,8 @@ void TitleScene::Init()
 	std::shared_ptr<TitleSceneBackGround> background = std::make_shared<TitleSceneBackGround>();
 	background->Init();
 	m_objList.push_back(background);
+
+	//部屋生成
 	STAGEMANAGER.LoadRoom("Title");
 
 	//スクロールするかどうか

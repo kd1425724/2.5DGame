@@ -1,5 +1,5 @@
 ﻿#include "ResultSceneBackGround.h"
-
+#include"../../../Common/Info/Info.h"
 void ResultSceneBackGround::Init()
 {
 	m_polygon = std::make_shared<KdSquarePolygon>();
@@ -17,5 +17,10 @@ void ResultSceneBackGround::Update()
 void ResultSceneBackGround::DrawUnLit()
 {
 	Math::Color color = { 0.7f,0.7f,0.7f,1.0f };
+
+	if (!INFO.GetGoalFlg())
+	{
+		//color = { 0.0f,0,0,1};
+	}
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon,m_mWorld,color);
 }

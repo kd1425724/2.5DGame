@@ -4,14 +4,19 @@
 #include"../../../Common/Input/Input.h"
 
 #include"Description/Description.h"
-#include"Button/Button.h"
 #include"../../../Object/Ui/BaseButton/BaseButton.h"
+#include"../UiBase.h"
 
 #include"../../Num/Num.h"
 #include"../../../Manager/ScoreManager/ScoreManager.h"
 
 void StageSelectSceneUi::Init()
 {
+	//ステージセレクト
+	std::shared_ptr<UiBase> stageselect = std::make_shared<UiBase>();
+	stageselect->SetAsset("Asset/Textures/StageSelectScene/StageSelect/StageSelect.png");
+	stageselect->SetPos({ 0,200,0 });
+	SceneManager::Instance().AddObject(stageselect);
 	//ボタン
 	m_buttons.resize((int)StageSelectButton::ButtonNum);
 	int i = 0;

@@ -20,7 +20,7 @@ void Num::DrawSprite()
 
 	Math::Rectangle Srect = ASSET.GetNumRect();
 
-	s = Math::Matrix::CreateScale(m_scale.x / 11, m_scale.y, m_scale.z);
+	s = Math::Matrix::CreateScale(m_scale.x/10, m_scale.y, m_scale.z);
 
 	// 0対策（0の場合は0のみ表示）
 	if (m_num == 0)

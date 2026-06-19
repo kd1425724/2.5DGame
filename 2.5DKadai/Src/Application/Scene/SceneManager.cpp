@@ -32,6 +32,8 @@ void SceneManager::PreUpdate()
 
 void SceneManager::Update()
 {
+	//KdShaderManager::Instance().WorkAmbientController().Update();
+
 	KdDebugGUI::Instance().ClearLog();
 	KdDebugGUI::Instance().AddLog("%d", GetObjList().size());
 

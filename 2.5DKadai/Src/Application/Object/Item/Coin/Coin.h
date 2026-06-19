@@ -14,5 +14,9 @@ public:
 
 	void OnHit(KdGameObject* other)override;
 
+	void SetHitFlg(const bool& flg) { m_hitflg = flg; }
+
 private:
+
+	bool m_hitflg = true;
 };

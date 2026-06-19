@@ -34,6 +34,7 @@ public:
 
 	void OnHit(KdGameObject* _other)override;
 
+
 protected:
 	std::shared_ptr<KdModelData> m_model;
 

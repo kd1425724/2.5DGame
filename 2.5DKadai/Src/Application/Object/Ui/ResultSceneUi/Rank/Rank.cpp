@@ -1,74 +1,188 @@
 ﻿#include "Rank.h"
 #include"../../../../Manager/ScoreManager/ScoreManager.h"
-
+#include"../../../Effect/EffectManager.h"
+#include"../../../Effect/BaseEffect.h"
 void Rank::Init()
 {
 	SetName("Rank");
 
-	m_tex = std::shared_ptr<KdTexture>();
-	m_tex->Load("");
+	m_Sranktex = std::make_shared<KdTexture>();
+	m_Sranktex->Load("Asset/Textures/ResultScene/Rank/RankS.png");
 
-	m_startcoin = SCOREMANAGER.GetCoin();
+	m_Aranktex = std::make_shared<KdTexture>();
+	m_Aranktex->Load("Asset/Textures/ResultScene/Rank/RankA.png");
 
-	////始めにコイン枚数からどのランク（アニメーション）まで行くのか計算
-	//if ()
-	//{
-	//	m_endanim =
-	//}
-	//else if ()
-	//{
-	//	m_endanim =
-	//}
+	m_Branktex = std::make_shared<KdTexture>();
+	m_Branktex->Load("Asset/Textures/ResultScene/Rank/RankB.png");
 
-	//ファイル読み込み
-	FILE* fp = nullptr;
+	UINT coin = SCOREMANAGER.GetCoin();
+
+	if (coin >= 100)
+	{
+		m_endanim = SRank;
+	}
+	else if (coin >= 60)
+	{
+		m_endanim = ARank;
+	}
+	else
+	{
+		m_endanim = BRank;
+	}
+
+	m_pattern = Stop;
+
+	m_nowRank = BRank;
+
+	m_scaleAnim = 1.0f;
+
+	m_defaultscale = { 2.0f,2.0f,1.0f };
+	m_scale = m_defaultscale;
+
+	m_scale.x /= 3;
+
+	MatrixUpdate();
 }
 
 void Rank::Update()
 {
 	switch (m_pattern)
 	{
-	case Rank::RankPattern::Stop:
-		m_stoptime--;
-		if (m_stoptime < 0)
-		{
-			//回収開始
-			m_pattern = RankPattern::Start;
-			//何フレームかけてどこまで下げるか
-			SCOREMANAGER.CoinDown(CoinCollectionTime, 0);
-		}
-		break;
-	case Rank::RankPattern::Start:
-		//スコアのコインを少しずつ回収する演出をいれてコインが一定枚数行くごとにランクアップアニメーション
-		if (SCOREMANAGER.GetCoin() > 0)
-		{
-			//コイン回収時間かけて最後のアニメーションまで
-			/*float animcntup = (float)m_endanim / CoinCollectionTime;
-			m_animcnt += animcntup;*/
+	case Stop:
 
-			float rate = 1.0f - (float)SCOREMANAGER.GetCoin() / m_startcoin;
-			m_animcnt = rate * m_endanim;
-		}
-		else
+		m_stoptime--;
+
+		if (m_stoptime <= 0)
 		{
-			m_animcnt = m_endanim;
-			m_pattern = RankPattern::End;
+			m_pattern = Shuffle;
+
+			m_shuffleCnt = 0;
+			m_changeInterval = 2;
+			m_nowRank = BRank;
 		}
+
 		break;
-	case Rank::RankPattern::End:
+
+	case Shuffle:
+
+		m_shuffleCnt++;
+
+		//ランク切り替え
+		if (m_shuffleCnt % m_changeInterval == 0)
+		{
+			m_nowRank++;
+
+			if (m_nowRank >= RankNum)
+			{
+				m_nowRank = BRank;
+			}
+		}
+
+		//徐々に減速
+		if (m_shuffleCnt % 15 == 0)
+		{
+			m_changeInterval++;
+		}
+
+		//最終ランク決定
+		if (m_shuffleCnt > 80)
+		{
+			m_nowRank = m_endanim;
+
+			//バン！
+			m_scaleAnim = 1.6f;
+
+			EFFECT.CreateEffect(
+				"CoinGet",
+				m_pos,
+				eBright);
+
+			m_pattern = End;
+		}
+
 		break;
+
+	case End:
+
+		//大きさを元に戻す
+		m_scaleAnim += (1.0f - m_scaleAnim) * 0.15f;
+
+		break;
+
 	default:
 		break;
 	}
+
+	m_scale =
+	{
+		m_defaultscale.x * m_scaleAnim / 3 ,
+		m_defaultscale.y* m_scaleAnim,
+		m_defaultscale.z
+	};
+
+	if (m_shuffleCnt % m_changeInterval == 0)
+	{
+		m_animcnt++;
+
+		if (m_animcnt >= RankNum)
+		{
+			m_animcnt = BRank;
+		}
+
+		m_nowRank = (int)m_animcnt;
+	}
+
+	MatrixUpdate();
 }
 
 void Rank::DrawSprite()
 {
 	KdShaderManager::Instance().m_spriteShader.SetMatrix(m_mWorld);
 
-	Math::Rectangle rect = { m_anim[(int)m_animcnt],0,30,30 };
+	Math::Rectangle rect =
+	{
+		(long)m_anim[(int)m_nowRank],
+		0,
+		(long)107.6f,
+		106
+	};
 
-	KdShaderManager::Instance().m_spriteShader.DrawTex(m_tex, 0, 0,&rect);
-	//行列初期化
-	KdShaderManager::Instance().m_spriteShader.SetMatrix(Math::Matrix::Identity);
+	switch (m_nowRank)
+	{
+	case BRank:
+
+		KdShaderManager::Instance().m_spriteShader.DrawTex(
+			m_Branktex,
+			0,
+			0,
+			&rect);
+
+		break;
+
+	case ARank:
+
+		KdShaderManager::Instance().m_spriteShader.DrawTex(
+			m_Aranktex,
+			0,
+			0,
+			&rect);
+
+		break;
+
+	case SRank:
+
+		KdShaderManager::Instance().m_spriteShader.DrawTex(
+			m_Sranktex,
+			0,
+			0,
+			&rect);
+
+		break;
+
+	default:
+		break;
+	}
+
+	KdShaderManager::Instance().m_spriteShader.SetMatrix(
+		Math::Matrix::Identity);
 }
