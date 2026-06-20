@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 class Num;
+class Rank;
 
 class ResultSceneUi
 {
@@ -11,6 +12,8 @@ public:
 	void Init();
 	void Update();
 
+	bool IsSkipThisFrame() const;
+
 private:
 
 	enum class ResultNumType
@@ -20,4 +23,6 @@ private:
 	};
 
 	std::vector<std::shared_ptr<Num>> m_nums;
+
+	std::weak_ptr<Rank> m_rank;
 };

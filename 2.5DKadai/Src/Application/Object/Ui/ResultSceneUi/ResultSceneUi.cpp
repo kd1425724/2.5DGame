@@ -51,6 +51,7 @@ void ResultSceneUi::Init()
 	rank->Init();
 	rank->SetPos({ 0,-100,0 });
 	SceneManager::Instance().AddObject(rank);
+	m_rank = rank;
 
 	//リザルト
 	std::shared_ptr<Result> result = std::make_shared<Result>();
@@ -71,4 +72,11 @@ void ResultSceneUi::Update()
 		coinpos,
 		scale
 	);
+}
+
+bool ResultSceneUi::IsSkipThisFrame() const
+{
+	if (m_rank.expired()) return false;
+
+	return m_rank.lock()->IsSkipThisFrame();
 }

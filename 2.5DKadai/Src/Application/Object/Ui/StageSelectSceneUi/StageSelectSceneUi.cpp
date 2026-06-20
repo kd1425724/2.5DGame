@@ -3,9 +3,9 @@
 #include"../../../Scene/SceneManager.h"
 #include"../../../Common/Input/Input.h"
 
-#include"Description/Description.h"
 #include"../../../Object/Ui/BaseButton/BaseButton.h"
 #include"../UiBase.h"
+#include"EnterStart/EnterStart.h"
 
 #include"../../Num/Num.h"
 #include"../../../Manager/ScoreManager/ScoreManager.h"
@@ -37,15 +37,15 @@ void StageSelectSceneUi::Init()
 	//ボタンの情報セット
 	m_buttons[(int)StageSelectButton::Stage1]->ButtonLoad("One", []()
 		{
-			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Game);
+			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Stage1);
 		});
 	m_buttons[(int)StageSelectButton::Stage2]->ButtonLoad("Two", []()
 		{
-			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Game);
+			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Stage2);
 		});
 	m_buttons[(int)StageSelectButton::Stage3]->ButtonLoad("Three", []()
 		{
-			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Game);
+			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Stage3);
 		});
 	
 	for (auto& button : m_buttons)
@@ -53,6 +53,13 @@ void StageSelectSceneUi::Init()
 		//オブジェクトリストにセット
 		SceneManager::Instance().AddObject(button);
 	}
+
+	//EnterStart
+	std::shared_ptr<EnterStart> m_enterstart = std::make_shared<EnterStart>();
+	m_enterstart->Init();
+	m_enterstart->SetPos({ 200,-200,0 });
+	m_enterstart->SetSize(0.8f);
+	SceneManager::Instance().AddObject(m_enterstart);
 }
 
 

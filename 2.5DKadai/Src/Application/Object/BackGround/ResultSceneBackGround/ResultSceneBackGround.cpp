@@ -20,7 +20,7 @@ void ResultSceneBackGround::DrawUnLit()
 
 	if (!INFO.GetGoalFlg())
 	{
-		//color = { 0.0f,0,0,1};
+		color = { 0.0f,0,0,1};
 	}
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon,m_mWorld,color);
 }

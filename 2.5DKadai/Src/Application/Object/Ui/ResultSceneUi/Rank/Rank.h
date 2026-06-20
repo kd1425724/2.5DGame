@@ -26,7 +26,14 @@ public:
 	void Update() override;
 	void DrawSprite() override;
 
+	bool IsSkipThisFrame() const
+	{
+		return m_skipThisFrame;
+	}
+
 private:
+
+	void FinishRank();
 
 	std::shared_ptr<KdTexture> m_Branktex;
 	std::shared_ptr<KdTexture> m_Aranktex;
@@ -58,4 +65,6 @@ private:
 
 	//デフォルトのサイズ
 	Math::Vector3 m_defaultscale = {};
+
+	bool m_skipThisFrame = false;
 };

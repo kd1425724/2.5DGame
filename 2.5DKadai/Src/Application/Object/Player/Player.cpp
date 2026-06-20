@@ -32,12 +32,13 @@ void Player::Init()
 
 	auto sceneType = SceneManager::Instance().GetSceneType();
 
-	//ゲームとリザルト以外では自由に動ける
-	if (sceneType != SceneManager::SceneType::Game &&
-		sceneType != SceneManager::SceneType::Result)
+	//タイトルでは自由に動ける
+	if (sceneType == SceneManager::SceneType::Title)
 	{
 		m_damageflg = false;
 	}
+
+	m_dashEffectCnt = 0;
 }
 
 void Player::PreUpdate()
@@ -50,8 +51,7 @@ void Player::Update()
 	auto sceneType = SceneManager::Instance().GetSceneType();
 
 	//ゲームとリザルト以外では自由に動ける
-	if (sceneType != SceneManager::SceneType::Game &&
-		sceneType != SceneManager::SceneType::Result)
+	if (sceneType == SceneManager::SceneType::Title)
 	{
 		// 自由移動
 		if (Inp.GetPlayerKey(PlayerKeyType::Right))
@@ -151,6 +151,7 @@ void Player::Update()
 		break;
 	}
 
+	//ダッシュ中
 
 
 	if (m_statepattern == PlayerStatePattern::Death)return;
@@ -167,7 +168,6 @@ void Player::Update()
 		Math::Matrix scale = Math::Matrix::CreateScale(0.5f);
 		Math::Matrix mtrans = Math::Matrix::CreateTranslation(m_mWorld.Translation());
 		img.mat = scale * mtrans;
-		img.offset = scroll;
 		img.alpha = 1.0f;
 
 		m_afterImages.push_front(img);
@@ -180,7 +180,7 @@ void Player::Update()
 	for (auto& img : m_afterImages)
 	{
 		img.alpha -= 0.005f;
-		img.mat *= Math::Matrix::CreateTranslation(-img.offset);
+		img.mat *= Math::Matrix::CreateTranslation({ -INFO.GetScrollSpeed(),0,0 });
 	}
 
 	//前回のm_gravityの値を保存
@@ -311,6 +311,24 @@ void Player::Hit()
 		//			   ↓余剰分を反転させる
 		m_pos = hitPos -= Math::Vector3(groundpossurplusX, groundpossurplusY, 0);
 		m_gravity = 0;
+
+		//ダッシュエフェクト
+		if (INFO.GetScrollFlg())
+		{
+			m_dashEffectCnt++;
+
+			if (m_dashEffectCnt > 2)
+			{
+				m_dashEffectCnt = 0;
+
+				EffectManager::Instance().CreateSquareEffect(
+					m_pos +
+					Math::Vector3(0, -0.5f, 0),
+					Math::Vector3(KdRandom::GetFloat(-0.1, -0.2f), KdRandom::GetFloat(0.0f, 0.15f), 0),
+					KdRandom::GetFloat(0.2f, 0.4f),
+					20);
+			}
+		}
 	}
 	else
 	{
@@ -328,7 +346,7 @@ void Player::Hit()
 		sphere.m_sphere.Center = m_pos;
 		sphere.m_sphere.Center.y += spherepossurplusY;
 		sphere.m_sphere.Center.x += spherepossurplusX;
-		sphere.m_sphere.Radius = 0.50f;
+		sphere.m_sphere.Radius = 0.49f;
 		sphere.m_type = KdCollider::TypeGround | KdCollider::TypeEvent|KdCollider::TypeDamage;
 
 		//デバッグ
@@ -430,7 +448,7 @@ void Player::Hit()
 
 void Player::PlayerDataLoad()
 {
-	FILE* fp;
+	FILE* fp=nullptr;
 
 	if (fopen_s(&fp, "Asset/Data/ObjectData/PlayerData/PlayerData.csv", "r") == 0)
 	{

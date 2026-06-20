@@ -109,12 +109,6 @@
     <Filter Include="Src\Application\Common\CommonAsset">
       <UniqueIdentifier>{4369e6df-ec4d-48ba-b445-abcfabae2cdb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\Ui\StageSelectSceneUi\Description">
-      <UniqueIdentifier>{e6f69e77-822e-46ba-9337-9d87b8c5e6d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Object\Enemy">
-      <UniqueIdentifier>{33af6290-27e9-4e88-bbf0-d1337fc1d228}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround">
       <UniqueIdentifier>{bb0b4a1d-da14-4b23-a567-735167e6d960}</UniqueIdentifier>
     </Filter>
@@ -124,9 +118,6 @@
     <Filter Include="Src\Application\Object\Ground\GameGround">
       <UniqueIdentifier>{92c3bb60-509c-4a50-8340-6582ca6fb861}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\Enemy\Slime">
-      <UniqueIdentifier>{24ef3206-afb3-4be6-be54-bba91f65a70b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\Common\Info">
       <UniqueIdentifier>{efca324b-c2f2-4285-bf76-8ae7a1d91350}</UniqueIdentifier>
     </Filter>
@@ -135,9 +126,6 @@
     </Filter>
     <Filter Include="Src\Application\Common\Editor">
       <UniqueIdentifier>{d69d0b7d-9bb3-4392-a171-a1b4c77bad22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Object\Enemy\Bat">
-      <UniqueIdentifier>{779ec619-c5b1-4fc0-88ce-3c4e72f7bfea}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Application\Object\StageBlock">
       <UniqueIdentifier>{89372405-e96f-4261-ab9c-b8afd92ed5cf}</UniqueIdentifier>
@@ -226,8 +214,14 @@
     <Filter Include="Src\Application\Object\CountDown">
       <UniqueIdentifier>{b32d6511-ed97-412d-b60d-ddcc84e5e33b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelect">
-      <UniqueIdentifier>{e95a906d-c9c9-404e-a2a6-b9f9d7846023}</UniqueIdentifier>
+    <Filter Include="Src\Application\Object\Ui\StageSelectSceneUi\EnterStart">
+      <UniqueIdentifier>{ebf94534-f52d-40fc-9bcf-b93914fd744b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Ui\GameSceneUi\OperationsUi">
+      <UniqueIdentifier>{bf3b7652-7d08-4a26-835e-886b1ac0c34f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Effect\SquareEffect">
+      <UniqueIdentifier>{f5c876d6-55ef-42f8-8213-23f0cd0a18c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -432,20 +426,11 @@
     <ClInclude Include="Src\Application\Object\Ui\UiBase.h">
       <Filter>Src\Application\Object\Ui</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\Description\Description.h">
-      <Filter>Src\Application\Object\Ui\StageSelectSceneUi\Description</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.h">
       <Filter>Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\Object\Ground\GameGround\GameGround.h">
       <Filter>Src\Application\Object\Ground\GameGround</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Application\Object\Enemy\EnemyBase.h">
-      <Filter>Src\Application\Object\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Application\Object\Enemy\Slime\Slime.h">
-      <Filter>Src\Application\Object\Enemy\Slime</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\Common\Info\Info.h">
       <Filter>Src\Application\Common\Info</Filter>
@@ -455,9 +440,6 @@
     </ClInclude>
     <ClInclude Include="Src\Application\Editor\Editor.h">
       <Filter>Src\Application\Common\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Application\Object\Enemy\Bat\Bat.h">
-      <Filter>Src\Application\Object\Enemy\Bat</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\Object\StageBlock\BaseStageBlock.h">
       <Filter>Src\Application\Object\StageBlock</Filter>
@@ -546,8 +528,14 @@
     <ClInclude Include="Src\Application\Object\CountDown\CountDown.h">
       <Filter>Src\Application\Object\CountDown</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelect\StageSelect.h">
-      <Filter>Src\Application\Object\Ui\StageSelectSceneUi\StageSelect</Filter>
+    <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\EnterStart\EnterStart.h">
+      <Filter>Src\Application\Object\Ui\StageSelectSceneUi\EnterStart</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Ui\GameSceneUi\OperationsUi\OperationsUi.h">
+      <Filter>Src\Application\Object\Ui\GameSceneUi\OperationsUi</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Effect\SquareEffect\SquareEffect.h">
+      <Filter>Src\Application\Object\Effect\SquareEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -722,20 +710,11 @@
     <ClCompile Include="Src\Application\Object\Ui\UiBase.cpp">
       <Filter>Src\Application\Object\Ui</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\Description\Description.cpp">
-      <Filter>Src\Application\Object\Ui\StageSelectSceneUi\Description</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.cpp">
       <Filter>Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Ground\GameGround\GameGround.cpp">
       <Filter>Src\Application\Object\Ground\GameGround</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\Object\Enemy\EnemyBase.cpp">
-      <Filter>Src\Application\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\Object\Enemy\Slime\Slime.cpp">
-      <Filter>Src\Application\Object\Enemy\Slime</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Common\Info\Info.cpp">
       <Filter>Src\Application\Common\Info</Filter>
@@ -745,9 +724,6 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Editor\Editor.cpp">
       <Filter>Src\Application\Common\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\Object\Enemy\Bat\Bat.cpp">
-      <Filter>Src\Application\Object\Enemy\Bat</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Object\StageBlock\BaseStageBlock.cpp">
       <Filter>Src\Application\Object\StageBlock</Filter>
@@ -836,8 +812,14 @@
     <ClCompile Include="Src\Application\Object\CountDown\CountDown.cpp">
       <Filter>Src\Application\Object\CountDown</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelect\StageSelect.cpp">
-      <Filter>Src\Application\Object\Ui\StageSelectSceneUi\StageSelect</Filter>
+    <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\EnterStart\EnterStart.cpp">
+      <Filter>Src\Application\Object\Ui\StageSelectSceneUi\EnterStart</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Ui\GameSceneUi\OperationsUi\OperationsUi.cpp">
+      <Filter>Src\Application\Object\Ui\GameSceneUi\OperationsUi</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Effect\SquareEffect\SquareEffect.cpp">
+      <Filter>Src\Application\Object\Effect\SquareEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

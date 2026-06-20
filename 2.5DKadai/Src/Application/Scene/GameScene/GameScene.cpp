@@ -14,6 +14,28 @@
 
 void GameScene::Event()
 {
+	//ゴールしたら
+	if (INFO.GetGoalFlg())
+	{
+		m_goalcnt++;
+
+		//0.5秒後にリザルトへ(60fps想定)
+		if (m_goalcnt > 30)
+		{
+			//スクロール停止
+			INFO.SetScrollFlg(false);
+			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
+		}
+
+		return;
+	}
+	//プレイヤー死亡時即リザルトへ
+	if (m_player.expired())
+	{
+		INFO.SetScrollFlg(false);
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
+		return;
+	}
 	switch (m_gamepattern)
 	{
 	case GameScene::GamePattern::Stop:
@@ -48,12 +70,6 @@ void GameScene::Event()
 		break;
 	}
 	
-	//プレイヤーが死亡するかゴールしたら
-	if (m_player.expired()||INFO.GetGoalFlg())
-	{
-		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
-		return;
-	}
 
 	if (m_gamesceneui)
 	{
@@ -72,6 +88,8 @@ void GameScene::Event()
 
 void GameScene::Init()
 {
+
+	m_goalcnt = 0;
 	INFO.SetGoalFlg(false);
 	//カメラ
 	m_camera = std::make_unique<KdCamera>();
@@ -95,8 +113,8 @@ void GameScene::Init()
 	m_gamesceneui = std::make_shared<GameSceneUi>();
 	m_gamesceneui->Init();
 
-	//ステージ１をロード
-	STAGEMANAGER.StageLoad("1");
+	//ステージをロード
+	STAGEMANAGER.StageLoad(m_stagepath);
 
 	m_gamepattern = GamePattern::Stop;
 

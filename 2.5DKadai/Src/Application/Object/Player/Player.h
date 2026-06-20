@@ -6,6 +6,14 @@ public:
 	Player() {}
 	~Player()override
 	{
+		m_pos = { 100,0,0 };
+		//ポイントライト
+		KdShaderManager::Instance().WorkAmbientController().AddPointLight
+		(
+			{ 10,0,0 },							//色
+			3,									//半径
+			m_pos	//座標
+		);
 	}
 
 	void Init()override;
@@ -77,7 +85,6 @@ private:
 		Math::Matrix mat;
 		float alpha = 1.0f;
 		float life = 0.0f;
-		Math::Vector3 offset = {};
 	};
 	std::deque<AfterImage> m_afterImages;
 
@@ -90,4 +97,6 @@ private:
 
 	//ダメージを受けないようにするフラグ
 	bool m_damageflg = true;
+
+	int m_dashEffectCnt = 0;
 };

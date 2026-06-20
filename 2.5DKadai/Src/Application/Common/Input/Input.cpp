@@ -60,6 +60,13 @@ void C_Input::Update(HWND hwnd)
 		m_userkeyflg[i] = (GetAsyncKeyState(m_userkey[i]) & 0x8000);
 	}
 
+	//デバッグキーのフラグ更新
+	for (int i = 0; i < (int)DebugKeyType::DebugKeyNum; i++)
+	{
+		m_olddebugkeyflg[i] = m_debugkeyflg[i];
+		m_debugkeyflg[i] = (GetAsyncKeyState(m_debugkey[i]) & 0x8000);
+	}
+
 	//アドレス渡しでマウス座標取得
 	GetMousePos(&mouse, hwnd);
 
@@ -71,18 +78,6 @@ void C_Input::Update(HWND hwnd)
 	else
 	{
 		m_mouseclickflg = false;
-	}
-
-	for (int i = 0; i < (int)DebugKeyType::DebugKeyNum; i++)
-	{
-		if (GetAsyncKeyState(m_debugkey[i])&0x8000)
-		{
-			m_debugkeyflg[i] = true;
-		}
-		else
-		{
-			m_debugkeyflg[i] = false;
-		}
 	}
 }
 void C_Input::Draw()
@@ -126,10 +121,8 @@ void C_Input::DebugDefaultKeySet()
 {
 	static const int num = (int)DebugKeyType::DebugKeyNum;
 
-	int defaultkey[num] = { (int)DebugKeyDefaultType::Pkey,
-						(int)DebugKeyDefaultType::Okey,
-						(int)DebugKeyDefaultType::Ikey,
-						(int)DebugKeyDefaultType::Ukey,
+	int defaultkey[num] = { (int)DebugKeyDefaultType::PKey,
+						(int)DebugKeyDefaultType::OKey,
 						(int)DebugKeyDefaultType::ZEROKey,
 						(int)DebugKeyDefaultType::NINEKey};
 

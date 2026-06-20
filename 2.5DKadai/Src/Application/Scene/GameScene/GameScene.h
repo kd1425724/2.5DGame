@@ -10,7 +10,10 @@ class GameScene : public BaseScene
 {
 public :
 
-	GameScene()  {}
+	GameScene(const std::string& stagepath)
+	{
+		m_stagepath = stagepath;
+	}
 	~GameScene() {}
 
 	void Init()  override;
@@ -25,6 +28,8 @@ private:
 		Game
 	};
 
+	std::string m_stagepath = "";
+
 	GamePattern m_gamepattern = GamePattern::Stop;
 
 	void Event() override;
@@ -35,5 +40,7 @@ private:
 	std::shared_ptr<GameSceneUi> m_gamesceneui;
 
 	std::shared_ptr<CountDown> m_countdown;
+
+	int m_goalcnt = 0;
 
 };

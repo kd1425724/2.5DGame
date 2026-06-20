@@ -8,6 +8,7 @@
 
 #include"../Common/CommonAPI.h"
 #include"../Common/Input/Input.h"
+#include"../Common/Info/Info.h"
 #include"../Common/Feed/Feed.h"
 
 #include"../Editor/Editor.h"
@@ -32,8 +33,6 @@ void SceneManager::PreUpdate()
 
 void SceneManager::Update()
 {
-	//KdShaderManager::Instance().WorkAmbientController().Update();
-
 	KdDebugGUI::Instance().ClearLog();
 	KdDebugGUI::Instance().AddLog("%d", GetObjList().size());
 
@@ -49,6 +48,27 @@ void SceneManager::Update()
 	m_currentScene->Update();
 
 	COMMONAPI.CreateButtonUpdate();
+
+
+	//デバッグキー
+	if (Inp.GetDebugKeyDown(DebugKeyType::PKey))
+	{
+		SetNextScene(SceneType::Title);
+		return;
+	}
+
+	if (Inp.GetDebugKeyDown(DebugKeyType::ZEROKey))
+	{
+		INFO.SetGoalFlg(false);
+		SetNextScene(SceneType::Result);
+		return;
+	}
+	if (Inp.GetDebugKeyDown(DebugKeyType::NINEKey))
+	{
+		INFO.SetGoalFlg(true);
+		SetNextScene(SceneType::Result);
+		return;
+	}
 }
 
 void SceneManager::PostUpdate()
@@ -122,11 +142,23 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<StageSelectScene>();
 		break;
-	case SceneType::Game:
+	case SceneType::Stage1:
 		//スコアリセット
 		SCOREMANAGER.ScoreReset();
 		COMMONAPI.Clear();
-		m_currentScene = std::make_shared<GameScene>();
+		m_currentScene = std::make_shared<GameScene>("1");
+		break;
+	case SceneType::Stage2:
+		//スコアリセット
+		SCOREMANAGER.ScoreReset();
+		COMMONAPI.Clear();
+		m_currentScene = std::make_shared<GameScene>("2");
+		break;
+	case SceneType::Stage3:
+		//スコアリセット
+		SCOREMANAGER.ScoreReset();
+		COMMONAPI.Clear();
+		m_currentScene = std::make_shared<GameScene>("3");
 		break;
 	case SceneType::Result:
 		COMMONAPI.Clear();

@@ -4,7 +4,7 @@ void RoomExit::Init()
 {
 	DirectX::BoundingBox box;
 	box.Center = m_pos;
-	box.Extents = { 1,1,1 };//m_scale / 2; // 半サイズ
+	box.Extents = { 1,1,1 }*m_scale / 2; // 半サイズ
 
 	m_pCollider = std::make_unique<KdCollider>();
 	m_pCollider->RegisterCollisionShape(

@@ -122,12 +122,12 @@ void Editor::DebagDraw()
 
 	if (!obj) return;
 
-	//選択中のオブジェクトの位置にBoxを表示
-	m_pDebugWire->AddDebugBox(obj->GetMatrix(), { 1,1,1 }, {}, false, { 1,1,0,1 });
-
 	// 早期リターン
 	if (!m_pDebugWire)return;
 
+	//選択中のオブジェクトの位置にBoxを表示
+	m_pDebugWire->AddDebugBox(obj->GetMatrix(), { 1,1,1 }, {}, false, { 1,1,0,1 });
+	
 	m_pDebugWire->Draw();
 }
 
@@ -885,7 +885,7 @@ void Editor::Load()
 
 				obj->SetPos(pos);
 				obj->SetRot(rot);
-				obj->SetScale(scale);
+				obj->SetSize(scale);
 
 				SceneManager::Instance().AddObject(obj);
 

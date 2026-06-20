@@ -23,12 +23,10 @@ enum class UserKeyType
 
 enum class DebugKeyType
 {
-    Pkey,   //レーザーに変更
-    Okey,   //バリアーに変更
-    Ikey,   //敵生成に変更
-    Ukey,   //リザルトへ
-    ZEROKey,  //ボスを倒す
-    NINEKey,  //プレイヤーの死亡フラグをONOFF
+	PKey,
+	OKey,
+	ZEROKey,
+	NINEKey,
     DebugKeyNum,
 };
 
@@ -101,19 +99,22 @@ public:
 			m_olduserkeyflg[(int)type];
 	}
 
-    SHORT GetDebugKey(DebugKeyType debugkeytype)
-    {
-        if (!m_olldebugkeyflg)return false;
+	bool GetDebugKey(DebugKeyType _debugkeytype)
+	{
+		return m_debugkeyflg[(int)_debugkeytype];
+	}
 
-        return GetAsyncKeyState(m_debugkey[(int)debugkeytype]) & 0x8000;
-    }
+	bool GetDebugKeyDown(DebugKeyType type)
+	{
+		return m_debugkeyflg[(int)type] &&
+			!m_olddebugkeyflg[(int)type];
+	}
 
-    bool GetDebugKeyFlg(DebugKeyType debugkeytype)
-    {
-		if (!m_olldebugkeyflg)return false;
-
-        return m_debugkeyflg[(int)debugkeytype];
-    }
+	bool GetDebugKeyUp(DebugKeyType type)
+	{
+		return !m_debugkeyflg[(int)type] &&
+			m_olddebugkeyflg[(int)type];
+	}
 
 	//エディターのキー
 	bool GetEditorKey(EditorKeyType editorkeytype)
@@ -159,12 +160,10 @@ private:
 
 	enum class DebugKeyDefaultType
 	{
-		Pkey = 'P',   //レーザーに変更
-		Okey = 'O',   //バリアーに変更
-		Ikey = 'I',   //敵生成に変更
-		Ukey = 'U',   //次のシーンへ
-		ZEROKey = '0',  //ボスを倒す
-		NINEKey = '9',  //プレイヤーの死亡フラグをONOFF
+		PKey = 'P',	  //タイトルに戻る
+		OKey = 'O',   //次のシーンへ
+		ZEROKey = '0',  //GameOverへ
+		NINEKey = '9',  //Clearへ
 	};
 	enum class EditorKeyDefaultType
 	{
@@ -197,10 +196,10 @@ private:
     bool m_userkeyflg[(int)UserKeyType::UserKeyNum] = { false };
     bool m_olduserkeyflg[(int)UserKeyType::UserKeyNum] = { false };
 
-
     //デバッグキー
     int m_debugkey[(int)DebugKeyType::DebugKeyNum] = { 0 };
     bool m_debugkeyflg[(int)DebugKeyType::DebugKeyNum] = { false };
+    bool m_olddebugkeyflg[(int)DebugKeyType::DebugKeyNum] = { false };
 
     //デバッグキーが使えるかどうかのフラグ
 	bool m_olldebugkeyflg = false;

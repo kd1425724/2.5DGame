@@ -3,15 +3,19 @@
 class Goal :public BaseEvent
 {
 public:
+
 	Goal(){}
 	~Goal()override{}
 
 	void Init()override;
+	void Update()override;
+	void DrawLit()override;
 	void OnHit(KdGameObject* _other)override;
 
 	ObjectTag GetObjectTag()override { return ObjectTag::Goal; }
 
 private:
 
+	std::shared_ptr<KdModelData> m_model;
 };
 

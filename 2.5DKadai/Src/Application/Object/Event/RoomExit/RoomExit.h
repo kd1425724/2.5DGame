@@ -5,7 +5,7 @@ class RoomExit:public BaseEvent
 {
 public:
 	RoomExit(){}
-	~RoomExit(){}
+	~RoomExit()override{}
 
 	void Init()override;
 	void OnHit(KdGameObject* _other)override;

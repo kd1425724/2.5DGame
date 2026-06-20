@@ -44,9 +44,9 @@ void Result::DrawSprite()
 		break;
 
 	case GameOver:
-		//color = { 1,0,0,1 };
+		color = { 1,0,0,1 };
 		KdShaderManager::Instance().m_spriteShader.DrawTex(
-			m_clearTex,
+			m_gameOverTex,
 			0,
 			0,nullptr,&color);
 

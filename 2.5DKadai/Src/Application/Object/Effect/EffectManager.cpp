@@ -1,6 +1,25 @@
 ﻿#include "EffectManager.h"
 #include"../../Scene/SceneManager.h"
 #include"BaseEffect.h"
+#include "SquareEffect/SquareEffect.h"
+
+void EffectManager::CreateSquareEffect(
+	const Math::Vector3& pos,
+	const Math::Vector3& vel,
+	float scale,
+	int life)
+{
+	auto effect = std::make_shared<SquareEffect>();
+
+	effect->SetPos(pos);
+	effect->SetVel(vel);
+	effect->SetSize(scale);
+	effect->SetLife(life);
+
+	effect->Init();
+
+	SceneManager::Instance().AddObject(effect);
+}
 
 void EffectManager::Init()
 {

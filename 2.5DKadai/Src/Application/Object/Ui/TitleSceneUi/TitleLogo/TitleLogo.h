@@ -8,6 +8,8 @@ public:
 	~TitleLogo()override{}
 
 	void Init()override;
+	void Update()override;
+	void DrawSprite()override;
 
 private:
 

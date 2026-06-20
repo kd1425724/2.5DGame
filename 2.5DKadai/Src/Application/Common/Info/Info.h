@@ -27,6 +27,8 @@ public:
 	//スクロール速度取得
 	float GetScrollSpeed() { return m_scrollspeed; }
 
+	bool GetScrollFlg() { return m_scrollflg; }
+
 	//スクロールするかどうかセット
 	void SetScrollFlg(const bool& flg)
 	{
@@ -56,7 +58,7 @@ private:
 	//スクロール速度
 	float m_scrollspeed = DefaultScrollSpeed;
 	//スクロール速度設定用
-	float m_setscrollspeed = 0;;
+	float m_setscrollspeed = 0;
 
 
 	//スクロールフラグ

@@ -14,7 +14,7 @@ void StageSelectScene::Event()
 
 void StageSelectScene::Init()
 {
-
+	
 	//カメラ
 	m_camera = std::make_unique<KdCamera>();
 

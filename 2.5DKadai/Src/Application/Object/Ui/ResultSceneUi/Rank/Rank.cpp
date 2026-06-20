@@ -2,6 +2,8 @@
 #include"../../../../Manager/ScoreManager/ScoreManager.h"
 #include"../../../Effect/EffectManager.h"
 #include"../../../Effect/BaseEffect.h"
+#include"../../../../Common/Info/Info.h"
+#include"../../../../Common/Input/Input.h"
 void Rank::Init()
 {
 	SetName("Rank");
@@ -30,6 +32,11 @@ void Rank::Init()
 		m_endanim = BRank;
 	}
 
+	if (!INFO.GetGoalFlg())
+	{
+		m_endanim = BRank;
+	}
+
 	m_pattern = Stop;
 
 	m_nowRank = BRank;
@@ -42,10 +49,22 @@ void Rank::Init()
 	m_scale.x /= 3;
 
 	MatrixUpdate();
+
+	m_skipThisFrame = false;
 }
 
 void Rank::Update()
 {
+	if (Inp.GetUserKeyDown(UserKeyType::DecisionKey))
+	{
+		if (m_pattern != End)
+		{
+			FinishRank();
+
+			m_skipThisFrame = true;
+		}
+	}
+
 	switch (m_pattern)
 	{
 	case Stop:
@@ -84,20 +103,12 @@ void Rank::Update()
 			m_changeInterval++;
 		}
 
+		
+
 		//最終ランク決定
 		if (m_shuffleCnt > 80)
 		{
-			m_nowRank = m_endanim;
-
-			//バン！
-			m_scaleAnim = 1.6f;
-
-			EFFECT.CreateEffect(
-				"CoinGet",
-				m_pos,
-				eBright);
-
-			m_pattern = End;
+			FinishRank();
 		}
 
 		break;
@@ -120,16 +131,19 @@ void Rank::Update()
 		m_defaultscale.z
 	};
 
-	if (m_shuffleCnt % m_changeInterval == 0)
+	if (m_pattern != End)
 	{
-		m_animcnt++;
-
-		if (m_animcnt >= RankNum)
+		if (m_shuffleCnt % m_changeInterval == 0)
 		{
-			m_animcnt = BRank;
-		}
+			m_animcnt++;
 
-		m_nowRank = (int)m_animcnt;
+			if (m_animcnt >= RankNum)
+			{
+				m_animcnt = BRank;
+			}
+
+			m_nowRank = (int)m_animcnt;
+		}
 	}
 
 	MatrixUpdate();
@@ -185,4 +199,20 @@ void Rank::DrawSprite()
 
 	KdShaderManager::Instance().m_spriteShader.SetMatrix(
 		Math::Matrix::Identity);
+}
+
+void Rank::FinishRank()
+{
+	m_nowRank = m_endanim;
+	m_animcnt = (float)m_endanim;
+
+	// バン！
+	m_scaleAnim = 1.6f;
+
+	EFFECT.CreateEffect(
+		"CoinGet",
+		m_pos,
+		eBright);
+
+	m_pattern = End;
 }

@@ -5,14 +5,18 @@
 #include"../../Common/Info/Info.h"
 #include"../../Object/Player/Player.h"
 #include"../../Object/Ui/ResultSceneUi/ResultSceneUi.h"
+#include"../../Common/Input/Input.h"
 void ResultScene::Event()
 {
-	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	if (Inp.GetUserKeyDown(UserKeyType::DecisionKey))
 	{
-		SceneManager::Instance().SetNextScene
-		(
-			SceneManager::SceneType::StageSelect
-		);
+		if (m_resultsceneui->IsSkipThisFrame())
+		{
+			SceneManager::Instance().SetNextScene
+			(
+				SceneManager::SceneType::StageSelect
+			);
+		}
 	}
 
 	if (m_resultsceneui)
@@ -27,13 +31,6 @@ void ResultScene::Init()
 	//KdShaderManager::Instance().WorkAmbientController().SetDirLight({ 0,-1,0.1 }, { 1,1,1 });
 	////環境光（アンビエントライト）										 　↓RGBA
 	//KdShaderManager::Instance().WorkAmbientController().SetAmbientLight({ 0.1f,0.1f,0.1f,1 });
-
-	//Fog（霧）														↓距離　↓高さ
-	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
-	//距離フォグの設定													↓色	  ↓密度
-	//KdShaderManager::Instance().WorkAmbientController().SetDistanceFog({ 1,1,1 }, 0.05f);
-	//高さフォグの設定													↓色  ↓上↓下↓距離
-	KdShaderManager::Instance().WorkAmbientController().SetheightFog({ 0.8,0.8,0.8 }, -3, -8, 0);
 
 	//カメラ
 	m_camera = std::make_unique<KdCamera>();

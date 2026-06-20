@@ -3,6 +3,7 @@
 #include"../../../Manager/ScoreManager/ScoreManager.h"
 #include"../../Num/Num.h"
 #include"../../Item/Coin/Coin.h"
+#include"OperationsUi/OperationsUi.h"
 
 void GameSceneUi::Init()
 {
@@ -34,6 +35,12 @@ void GameSceneUi::Init()
 	scorecoin->SetSize(0.8f);
 	scorecoin->SetHitFlg(false);
 	SceneManager::Instance().AddObject(scorecoin);
+
+	std::shared_ptr<OperationsUi> operationsui = std::make_shared<OperationsUi>();
+	operationsui->Init();
+	operationsui->SetPos({ -320,200,0 });
+	operationsui->SetSize(0.25);
+	SceneManager::Instance().AddObject(operationsui);
 }
 
 void GameSceneUi::Update()

@@ -41,6 +41,12 @@ public:
 		UINT flag = 0,
 		float homingspeed = 0.2f);
 
+	void CreateSquareEffect(
+		const Math::Vector3& pos,
+		const Math::Vector3& vel,
+		float scale = 1.0f,
+		int life = 20);
+
 private:
 
 	std::unordered_map<
