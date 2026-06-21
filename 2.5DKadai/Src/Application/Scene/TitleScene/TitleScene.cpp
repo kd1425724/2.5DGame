@@ -12,6 +12,8 @@ void TitleScene::Event()
 {
 	if (Inp.GetUserKeyDown(UserKeyType::DecisionKey))
 	{
+		KdAudioManager::Instance().Play("Asset/Sounds/SE/SceneChangeSE/SceneChangeSE.wav", false);
+
 		SceneManager::Instance().SetNextScene
 		(
 			SceneManager::SceneType::StageSelect

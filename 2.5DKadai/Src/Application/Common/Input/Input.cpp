@@ -122,10 +122,10 @@ void C_Input::DebugDefaultKeySet()
 	static const int num = (int)DebugKeyType::DebugKeyNum;
 
 	int defaultkey[num] = { (int)DebugKeyDefaultType::PKey,
-						(int)DebugKeyDefaultType::OKey,
+						(int)DebugKeyDefaultType::IKey,
+						(int)DebugKeyDefaultType::LKey,
 						(int)DebugKeyDefaultType::ZEROKey,
 						(int)DebugKeyDefaultType::NINEKey};
-
 	for (int i = 0; i < num; i++)
 	{
 		m_debugkey[i] = defaultkey[i];

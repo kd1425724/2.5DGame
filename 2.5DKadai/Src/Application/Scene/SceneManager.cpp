@@ -69,6 +69,11 @@ void SceneManager::Update()
 		SetNextScene(SceneType::Result);
 		return;
 	}
+	if (Inp.GetDebugKeyDown(DebugKeyType::IKey))
+	{
+		SetNextScene(SceneType::Goal);
+		return;
+	}
 }
 
 void SceneManager::PostUpdate()
@@ -128,6 +133,9 @@ void SceneManager::Init()
 
 void SceneManager::ChangeScene(SceneType _sceneType)
 {
+	//前のシーンを保存
+	m_OldSceneType = m_currentSceneType;
+
 	// 現在のシーン情報を更新
 	m_currentSceneType = _sceneType;
 
@@ -135,37 +143,60 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 	switch (_sceneType)
 	{
 	case SceneType::Title:
+		KdAudioManager::Instance().StopAllSound();
+		KdAudioManager::Instance().Play("Asset/Sounds/BGM/TitleBGM.wav", true);
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<TitleScene>();
 		break;
 	case SceneType::StageSelect:
+		//前のシーンがタイトル以外なら	
+		if (m_OldSceneType != SceneType::Title)
+		{
+			KdAudioManager::Instance().StopAllSound();
+			KdAudioManager::Instance().Play("Asset/Sounds/BGM/TitleBGM.wav", true);
+		}
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<StageSelectScene>();
 		break;
 	case SceneType::Stage1:
+		KdAudioManager::Instance().StopAllSound();
+		KdAudioManager::Instance().Play("Asset/Sounds/BGM/GameBGM.wav", true);
 		//スコアリセット
 		SCOREMANAGER.ScoreReset();
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<GameScene>("1");
 		break;
 	case SceneType::Stage2:
+		KdAudioManager::Instance().StopAllSound();
+		KdAudioManager::Instance().Play("Asset/Sounds/BGM/GameBGM.wav", true);
 		//スコアリセット
 		SCOREMANAGER.ScoreReset();
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<GameScene>("2");
 		break;
 	case SceneType::Stage3:
+		KdAudioManager::Instance().StopAllSound();
+		KdAudioManager::Instance().Play("Asset/Sounds/BGM/GameBGM.wav", true);
 		//スコアリセット
 		SCOREMANAGER.ScoreReset();
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<GameScene>("3");
 		break;
 	case SceneType::Result:
+		KdAudioManager::Instance().StopAllSound();
+		KdAudioManager::Instance().Play("Asset/Sounds/BGM/ResultBGM.wav", true);
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<ResultScene>();
 		break;
+	case SceneType::Goal:
+		KdAudioManager::Instance().StopAllSound();
+		KdAudioManager::Instance().Play("Asset/Sounds/BGM/GameBGM.wav", true);
+		COMMONAPI.Clear();
+		m_currentScene = std::make_shared<GameScene>("Goal");
+		break;
 	}
 
+	
 	// Sceneが確定していない状況でInit()でObjectListにObjectを保持しがちなので
 	// コントラクタでのInit()を禁止します！！！
 	m_currentScene->Init();

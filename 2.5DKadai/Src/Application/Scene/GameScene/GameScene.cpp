@@ -20,7 +20,7 @@ void GameScene::Event()
 		m_goalcnt++;
 
 		//0.5秒後にリザルトへ(60fps想定)
-		if (m_goalcnt > 30)
+		if (m_goalcnt > 60)
 		{
 			//スクロール停止
 			INFO.SetScrollFlg(false);

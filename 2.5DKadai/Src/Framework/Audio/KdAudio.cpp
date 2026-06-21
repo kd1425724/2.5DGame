@@ -82,6 +82,8 @@ std::shared_ptr<KdSoundInstance> KdAudioManager::Play(std::string_view rName, bo
 
 	instance->Play(loop);
 
+	instance->SetVolume(0.1f);
+
 	AddPlayList(instance);
 
 	return instance;

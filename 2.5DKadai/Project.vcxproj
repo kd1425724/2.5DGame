@@ -296,6 +296,7 @@
     <ClInclude Include="Src\Application\Object\Event\Goal\Goal.h" />
     <ClInclude Include="Src\Application\Object\Event\RoomCenter\RoomCenter.h" />
     <ClInclude Include="Src\Application\Object\Event\RoomExit\RoomExit.h" />
+    <ClInclude Include="Src\Application\Object\GoalDisplay\GoalDisplay.h" />
     <ClInclude Include="Src\Application\Object\Ground\GameGround\GameGround.h" />
     <ClInclude Include="Src\Application\Object\Item\BaseItem.h" />
     <ClInclude Include="Src\Application\Object\Item\Coin\Coin.h" />
@@ -395,6 +396,7 @@
     <ClCompile Include="Src\Application\Object\Event\Goal\Goal.cpp" />
     <ClCompile Include="Src\Application\Object\Event\RoomCenter\RoomCenter.cpp" />
     <ClCompile Include="Src\Application\Object\Event\RoomExit\RoomExit.cpp" />
+    <ClCompile Include="Src\Application\Object\GoalDisplay\GoalDisplay.cpp" />
     <ClCompile Include="Src\Application\Object\Ground\GameGround\GameGround.cpp" />
     <ClCompile Include="Src\Application\Object\Item\BaseItem.cpp" />
     <ClCompile Include="Src\Application\Object\Item\Coin\Coin.cpp" />

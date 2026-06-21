@@ -12,6 +12,8 @@ void ResultScene::Event()
 	{
 		if (m_resultsceneui->IsSkipThisFrame())
 		{
+			KdAudioManager::Instance().Play("Asset/Sounds/SE/SceneChangeSE/SceneChangeSE.wav", false);
+
 			SceneManager::Instance().SetNextScene
 			(
 				SceneManager::SceneType::StageSelect

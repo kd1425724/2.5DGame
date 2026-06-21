@@ -54,11 +54,10 @@ void Goal::OnHit(KdGameObject* _other)
 	//プレイヤーと当たったら
 	if (_other->GetObjectTag() == ObjectTag::Player)
 	{
-		//サウンド（未実装）
-		//KdAudioManager::Instance().Play("Asset/Sounds/GoalSE/GoalSE.wav", false);
+		//サウンド
+		KdAudioManager::Instance().Play("Asset/Sounds/SE/GoalSE/GoalSE.wav", false);
 		//ゴール
 		INFO.SetGoalFlg(true);
-
 
 		//当たり判定消失
 		m_hitflg = false;

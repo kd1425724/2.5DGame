@@ -24,7 +24,8 @@ enum class UserKeyType
 enum class DebugKeyType
 {
 	PKey,
-	OKey,
+	IKey,
+	LKey,
 	ZEROKey,
 	NINEKey,
     DebugKeyNum,
@@ -161,9 +162,11 @@ private:
 	enum class DebugKeyDefaultType
 	{
 		PKey = 'P',	  //タイトルに戻る
-		OKey = 'O',   //次のシーンへ
+		IKey='I',		//ゴールのみのステージへ
+		LKey='L',		//プレイヤーダメージ無効
 		ZEROKey = '0',  //GameOverへ
 		NINEKey = '9',  //Clearへ
+
 	};
 	enum class EditorKeyDefaultType
 	{

@@ -64,8 +64,8 @@ void Coin::OnHit(KdGameObject * other)
 		//取得
 		SCOREMANAGER.CoinUp();
 
-		//サウンド（未実装）
-
+		//サウンド
+		KdAudioManager::Instance().Play("Asset/Sounds/SE/CoinGetSE/CoinGetSE.wav", false);
 
 		//エフェクト発生
 		EFFECT.CreateEffect("CoinGet", m_pos, eBright | eScroll);

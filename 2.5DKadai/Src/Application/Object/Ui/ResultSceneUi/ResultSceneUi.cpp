@@ -7,6 +7,7 @@
 #include"Rank/Rank.h"
 #include"../../../Common/Info/Info.h"
 #include"Result/Result.h"
+#include"../StageSelectSceneUi/EnterStart/EnterStart.h"
 
 void ResultSceneUi::Init()
 {
@@ -58,6 +59,14 @@ void ResultSceneUi::Init()
 	result->Init();
 	result->SetPos({0,200,0});
 	SceneManager::Instance().AddObject(result);
+
+	//Enter
+	std::shared_ptr<EnterStart> enter = std::make_shared<EnterStart>();
+	enter->Init();
+	enter->SetAsset("ResultScene/Enter/Enter");
+	enter->SetPos({ 300,-250,0 });
+	enter->SetSize(0.8f);
+	SceneManager::Instance().AddObject(enter);
 }
 
 void ResultSceneUi::Update()

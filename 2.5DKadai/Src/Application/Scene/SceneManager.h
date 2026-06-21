@@ -14,7 +14,8 @@ public :
 		Stage1,
 		Stage2,
 		Stage3,
-		Result
+		Result,
+		Goal
 	};
 
 	void PreUpdate();
@@ -56,6 +57,8 @@ private :
 
 	// 現在のシーンの種類を保持している変数
 	SceneType m_currentSceneType = SceneType::Title;
+	//前のシーンを保存
+	SceneType m_OldSceneType = m_currentSceneType;
 	
 	// 次のシーンの種類を保持している変数
 	SceneType m_nextSceneType = m_currentSceneType;

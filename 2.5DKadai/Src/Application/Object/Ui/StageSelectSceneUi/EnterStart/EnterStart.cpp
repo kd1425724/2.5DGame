@@ -2,8 +2,7 @@
 
 void EnterStart::Init()
 {
-	m_tex = std::make_shared<KdTexture>();
-	m_tex->Load("Asset/Textures/StageSelectScene/EnterStart/EnterStart.png");
+	
 }
 
 void EnterStart::Update()

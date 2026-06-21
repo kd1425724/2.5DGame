@@ -223,6 +223,9 @@
     <Filter Include="Src\Application\Object\Effect\SquareEffect">
       <UniqueIdentifier>{f5c876d6-55ef-42f8-8213-23f0cd0a18c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\GoalDisplay">
+      <UniqueIdentifier>{71b784ce-cbcb-41a2-958d-a3f1168f1f23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -537,6 +540,9 @@
     <ClInclude Include="Src\Application\Object\Effect\SquareEffect\SquareEffect.h">
       <Filter>Src\Application\Object\Effect\SquareEffect</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\GoalDisplay\GoalDisplay.h">
+      <Filter>Src\Application\Object\GoalDisplay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -820,6 +826,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Effect\SquareEffect\SquareEffect.cpp">
       <Filter>Src\Application\Object\Effect\SquareEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\GoalDisplay\GoalDisplay.cpp">
+      <Filter>Src\Application\Object\GoalDisplay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

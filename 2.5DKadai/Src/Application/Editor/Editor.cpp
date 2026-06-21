@@ -81,12 +81,16 @@ void Editor::Update()
 
 	if (nowState && !oldState)
 	{
+		ShowCursor(false);
 		m_editMode = !m_editMode;
 	}
 
 	oldState = nowState;
 
+	ShowCursor(m_editMode);
+
 	if (!m_editMode) return;
+
 
 	//マウスドラッグ更新
 	MouseDragMoveUpdate();

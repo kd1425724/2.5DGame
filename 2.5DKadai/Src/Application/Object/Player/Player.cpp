@@ -28,7 +28,7 @@ void Player::Init()
 
 	m_shadowflg = false;
 
-	m_damageflg = true;
+	m_damageflg = false;
 
 	auto sceneType = SceneManager::Instance().GetSceneType();
 
@@ -62,6 +62,11 @@ void Player::Update()
 		{
 			m_pos.x -= m_speed;
 		}
+	}
+
+	if (Inp.GetDebugKeyDown(DebugKeyType::LKey))
+	{
+		m_damageflg = !m_damageflg;
 	}
 
 
@@ -98,7 +103,7 @@ void Player::Update()
 			if (!m_isground)
 			{
 				//地面から離れてたらJump1に移行
-				m_jumppattern = PlayerJumpPattern::Jump1;
+				//m_jumppattern = PlayerJumpPattern::Jump1;
 			}
 			break;
 		case Player::PlayerJumpPattern::Jump1:
@@ -381,6 +386,7 @@ void Player::Hit()
 			{
 				if (m_damageflg)
 				{
+					KdAudioManager::Instance().Play("Asset/Sounds/SE/DeathSE/DeathSE.wav",false);
 					//死亡
 					m_statepattern = PlayerStatePattern::Death;
 					//画面揺れ開始
@@ -388,13 +394,17 @@ void Player::Hit()
 					return;
 				}
 			}
-			//球にめり込んだ長さが一番長いものを探す
-			if (maxOverLap < ret.m_overlapDistance)
+		
+			if (ret.m_hitType & KdCollider::TypeGround)
 			{
-				//更新
-				maxOverLap = ret.m_overlapDistance;
-				hitDir = ret.m_hitDir;
-				hit = true;
+				//球にめり込んだ長さが一番長いものを探す
+				if (maxOverLap < ret.m_overlapDistance)
+				{
+					//更新
+					maxOverLap = ret.m_overlapDistance;
+					hitDir = ret.m_hitDir;
+					hit = true;
+				}
 			}
 		}
 
@@ -416,6 +426,7 @@ void Player::Hit()
 			{
 				if (m_damageflg)
 				{
+					KdAudioManager::Instance().Play("Asset/Sounds/SE/DeathSE/DeathSE.wav",false);
 					// 左から当たった
 					m_statepattern = PlayerStatePattern::Death;
 					//画面揺れ開始
@@ -437,6 +448,7 @@ void Player::Hit()
 	{
 		if (m_damageflg)
 		{
+			KdAudioManager::Instance().Play("Asset/Sounds/SE/DeathSE/DeathSE.wav", false);
 			//死亡
 			m_statepattern = PlayerStatePattern::Death;
 			//画面揺れ開始

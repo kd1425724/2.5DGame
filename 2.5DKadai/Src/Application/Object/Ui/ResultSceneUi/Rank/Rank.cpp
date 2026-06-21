@@ -60,8 +60,6 @@ void Rank::Update()
 		if (m_pattern != End)
 		{
 			FinishRank();
-
-			m_skipThisFrame = true;
 		}
 	}
 
@@ -215,4 +213,6 @@ void Rank::FinishRank()
 		eBright);
 
 	m_pattern = End;
+
+	m_skipThisFrame = true;
 }

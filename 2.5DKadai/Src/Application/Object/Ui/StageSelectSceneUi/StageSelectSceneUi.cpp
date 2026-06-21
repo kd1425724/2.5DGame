@@ -17,6 +17,15 @@ void StageSelectSceneUi::Init()
 	stageselect->SetAsset("Asset/Textures/StageSelectScene/StageSelect/StageSelect.png");
 	stageselect->SetPos({ 0,200,0 });
 	SceneManager::Instance().AddObject(stageselect);
+
+	//SelectArow
+	std::shared_ptr<UiBase> selectarow = std::make_shared<UiBase>();
+	selectarow->SetAsset("Asset/Textures/StageSelectScene/SelectArow/SelectArow.png");
+	selectarow->SetPos({ 0,100,0 });
+	selectarow->SetSize({ 0.65f,0.7f,0 });
+	SceneManager::Instance().AddObject(selectarow);
+
+
 	//ボタン
 	m_buttons.resize((int)StageSelectButton::ButtonNum);
 	int i = 0;
@@ -55,11 +64,12 @@ void StageSelectSceneUi::Init()
 	}
 
 	//EnterStart
-	std::shared_ptr<EnterStart> m_enterstart = std::make_shared<EnterStart>();
-	m_enterstart->Init();
-	m_enterstart->SetPos({ 200,-200,0 });
-	m_enterstart->SetSize(0.8f);
-	SceneManager::Instance().AddObject(m_enterstart);
+	std::shared_ptr<EnterStart> enterstart = std::make_shared<EnterStart>();
+	enterstart->Init();
+	enterstart->SetAsset("StageSelectScene/EnterStart/EnterStart");
+	enterstart->SetPos({ 200,-200,0 });
+	enterstart->SetSize(0.8f);
+	SceneManager::Instance().AddObject(enterstart);
 }
 
 
@@ -72,6 +82,8 @@ void StageSelectSceneUi::Update()
 
 	if (Inp.GetUserKeyDown(UserKeyType::DecisionKey))
 	{
+		KdAudioManager::Instance().Play("Asset/Sounds/SE/SceneChangeSE/SceneChangeSE.wav", false);
+
 		m_buttons[(int)m_selectbutton]->Action();
 	}
 }
@@ -80,6 +92,7 @@ void StageSelectSceneUi::SelectButtonControll()
 {
 	if (Inp.GetUserKeyDown(UserKeyType::Right))
 	{
+		KdAudioManager::Instance().Play("Asset/Sounds/SE/SelectStageChangeSE/SelectStageChangeSE.wav");
 		if (m_selectbutton == StageSelectButton::Stage3)
 		{
 			m_selectbutton = StageSelectButton::Stage1;
@@ -92,6 +105,8 @@ void StageSelectSceneUi::SelectButtonControll()
 
 	if (Inp.GetUserKeyDown(UserKeyType::Left))
 	{
+		KdAudioManager::Instance().Play("Asset/Sounds/SE/SelectStageChangeSE/SelectStageChangeSE.wav");
+
 		if (m_selectbutton == StageSelectButton::Stage1)
 		{
 			m_selectbutton =

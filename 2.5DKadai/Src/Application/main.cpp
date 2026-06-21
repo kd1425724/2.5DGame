@@ -167,7 +167,7 @@ bool Application::Init(int w, int h)
 	// ウィンドウ作成
 	//===================================================================
 	//														↓ここtrueにしたらフルスクリーン
-	if (m_window.Create(w, h, "3D GameProgramming", "Window",false) == false) {
+	if (m_window.Create(w, h, "Cube Run", "Window",false) == false) {
 		MessageBoxA(nullptr, "ウィンドウ作成に失敗", "エラー", MB_OK);
 		return false;
 	}
@@ -233,7 +233,7 @@ bool Application::Init(int w, int h)
 	// ゲーム固有の初期化
 	//===================================================================
 	// 例えばカーソルを消したい場合
-	//ShowCursor(false);
+	ShowCursor(false);
 	SceneManager::Instance().Init();
 	EDITOR.Init();
 
@@ -339,7 +339,7 @@ void Application::Execute()
 		//=========================================
 
 		m_fpsController.Update();
-		std::string titleBar = "ゲーム名 FPS:" + std::to_string(m_fpsController.m_nowfps);
+		std::string titleBar = "Cube Run FPS:" + std::to_string(m_fpsController.m_nowfps);
 		SetWindowTextA(m_window.GetWndHandle(), titleBar.c_str());
 	}
 

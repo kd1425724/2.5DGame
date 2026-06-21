@@ -4,6 +4,7 @@
 #include"../../Num/Num.h"
 #include"../../Item/Coin/Coin.h"
 #include"OperationsUi/OperationsUi.h"
+#include"../../GoalDisplay/GoalDisplay.h"
 
 void GameSceneUi::Init()
 {
@@ -41,6 +42,11 @@ void GameSceneUi::Init()
 	operationsui->SetPos({ -320,200,0 });
 	operationsui->SetSize(0.25);
 	SceneManager::Instance().AddObject(operationsui);
+
+	//Goal!!
+	std::shared_ptr<GoalDisplay> goaldisplay = std::make_shared<GoalDisplay>();
+	goaldisplay->Init();
+	SceneManager::Instance().AddObject(goaldisplay);
 }
 
 void GameSceneUi::Update()
