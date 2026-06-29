@@ -1,4 +1,2 @@
 Name,Asset,SplitX,SplitY,Anim,Speed,Scale
 CoinGet,CoinGetEffect/CoinGetEffect.png,4,4,0|1|2|3|4|5|6|7|8|9|10|11|12|13|14,0.45,3
-PlayerJump,PlayerJumpEffect/PlayerJumpEffect.png,5,1,0|1|2|3|4,0.3,3
-CoinCollection,CoinCollectionEffect/CoinCollectionEffect.png,1,1,0,0.3,0.5

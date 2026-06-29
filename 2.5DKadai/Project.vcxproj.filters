@@ -112,17 +112,8 @@
     <Filter Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround">
       <UniqueIdentifier>{bb0b4a1d-da14-4b23-a567-735167e6d960}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\Ground">
-      <UniqueIdentifier>{fbd0853e-52d2-4ed9-9eed-fe353cba7778}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Object\Ground\GameGround">
-      <UniqueIdentifier>{92c3bb60-509c-4a50-8340-6582ca6fb861}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\Common\Info">
       <UniqueIdentifier>{efca324b-c2f2-4285-bf76-8ae7a1d91350}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Scene\EditorScene">
-      <UniqueIdentifier>{2b0c3971-63f7-4a09-b214-09aad97d52be}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Application\Common\Editor">
       <UniqueIdentifier>{d69d0b7d-9bb3-4392-a171-a1b4c77bad22}</UniqueIdentifier>
@@ -144,9 +135,6 @@
     </Filter>
     <Filter Include="Src\Application\Object\Effect">
       <UniqueIdentifier>{41085394-248c-4406-8fdc-fa3d5eb3c00a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Common\Sound">
-      <UniqueIdentifier>{1f59fc43-7f29-4988-befb-bed7bd889f3d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Application\Object\Event\Goal">
       <UniqueIdentifier>{aa9752de-b181-4778-87f8-4435d0781ed3}</UniqueIdentifier>
@@ -432,14 +420,8 @@
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.h">
       <Filter>Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Ground\GameGround\GameGround.h">
-      <Filter>Src\Application\Object\Ground\GameGround</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Common\Info\Info.h">
       <Filter>Src\Application\Common\Info</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Application\Scene\EditorScene\EditorScene.h">
-      <Filter>Src\Application\Scene\EditorScene</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\Editor\Editor.h">
       <Filter>Src\Application\Common\Editor</Filter>
@@ -461,9 +443,6 @@
     </ClInclude>
     <ClInclude Include="Src\Application\Object\Effect\EffectManager.h">
       <Filter>Src\Application\Object\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Application\Common\Sound\Sound.h">
-      <Filter>Src\Application\Common\Sound</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\Object\Event\Goal\Goal.h">
       <Filter>Src\Application\Object\Event\Goal</Filter>
@@ -719,14 +698,8 @@
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.cpp">
       <Filter>Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Ground\GameGround\GameGround.cpp">
-      <Filter>Src\Application\Object\Ground\GameGround</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Common\Info\Info.cpp">
       <Filter>Src\Application\Common\Info</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\Scene\EditorScene\EditorScene.cpp">
-      <Filter>Src\Application\Scene\EditorScene</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Editor\Editor.cpp">
       <Filter>Src\Application\Common\Editor</Filter>
@@ -748,9 +721,6 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Effect\EffectManager.cpp">
       <Filter>Src\Application\Object\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\Common\Sound\Sound.cpp">
-      <Filter>Src\Application\Common\Sound</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Event\Goal\Goal.cpp">
       <Filter>Src\Application\Object\Event\Goal</Filter>

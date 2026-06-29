@@ -37,6 +37,8 @@ private:
 
 	void Hit();
 
+	void DrawJumpBlock();
+
 	//プレイヤーの状態
 	enum class PlayerStatePattern
 	{
@@ -84,13 +86,14 @@ private:
 	{
 		Math::Matrix mat;
 		float alpha = 1.0f;
-		float life = 0.0f;
+		float time = 0.0f;      // 経過時間
+		float life = 2.0f;      // 2秒で消える
 	};
 	std::deque<AfterImage> m_afterImages;
 
 	// 残像制御
 	float m_afterImageTimer = 0.0f;
-	float m_afterImageInterval = 4; // 基本間隔
+	float m_afterImageInterval = 3; // 基本間隔
 
 	//当たり判定だけのプレイヤー生成フラグ
 	bool m_shadowflg = false;
@@ -99,4 +102,12 @@ private:
 	bool m_damageflg = true;
 
 	int m_dashEffectCnt = 0;
+
+	Math::Color m_color = { 1,1,1,1 };
+
+	std::shared_ptr<KdModelData> m_jumpBlockModel;
+
+	float m_jumpBlockRot = 0.0f;
+
+	float m_jumpBlockDissolve = 0.0f;
 };

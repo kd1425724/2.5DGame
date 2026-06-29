@@ -18,22 +18,6 @@
 			"name":"\u7403"
 		}
 	],
-	"materials":[
-		{
-			"doubleSided":true,
-			"name":"\u30de\u30c6\u30ea\u30a2\u30eb.001",
-			"pbrMetallicRoughness":{
-				"baseColorFactor":[
-					0.8000074625015259,
-					0.004233730956912041,
-					0,
-					1
-				],
-				"metallicFactor":0,
-				"roughnessFactor":0.5
-			}
-		}
-	],
 	"meshes":[
 		{
 			"name":"\u7403.001",
@@ -44,8 +28,7 @@
 						"NORMAL":1,
 						"TEXCOORD_0":2
 					},
-					"indices":3,
-					"material":0
+					"indices":3
 				}
 			]
 		}

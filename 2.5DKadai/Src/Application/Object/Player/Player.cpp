@@ -3,6 +3,7 @@
 #include"../../Common/Input/Input.h"
 #include"../../Scene/SceneManager.h"
 #include"../Effect/EffectManager.h"
+#include"../../main.h"
 
 void Player::Init()
 {
@@ -28,8 +29,6 @@ void Player::Init()
 
 	m_shadowflg = false;
 
-	m_damageflg = false;
-
 	auto sceneType = SceneManager::Instance().GetSceneType();
 
 	//タイトルでは自由に動ける
@@ -39,6 +38,8 @@ void Player::Init()
 	}
 
 	m_dashEffectCnt = 0;
+
+	m_jumpBlockModel = m_coremodel;
 }
 
 void Player::PreUpdate()
@@ -69,23 +70,25 @@ void Player::Update()
 		m_damageflg = !m_damageflg;
 	}
 
-
 	//ポイントライト
 	KdShaderManager::Instance().WorkAmbientController().AddPointLight
 	(
-		{ 10,0,0 },							//色
+		{10,0,0},							//色
 		3,									//半径
 		m_pos	//座標
 	);
+
+	
 
 	switch (m_statepattern)
 	{
 	case Player::PlayerStatePattern::Start:
 		break;
 	case Player::PlayerStatePattern::Loop:
-
-		/*m_move.Normalize();
-		m_pos += m_move * m_speed;*/
+		if (Inp.GetPlayerKey(PlayerKeyType::Plunge))
+		{
+			m_gravity += 0.05f;
+		}
 
 		//ジャンプ処理
 		switch (m_jumppattern)
@@ -103,7 +106,7 @@ void Player::Update()
 			if (!m_isground)
 			{
 				//地面から離れてたらJump1に移行
-				//m_jumppattern = PlayerJumpPattern::Jump1;
+				m_jumppattern = PlayerJumpPattern::Jump1;
 			}
 			break;
 		case Player::PlayerJumpPattern::Jump1:
@@ -113,10 +116,12 @@ void Player::Update()
 				m_gravity = -m_twojumppow;
 				m_jumppattern = PlayerJumpPattern::Jump2;
 			}
+			//m_color = { 0.3,0,0,1 };
 			break;
 		case Player::PlayerJumpPattern::Jump2:
 			//着地したらNoneに戻す
 			//当たり判定処理の部分に書いてる
+			//m_color = { 0.1,0.1,0.1f,1 };
 			break;
 		default:
 			break;
@@ -127,25 +132,36 @@ void Player::Update()
 		{
 			m_rot.z -= 5;
 		}
-
-		if (Inp.GetPlayerKey(PlayerKeyType::Plunge))
+		else
 		{
-			m_gravity += 0.05f;
+			m_color = { 0.5f,0,0,1 };
 		}
 
+	
 		//重力が0以下（プレイヤーが上昇中）かつJumpキーが離れされたら
-		if (m_gravity < 0 && Inp.GetPlayerKeyUp(PlayerKeyType::Jump))
+		if (m_gravity < 0 && !Inp.GetPlayerKey(PlayerKeyType::Jump))
 		{
 			//重力を0に
-			m_gravity = 0;
+			m_gravity *= 0.4f;
 		}
 
+		// 2段ジャンプ可能なら回転
+		if (m_jumppattern != PlayerJumpPattern::Jump2)
+		{
+			m_jumpBlockRot -= 3.0f;
+
+			if (m_jumpBlockRot <= -360.0f)
+			{
+				m_jumpBlockRot += 360.0f;
+			}
+		}
 		break;
 	case Player::PlayerStatePattern::Death:
 		//スクロールを止める
 		INFO.SetScrollFlg(false);
 		//死亡演出
 		m_dissolv += 0.02f;
+		m_jumpBlockDissolve += 0.02f;
 		if (m_dissolv > 1.0f)
 		{
 			m_isExpired = true;
@@ -156,36 +172,76 @@ void Player::Update()
 		break;
 	}
 
-	//ダッシュ中
-
 
 	if (m_statepattern == PlayerStatePattern::Death)return;
+	// Jump2なら消す、それ以外なら表示
+	float target = (m_jumppattern == PlayerJumpPattern::Jump2) ? 1.0f : 0.0f;
 
-	m_afterImageTimer += 1.0f;
+	const float speed = 0.05f;
+
+	if (m_jumpBlockDissolve < target)
+	{
+		m_jumpBlockDissolve += speed;
+
+		if (m_jumpBlockDissolve > target)
+			m_jumpBlockDissolve = target;
+	}
+	else if (m_jumpBlockDissolve > target)
+	{
+		m_jumpBlockDissolve -= speed;
+
+		if (m_jumpBlockDissolve < target)
+			m_jumpBlockDissolve = target;
+	}
+
+
+	float dt = Application::Instance().GetDeltaTime();
+
+	m_afterImageTimer += dt;
 
 	if (m_afterImageTimer >= m_afterImageInterval)
 	{
-		m_afterImageTimer = 0.0f;
+		//if (m_jumppattern != PlayerJumpPattern::Jump2)
+		{
+			m_afterImageTimer = 0.0f;
 
-		AfterImage img;
+			AfterImage img;
 
-		Math::Vector3 scroll = { INFO.GetScrollSpeed(),0,0 };
-		Math::Matrix scale = Math::Matrix::CreateScale(0.5f);
-		Math::Matrix mtrans = Math::Matrix::CreateTranslation(m_mWorld.Translation());
-		img.mat = scale * mtrans;
-		img.alpha = 1.0f;
+			Math::Vector3 scroll = { INFO.GetScrollSpeed(),0,0 };
+			Math::Matrix scale = Math::Matrix::CreateScale(0.5f);
+			Math::Matrix mtrans = Math::Matrix::CreateTranslation(m_mWorld.Translation());
+			img.mat = scale * mtrans;
+			img.alpha = 1.0f;
+			img.life = 150.0f;    // 約30フレーム
 
-		m_afterImages.push_front(img);
+			m_afterImages.push_front(img);
+		}
 
 		if (m_afterImages.size() > 15)
 			m_afterImages.pop_back();
-	}
 
+	}
+	
 	// フェード
-	for (auto& img : m_afterImages)
+	
+	for (auto it = m_afterImages.begin(); it != m_afterImages.end();)
 	{
-		img.alpha -= 0.005f;
-		img.mat *= Math::Matrix::CreateTranslation({ -INFO.GetScrollSpeed(),0,0 });
+		it->time += dt;
+
+		// αを時間から計算
+		it->alpha = 1.0f - (it->time / it->life);
+		if (it->alpha < 0.0f) it->alpha = 0.0f;
+
+		it->mat *= Math::Matrix::CreateTranslation({ -INFO.GetScrollSpeed(), 0, 0 });
+
+		if (it->time >= it->life)
+		{
+			it = m_afterImages.erase(it);
+		}
+		else
+		{
+			++it;
+		}
 	}
 
 	//前回のm_gravityの値を保存
@@ -224,9 +280,16 @@ void Player::DrawLit()
 	if (m_shadowflg)return;
 	//ディゾルブ											↓０～１
 	KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolv);
-	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, m_mWorld);
+	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, m_mWorld,m_color);
 	KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolv);
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
+
+
+	//if (m_jumppattern != PlayerJumpPattern::Jump2)
+	{
+		DrawJumpBlock();
+	}
+
 }
 
 void Player::GenerateDepthMapFromLight()
@@ -241,16 +304,49 @@ void Player::DrawBright()
 {
 	if (m_shadowflg)return;
 	KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolv);
-	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, m_mWorld);
+	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, m_mWorld, m_color);
+
+	//if (m_jumppattern != PlayerJumpPattern::Jump2)
+	{
+		DrawJumpBlock();
+	}
 
 	// コア残像
 	for (auto& img : m_afterImages)
 	{
-		Math::Color color = { 1,0.1,0.1,img.alpha };
+		Math::Color color = { 1,0,0,img.alpha };
 
-		KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, img.mat, color);
+		KdShaderManager::Instance().m_StandardShader.DrawModel(*m_coremodel, img.mat,color);
+	}
+}
+
+void Player::DrawJumpBlock()
+{
+	float radius = 1.3f;
+
+	for (int i = 0; i < 4; i++)
+	{
+		float angle = DirectX::XMConvertToRadians(
+			m_jumpBlockRot + i * 90.0f);
+
+		Math::Vector3 pos = { 0,0,-2 };
+
+		Math::Matrix world =
+			Math::Matrix::CreateScale(0.3f) *
+			Math::Matrix::CreateTranslation(0, 0, -radius) *
+			Math::Matrix::CreateRotationY(angle) *
+			Math::Matrix::CreateTranslation(m_pos);
+
+		Math::Color color = { 1.0f,0.0f,0.0f,1.0f };
+
+		KdShaderManager::Instance().m_StandardShader.SetDissolve(m_jumpBlockDissolve);
+		KdShaderManager::Instance().m_StandardShader.DrawModel(
+			*m_jumpBlockModel,
+			world,
+			color);
 	}
 
+	KdShaderManager::Instance().m_StandardShader.SetDissolve(0.0f);
 }
 
 
@@ -329,7 +425,7 @@ void Player::Hit()
 				EffectManager::Instance().CreateSquareEffect(
 					m_pos +
 					Math::Vector3(0, -0.5f, 0),
-					Math::Vector3(KdRandom::GetFloat(-0.1, -0.2f), KdRandom::GetFloat(0.0f, 0.15f), 0),
+					Math::Vector3(KdRandom::GetFloat(-0.2, -0.1f), KdRandom::GetFloat(0.0f, 0.15f), 0),
 					KdRandom::GetFloat(0.2f, 0.4f),
 					20);
 			}

@@ -278,7 +278,6 @@
     <ClInclude Include="Src\Application\Common\Feed\Feed.h" />
     <ClInclude Include="Src\Application\Common\Info\Info.h" />
     <ClInclude Include="Src\Application\Common\Input\Input.h" />
-    <ClInclude Include="Src\Application\Common\Sound\Sound.h" />
     <ClInclude Include="Src\Application\Editor\Editor.h" />
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\Manager\ScoreManager\ScoreManager.h" />
@@ -297,7 +296,6 @@
     <ClInclude Include="Src\Application\Object\Event\RoomCenter\RoomCenter.h" />
     <ClInclude Include="Src\Application\Object\Event\RoomExit\RoomExit.h" />
     <ClInclude Include="Src\Application\Object\GoalDisplay\GoalDisplay.h" />
-    <ClInclude Include="Src\Application\Object\Ground\GameGround\GameGround.h" />
     <ClInclude Include="Src\Application\Object\Item\BaseItem.h" />
     <ClInclude Include="Src\Application\Object\Item\Coin\Coin.h" />
     <ClInclude Include="Src\Application\Object\Num\Num.h" />
@@ -319,7 +317,6 @@
     <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\TitleSceneUi.h" />
     <ClInclude Include="Src\Application\Object\Ui\UiBase.h" />
     <ClInclude Include="Src\Application\Scene\BaseScene\BaseScene.h" />
-    <ClInclude Include="Src\Application\Scene\EditorScene\EditorScene.h" />
     <ClInclude Include="Src\Application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="Src\Application\Scene\ResultScene\ResultScene.h" />
     <ClInclude Include="Src\Application\Scene\SceneManager.h" />
@@ -378,7 +375,6 @@
     <ClCompile Include="Src\Application\Common\Feed\Feed.cpp" />
     <ClCompile Include="Src\Application\Common\Info\Info.cpp" />
     <ClCompile Include="Src\Application\Common\Input\Input.cpp" />
-    <ClCompile Include="Src\Application\Common\Sound\Sound.cpp" />
     <ClCompile Include="Src\Application\Editor\Editor.cpp" />
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\Manager\ScoreManager\ScoreManager.cpp" />
@@ -397,7 +393,6 @@
     <ClCompile Include="Src\Application\Object\Event\RoomCenter\RoomCenter.cpp" />
     <ClCompile Include="Src\Application\Object\Event\RoomExit\RoomExit.cpp" />
     <ClCompile Include="Src\Application\Object\GoalDisplay\GoalDisplay.cpp" />
-    <ClCompile Include="Src\Application\Object\Ground\GameGround\GameGround.cpp" />
     <ClCompile Include="Src\Application\Object\Item\BaseItem.cpp" />
     <ClCompile Include="Src\Application\Object\Item\Coin\Coin.cpp" />
     <ClCompile Include="Src\Application\Object\Num\Num.cpp" />
@@ -419,7 +414,6 @@
     <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\TitleSceneUi.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\UiBase.cpp" />
     <ClCompile Include="Src\Application\Scene\BaseScene\BaseScene.cpp" />
-    <ClCompile Include="Src\Application\Scene\EditorScene\EditorScene.cpp" />
     <ClCompile Include="Src\Application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Src\Application\Scene\ResultScene\ResultScene.cpp" />
     <ClCompile Include="Src\Application\Scene\SceneManager.cpp" />

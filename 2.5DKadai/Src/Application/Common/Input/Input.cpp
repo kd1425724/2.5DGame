@@ -46,12 +46,6 @@ void C_Input::Update(HWND hwnd)
 		m_playerkeyflg[i] =(GetAsyncKeyState(m_playerkey[i]) & 0x8000);
 	}
 
-	//エディターキーのフラグ更新
-	for (int i = 0; i < (int)EditorKeyType::EditorKeyNum; i++)
-	{
-		m_oldeditorkeyflg[i] = m_editorkeyflg[i];
-		m_editorkeyflg[i] = (GetAsyncKeyState(m_editorkey[i]) & 0x8000);
-	}
 
 	//ユーザーキーのフラグ更新
 	for (int i = 0; i < (int)UserKeyType::UserKeyNum; i++)
@@ -60,11 +54,37 @@ void C_Input::Update(HWND hwnd)
 		m_userkeyflg[i] = (GetAsyncKeyState(m_userkey[i]) & 0x8000);
 	}
 
-	//デバッグキーのフラグ更新
-	for (int i = 0; i < (int)DebugKeyType::DebugKeyNum; i++)
+	if (m_olldebugkeyflg)
 	{
-		m_olddebugkeyflg[i] = m_debugkeyflg[i];
-		m_debugkeyflg[i] = (GetAsyncKeyState(m_debugkey[i]) & 0x8000);
+		//エディターキーのフラグ更新
+		for (int i = 0; i < (int)EditorKeyType::EditorKeyNum; i++)
+		{
+			m_oldeditorkeyflg[i] = m_editorkeyflg[i];
+			m_editorkeyflg[i] = (GetAsyncKeyState(m_editorkey[i]) & 0x8000);
+		}
+
+		//デバッグキーのフラグ更新
+		for (int i = 0; i < (int)DebugKeyType::DebugKeyNum; i++)
+		{
+			m_olddebugkeyflg[i] = m_debugkeyflg[i];
+			m_debugkeyflg[i] = (GetAsyncKeyState(m_debugkey[i]) & 0x8000);
+		}
+	}
+	else
+	{
+		//エディターキーのフラグ更新
+		for (int i = 0; i < (int)EditorKeyType::EditorKeyNum; i++)
+		{
+			m_oldeditorkeyflg[i] = false;
+			m_editorkeyflg[i] = false;
+		}
+
+		//デバッグキーのフラグ更新
+		for (int i = 0; i < (int)DebugKeyType::DebugKeyNum; i++)
+		{
+			m_olddebugkeyflg[i] = false;
+			m_debugkeyflg[i] = false;
+		}
 	}
 
 	//アドレス渡しでマウス座標取得

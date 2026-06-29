@@ -11,12 +11,23 @@ public:
 	void Update()override;
 	void DrawLit()override;
 	void GenerateDepthMapFromLight()override;
+	void DrawBright()override;
 
 	void OnHit(KdGameObject* other)override;
 
-	void SetHitFlg(const bool& flg) { m_hitflg = flg; }
-
+	static void SetTarget(const std::shared_ptr<KdGameObject>& target) { s_target = target; }
 private:
 
-	bool m_hitflg = true;
+	bool m_getflg = false;
+
+	float m_getTime = 0.0f;
+
+	Math::Vector3 m_moveDir = {};
+	Math::Vector3 m_targetPos = {};
+
+	float m_time=0;
+
+	KdTrailPolygon m_tpoly;
+
+	inline static std::weak_ptr<KdGameObject> s_target;
 };

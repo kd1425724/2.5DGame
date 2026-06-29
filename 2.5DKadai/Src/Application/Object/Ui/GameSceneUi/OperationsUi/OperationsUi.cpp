@@ -17,8 +17,8 @@ void OperationsUi::Update()
 
 	m_cnt++;
 
-	//10秒後からフェードアウト
-	if (m_cnt > 60)
+	//2秒後からフェードアウト
+	if (m_cnt > 120)
 	{
 		m_alpha -= 0.01f;
 
