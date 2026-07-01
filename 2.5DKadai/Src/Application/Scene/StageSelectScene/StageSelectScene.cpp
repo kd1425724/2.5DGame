@@ -5,7 +5,6 @@
 #include"../../Common/Info/Info.h"
 #include"../../Manager/StageManager/StageManager.h"
 
-
 void StageSelectScene::Event()
 {
 	//UIまとめ
@@ -14,7 +13,6 @@ void StageSelectScene::Event()
 
 void StageSelectScene::Init()
 {
-	
 	//カメラ
 	m_camera = std::make_unique<KdCamera>();
 

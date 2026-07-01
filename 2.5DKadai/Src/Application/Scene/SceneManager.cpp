@@ -165,6 +165,7 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 		SCOREMANAGER.ScoreReset();
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<GameScene>("1");
+		INFO.SetStage("1");
 		break;
 	case SceneType::Stage2:
 		KdAudioManager::Instance().StopAllSound();
@@ -173,6 +174,7 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 		SCOREMANAGER.ScoreReset();
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<GameScene>("2");
+		INFO.SetStage("2");
 		break;
 	case SceneType::Stage3:
 		KdAudioManager::Instance().StopAllSound();
@@ -181,6 +183,7 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 		SCOREMANAGER.ScoreReset();
 		COMMONAPI.Clear();
 		m_currentScene = std::make_shared<GameScene>("3");
+		INFO.SetStage("3");
 		break;
 	case SceneType::Result:
 		KdAudioManager::Instance().StopAllSound();

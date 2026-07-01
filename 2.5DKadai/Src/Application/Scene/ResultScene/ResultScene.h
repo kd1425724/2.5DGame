@@ -8,7 +8,7 @@ class ResultScene : public BaseScene
 {
 public :
 
-	ResultScene()  { }
+	ResultScene() {}
 	~ResultScene() {}
 
 	void Init()  override;

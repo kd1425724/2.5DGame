@@ -40,6 +40,8 @@ void Player::Init()
 	m_dashEffectCnt = 0;
 
 	m_jumpBlockModel = m_coremodel;
+
+	m_orbExist = true;
 }
 
 void Player::PreUpdate()
@@ -85,11 +87,17 @@ void Player::Update()
 	case Player::PlayerStatePattern::Start:
 		break;
 	case Player::PlayerStatePattern::Loop:
-		if (Inp.GetPlayerKey(PlayerKeyType::Plunge))
+		if (!m_isground)
 		{
-			m_gravity += 0.05f;
+			if (Inp.GetPlayerKeyDown(PlayerKeyType::Plunge))
+			{
+				KdAudioManager::Instance().Play("Asset/Sounds/SE/PlungeSE/PlungeSE.wav");
+			}
+			if (Inp.GetPlayerKey(PlayerKeyType::Plunge))
+			{
+				m_gravity += 0.05f;
+			}
 		}
-
 		//ジャンプ処理
 		switch (m_jumppattern)
 		{
@@ -102,6 +110,21 @@ void Player::Update()
 
 				//地面から離れた
 				m_isground = false;
+
+				KdAudioManager::Instance().Play("Asset/Sounds/SE/JumpSE/JumpSE.wav");
+			
+				// ジャンプエフェクト
+				for (int i = 0; i < 8; i++)
+				{
+					EffectManager::Instance().CreateSquareEffect(
+						m_pos + Math::Vector3(0, -0.5f, 0),
+						Math::Vector3(
+							KdRandom::GetFloat(-0.15f, 0.15f),
+							KdRandom::GetFloat(-0.05f, 0.15f),
+							0),
+						KdRandom::GetFloat(0.5f, 0.8f),
+						20);
+				}
 			}
 			if (!m_isground)
 			{
@@ -113,8 +136,40 @@ void Player::Update()
 			if (Inp.GetPlayerKeyDown(PlayerKeyType::Jump))
 			{
 				//ジャンプ2段目
+				KdAudioManager::Instance().Play("Asset/Sounds/SE/JumpSE/JumpSE.wav");
+
+				//オーブ消滅
+				m_orbExist = false;
+				KdAudioManager::Instance().Play("Asset/Sounds/SE/OrbBreakSE/OrbBreakSE.wav");
+				
+				
 				m_gravity = -m_twojumppow;
 				m_jumppattern = PlayerJumpPattern::Jump2;
+
+				// 2段ジャンプエフェクト
+				for (int i = 0; i < 10; i++)
+				{
+					EffectManager::Instance().CreateSquareEffect(
+						m_pos,
+						Math::Vector3(
+							KdRandom::GetFloat(-0.2f, 0.2f),
+							KdRandom::GetFloat(-0.2f, 0.2f),
+							0),
+						KdRandom::GetFloat(0.4f, 0.7f),
+						20);
+				}
+
+				for (int i = 0; i < 20; i++)
+				{
+					EffectManager::Instance().CreateSquareEffect(
+						m_pos,
+						Math::Vector3(
+							KdRandom::GetFloat(-0.35f, 0.35f),
+							KdRandom::GetFloat(-0.35f, 0.35f),
+							KdRandom::GetFloat(-0.1f, 0.1f)),
+						KdRandom::GetFloat(0.4f, 0.8f),
+						25);
+				}
 			}
 			//m_color = { 0.3,0,0,1 };
 			break;
@@ -130,7 +185,11 @@ void Player::Update()
 		//地面から離れているとき回転
 		if (!m_isground)
 		{
-			m_rot.z -= 5;
+			m_jumprottimer++;
+			if (m_jumprottimer > 15)
+			{
+				m_rot.z -= 5;
+			}
 		}
 		else
 		{
@@ -177,6 +236,22 @@ void Player::Update()
 	// Jump2なら消す、それ以外なら表示
 	float target = (m_jumppattern == PlayerJumpPattern::Jump2) ? 1.0f : 0.0f;
 
+	if (m_jumppattern == PlayerJumpPattern::Jump2)
+	{
+		m_jumpBlockScale = 1.0f;
+	}
+	else
+	{
+		if (m_jumpBlockScale < 1.3f)
+		{
+			m_jumpBlockScale += 0.04f;
+		}
+		else
+		{
+			m_jumpBlockScale -= (m_jumpBlockScale - 1.0f) * 0.2f;
+		}
+	}
+
 	const float speed = 0.05f;
 
 	if (m_jumpBlockDissolve < target)
@@ -208,7 +283,7 @@ void Player::Update()
 			AfterImage img;
 
 			Math::Vector3 scroll = { INFO.GetScrollSpeed(),0,0 };
-			Math::Matrix scale = Math::Matrix::CreateScale(0.5f);
+			Math::Matrix scale = Math::Matrix::CreateScale(0.5f * m_jumpBlockScale);
 			Math::Matrix mtrans = Math::Matrix::CreateTranslation(m_mWorld.Translation());
 			img.mat = scale * mtrans;
 			img.alpha = 1.0f;
@@ -244,8 +319,8 @@ void Player::Update()
 		}
 	}
 
-	//前回のm_gravityの値を保存
-	float prevgravity = m_gravity;
+	//重力処理前に保存
+	m_prevGravity = m_gravity;
 
 	//重力処理
 	m_pos.y -= m_gravity;
@@ -285,11 +360,7 @@ void Player::DrawLit()
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
 
 
-	//if (m_jumppattern != PlayerJumpPattern::Jump2)
-	{
-		DrawJumpBlock();
-	}
-
+	DrawJumpBlock();
 }
 
 void Player::GenerateDepthMapFromLight()
@@ -337,7 +408,18 @@ void Player::DrawJumpBlock()
 			Math::Matrix::CreateRotationY(angle) *
 			Math::Matrix::CreateTranslation(m_pos);
 
-		Math::Color color = { 1.0f,0.0f,0.0f,1.0f };
+		Math::Color color;
+
+		if (m_jumppattern != PlayerJumpPattern::Jump2)
+		{
+			// 使用可能：明るく発光
+			color = { 3.0f,0.3f,0.3f,1.0f };
+		}
+		else
+		{
+			// 使用済み：暗い
+			color = { 0.8f,0.1f,0.1f,1.0f };
+		}
 
 		KdShaderManager::Instance().m_StandardShader.SetDissolve(m_jumpBlockDissolve);
 		KdShaderManager::Instance().m_StandardShader.DrawModel(
@@ -352,49 +434,75 @@ void Player::DrawJumpBlock()
 
 void Player::Hit()
 {
+	MatrixUpdate();
+
+	// 移動前の基準Y（今フレームで実際に落下した量を遡る）
+	float fallDistance = m_prevGravity; // 実際に落ちた量
+
 	//プレイヤー座標調整地面判定用（プレイヤーの足元）
-	float groundpossurplusX = 0;
+	float rayPosX[3] =
+	{
+		-0.28f,    // 左足
+		 0.0f,     // 中央
+		 0.28f     // 右足
+	};
 	float groundpossurplusY = -0.5f;
 
-	//レイ判定
-	KdCollider::RayInfo ray;
-	//レイの設定
-	ray.m_pos = m_pos;
-	ray.m_pos.y += groundpossurplusY;
-	ray.m_pos.x += groundpossurplusX;
-	float enableStepHigh = 0.3f;
-	ray.m_pos.y += enableStepHigh;
-	ray.m_dir = { 0,-1,0 };
-	ray.m_dir.Normalize();
-	ray.m_range = m_gravity +enableStepHigh;
-	ray.m_type = KdCollider::TypeGround;
-
-	//デバッグ
-	//m_pDebugWire->AddDebugLine(ray.m_pos, ray.m_dir, ray.m_range);
-
-	//レイに当たったオブジェクトを格納
-	std::list<KdCollider::CollisionResult> retRayList;
-	//当たり判定
-	for (auto& obj : SceneManager::Instance().GetObjList())
-	{
-		obj->Intersects(ray, &retRayList);
-	}
-
-	//レイに当たったリストから一番近いオブジェクトを探す
 	float maxOverLap = 0;
 	Math::Vector3 hitPos;
 	bool hit = false;
+	float hitRayOffsetX = 0.0f;
 
-	for (auto& ret : retRayList)
+	//レイ判定
+	std::list<KdCollider::CollisionResult> retRayList;
+
+	for (int i = 0; i < 3; i++)
 	{
-		//レイを遮断しオーバーした長さが一番長いものを探す
-		//上回っていたら更新
-		if (maxOverLap < ret.m_overlapDistance)
+		retRayList.clear();
+
+		KdCollider::RayInfo ray;
+
+		ray.m_pos = m_pos;
+		ray.m_pos.x += rayPosX[i];
+		ray.m_pos.y += groundpossurplusY;
+
+		float enableStepHigh = 0.1f;
+		// 移動前の高さまでさかのぼる
+		ray.m_pos.y += fallDistance;     // ここを enableStepHigh ではなく実移動量で戻す
+		ray.m_pos.y += enableStepHigh;   // 段差用の余白として少し追加
+
+		ray.m_dir = { 0,-1,0 };
+		ray.m_dir.Normalize();
+
+		ray.m_range = m_gravity + enableStepHigh;
+		ray.m_type = KdCollider::TypeGround;
+
+		// デバッグ表示
+		//m_pDebugWire->AddDebugLine(ray.m_pos, ray.m_dir, ray.m_range);
+
+		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
-			//更新
-			maxOverLap = ret.m_overlapDistance;
-			hitPos = ret.m_hitPos;
-			hit = true;
+			obj->Intersects(ray, &retRayList);
+		}
+
+		for (auto& ret : retRayList)
+		{
+			Math::Vector3 normal = ret.m_hitNDir;
+			normal.Normalize();
+
+			// 上向きの面だけ地面とする
+			if (normal.y < 0.8f)
+			{
+				continue;
+			}
+
+			if (maxOverLap < ret.m_overlapDistance)
+			{
+				maxOverLap = ret.m_overlapDistance;
+				hitPos = ret.m_hitPos;
+				hitRayOffsetX = rayPosX[i]; 
+				hit = true;
+			}
 		}
 	}
 	//当たったら
@@ -405,29 +513,56 @@ void Player::Hit()
 		{
 			m_isground = true;
 			m_jumppattern = PlayerJumpPattern::None;
+			m_jumprottimer = 0;
 
+			//オーブがなければ再生
+			if (!m_orbExist)
+			{
+				m_orbExist = true;
+				KdAudioManager::Instance().Play("Asset/Sounds/SE/OrbReturnSE/OrbReturnSE.wav");
+			}
+			// 強く落下していたら着地エフェクト
+			if (m_prevGravity > 0.4f) 
+			{
+
+				KdAudioManager::Instance().Play("Asset/Sounds/SE/LandingSE/LandingSE.wav");
+				for (int i = 0; i < 12; i++)
+				{
+					EffectManager::Instance().CreateSquareEffect(
+						m_pos + Math::Vector3(0, -0.5f, 0),
+						Math::Vector3(
+							KdRandom::GetFloat(-0.10, 0.25f),
+							KdRandom::GetFloat(-0.05f, 0.2f),
+							0),
+						KdRandom::GetFloat(1.3f, 1.6f),
+						25);
+				}
+			}
 		}
 		//回転初期化
 		m_rot.z = 0;
 		//			   ↓余剰分を反転させる
-		m_pos = hitPos -= Math::Vector3(groundpossurplusX, groundpossurplusY, 0);
+		m_pos = hitPos -= Math::Vector3(hitRayOffsetX, groundpossurplusY, 0);
 		m_gravity = 0;
 
-		//ダッシュエフェクト
-		if (INFO.GetScrollFlg())
+		if (!m_shadowflg)
 		{
-			m_dashEffectCnt++;
-
-			if (m_dashEffectCnt > 2)
+			//ダッシュエフェクト
+			if (INFO.GetScrollFlg())
 			{
-				m_dashEffectCnt = 0;
+				m_dashEffectCnt++;
 
-				EffectManager::Instance().CreateSquareEffect(
-					m_pos +
-					Math::Vector3(0, -0.5f, 0),
-					Math::Vector3(KdRandom::GetFloat(-0.2, -0.1f), KdRandom::GetFloat(0.0f, 0.15f), 0),
-					KdRandom::GetFloat(0.2f, 0.4f),
-					20);
+				if (m_dashEffectCnt > 2)
+				{
+					m_dashEffectCnt = 0;
+
+					EffectManager::Instance().CreateSquareEffect(
+						m_pos +
+						Math::Vector3(0, -0.5f, 0),
+						Math::Vector3(KdRandom::GetFloat(-0.2, -0.1f), KdRandom::GetFloat(0.0f, 0.15f), 0),
+						KdRandom::GetFloat(0.2f, 0.4f),
+						20);
+				}
 			}
 		}
 	}
@@ -468,7 +603,7 @@ void Player::Hit()
 
 		//球に当たったリストから一番近いオブジェクトを探す
 		maxOverLap = 0; //球の時はめりこんだ長さ
-		hit = false;
+		bool shit = false;
 		//当たった方向を格納する変数
 		Math::Vector3 hitDir;
 
@@ -499,13 +634,15 @@ void Player::Hit()
 					//更新
 					maxOverLap = ret.m_overlapDistance;
 					hitDir = ret.m_hitDir;
-					hit = true;
+					shit = true;
 				}
 			}
 		}
 
-		if (hit)
+		if (shit)
 		{
+			//if (hit)return;
+
 			hitDir.Normalize();
 
 			if (m_gravity < 0 && hitDir.y < -0.5f)
@@ -533,10 +670,13 @@ void Player::Hit()
 
 			//Z方向への押し戻し無効
 			hitDir.z = 0;
+			
 			//正規化（長さ１にする）
 			hitDir.Normalize();
-			m_pos += hitDir * maxOverLap;
+			m_pos += hitDir * (maxOverLap);
 		}
+
+		MatrixUpdate();
 	}
 
 	//奈落判定

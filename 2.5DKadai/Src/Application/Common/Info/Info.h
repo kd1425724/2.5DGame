@@ -3,7 +3,6 @@
 class Info
 {
 public:
-
 	//px単位画面範囲
 	static const int ScrWidth = 1280;
 	static const int ScrHeight = 720;
@@ -14,6 +13,15 @@ public:
 	//奈落判定座標
 	static const int AbyssJudgmentPos = -7;
 
+	//最後に入ったステージ
+	void SetStage(const std::string& stage)
+	{
+		m_stage = stage;
+	}
+	std::string GetStage()
+	{
+		return m_stage;
+	}
 
 	//デフォルトスクロール速度取得
 	float GetDefaultScrollSpeed()const { return DefaultScrollSpeed; }
@@ -66,6 +74,8 @@ private:
 
 	//ゴールフラグ
 	bool m_goalflg = false;
+
+	std::string m_stage = "";
 
 private:
 	Info(){}

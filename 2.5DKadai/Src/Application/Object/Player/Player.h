@@ -35,8 +35,14 @@ private:
 
 	void PlayerDataLoad();
 
-	void Hit();
+	//分割当たり判定用
+	void GroundHit();   // 地面・押し戻し
+	void EventHit();    // イベント
+	void DamageHit();   // ダメージ
+	void AbyssHit();    // 奈落
+	void WallHit(float moveX);
 
+	void Hit();         // 互換用（まとめ呼び）
 	void DrawJumpBlock();
 
 	//プレイヤーの状態
@@ -71,6 +77,8 @@ private:
 	//重力
 	float m_gravity = 0;
 	float m_gravitysubtractionvalue = 0.006f;
+
+	float m_prevGravity = 0.0f;
 	//ジャンプ力
 	float m_onejumppow = 0.2f;
 	float m_twojumppow = 0.18f;
@@ -110,4 +118,11 @@ private:
 	float m_jumpBlockRot = 0.0f;
 
 	float m_jumpBlockDissolve = 0.0f;
+
+	//ジャンプ中回転タイマー
+	float m_jumprottimer = 0;
+
+	float m_jumpBlockScale = 1.0f;
+
+	bool m_orbExist = true;
 };

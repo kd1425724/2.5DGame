@@ -128,10 +128,6 @@ void Coin::OnHit(KdGameObject * other)
 		//エフェクト発生
 		EFFECT.CreateEffect("CoinGet", m_pos, eBright | eScroll);
 
-		//スコアアップ
-		int upval = 100;
-		SCOREMANAGER.ScoreUp(upval);
-
 		//取得演出へ
 		m_getflg = true;
 		m_getTime = 0.0f;

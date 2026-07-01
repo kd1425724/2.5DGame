@@ -310,6 +310,7 @@
     <ClInclude Include="Src\Application\Object\Ui\ResultSceneUi\ResultSceneUi.h" />
     <ClInclude Include="Src\Application\Object\Ui\ResultSceneUi\Result\Result.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\EnterStart\EnterStart.h" />
+    <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\MaxCoinFrame\MaxCoinFrame.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.h" />
     <ClInclude Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectSceneUi.h" />
     <ClInclude Include="Src\Application\Object\Ui\TitleSceneUi\PressEnter\PressEnter.h" />
@@ -407,6 +408,7 @@
     <ClCompile Include="Src\Application\Object\Ui\ResultSceneUi\ResultSceneUi.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\ResultSceneUi\Result\Result.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\EnterStart\EnterStart.cpp" />
+    <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\MaxCoinFrame\MaxCoinFrame.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectBackGround\StageSelectBackGround.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\StageSelectSceneUi\StageSelectSceneUi.cpp" />
     <ClCompile Include="Src\Application\Object\Ui\TitleSceneUi\PressEnter\PressEnter.cpp" />

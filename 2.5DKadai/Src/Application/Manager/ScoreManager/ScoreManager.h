@@ -2,8 +2,17 @@
 
 struct Score
 {
-	int score = 0;
 	UINT coin = 0;
+	UINT maxcoin[3] = {};
+};
+
+enum class Stage
+{
+	None = -1,
+	Stage1,
+	Stage2,
+	Stage3,
+	StageNum
 };
 class ScoreManager
 {
@@ -11,14 +20,6 @@ public:
 	
 	void Init();
 	void Update();
-
-	//スコアセット
-	void ScoreUp(const int& _val)
-	{
-		m_score.score += _val;
-	}
-	//スコア取得
-	Score GetScore() { return m_score; }
 
 	//コイン取得
 	void CoinUp() { m_score.coin++; }
@@ -31,8 +32,28 @@ public:
 	//スコア初期化
 	void ScoreReset()
 	{
-		m_score.score = 0;
 		m_score.coin = 0;
+	}
+
+	//セーブ・ロード
+	void Save();
+	void Load();
+
+	void SetMaxCoin(const Stage& stage)
+	{
+		if (stage == Stage::None)return;
+
+		//スコアが現在の最大コイン数より低かったら
+		if (m_score.maxcoin[(int)stage] > m_score.coin)return;
+
+		m_score.maxcoin[(int)stage] = m_score.coin;
+	}
+
+	UINT GetMaxCoin(const Stage& stage)
+	{
+		if (stage == Stage::None)return 0;
+
+		return m_score.maxcoin[(int)stage];
 	}
 
 private:
@@ -49,7 +70,7 @@ private:
 	UINT m_startCoin = 0;
 
 private:
-	ScoreManager() {}
+	ScoreManager() { Load(); }
 	~ScoreManager() {}
 
 public:

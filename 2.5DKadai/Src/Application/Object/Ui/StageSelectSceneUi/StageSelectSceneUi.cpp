@@ -9,6 +9,7 @@
 
 #include"../../Num/Num.h"
 #include"../../../Manager/ScoreManager/ScoreManager.h"
+#include"MaxCoinFrame/MaxCoinFrame.h"
 
 void StageSelectSceneUi::Init()
 {
@@ -24,7 +25,6 @@ void StageSelectSceneUi::Init()
 	selectarow->SetPos({ 0,100,0 });
 	selectarow->SetSize({ 0.65f,0.7f,0 });
 	SceneManager::Instance().AddObject(selectarow);
-
 
 	//ボタン
 	m_buttons.resize((int)StageSelectButton::ButtonNum);
@@ -70,6 +70,11 @@ void StageSelectSceneUi::Init()
 	enterstart->SetPos({ 200,-200,0 });
 	enterstart->SetSize(0.8f);
 	SceneManager::Instance().AddObject(enterstart);
+
+	//最大コイン取得数
+	std::shared_ptr<MaxCoinFrame> maxcoin = std::make_shared<MaxCoinFrame>();
+	maxcoin->Init();
+	SceneManager::Instance().AddObject(maxcoin);
 }
 
 

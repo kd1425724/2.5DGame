@@ -1,9 +1,8 @@
 ﻿#include "ScoreManager.h"
-
+#include"../../Common/Info/Info.h"
 void ScoreManager::Init()
 {
 	//スコアリセット
-	m_score.score = 0;
 	m_score.coin = 0;
 }
 
@@ -38,3 +37,47 @@ void ScoreManager::CoinDown(int time, int num)
 	m_coinDownFlg = true;
 }
 
+void ScoreManager::Save()
+{
+	FILE* fp = nullptr;
+
+	fopen_s(&fp, "Asset/Data/ScoreData/ScoreData.csv", "w");
+
+	if (!fp)return;
+
+	for (int i = 0; i < (int)Stage::StageNum; i++)
+	{
+		fprintf(fp, "%u", m_score.maxcoin[i]);
+
+		if (i != (int)Stage::StageNum - 1)
+		{
+			fprintf(fp, ",");
+		}
+	}
+
+	fprintf(fp, "\n");
+
+	fclose(fp);
+}
+
+void ScoreManager::Load()
+{
+	FILE* fp = nullptr;
+
+	fopen_s(&fp, "Asset/Data/ScoreData/ScoreData.csv", "r");
+
+	if (!fp) return;
+
+	for (int i = 0; i < (int)Stage::StageNum; i++)
+	{
+		fscanf_s(fp, "%u", &m_score.maxcoin[i]);
+
+		// 最後以外はカンマを読み飛ばす
+		if (i != (int)Stage::StageNum - 1)
+		{
+			fscanf_s(fp, ",");
+		}
+	}
+
+	fclose(fp);
+}

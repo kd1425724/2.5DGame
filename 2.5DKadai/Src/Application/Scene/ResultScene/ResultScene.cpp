@@ -6,6 +6,7 @@
 #include"../../Object/Player/Player.h"
 #include"../../Object/Ui/ResultSceneUi/ResultSceneUi.h"
 #include"../../Common/Input/Input.h"
+#include"../../Manager/ScoreManager/ScoreManager.h"
 void ResultScene::Event()
 {
 	if (Inp.GetUserKeyDown(UserKeyType::DecisionKey))
@@ -75,4 +76,22 @@ void ResultScene::Init()
 
 	INFO.SetScrollFlg(true);
 	INFO.SetScrollSpeed(0.15f);
+
+	Stage stage = Stage::None;
+
+	if (INFO.GetStage() == "1")
+	{
+		stage = Stage::Stage1;
+	}
+	if (INFO.GetStage() == "2")
+	{
+		stage = Stage::Stage2;
+	}
+	if (INFO.GetStage() == "3")
+	{
+		stage = Stage::Stage3;
+	}
+	SCOREMANAGER.SetMaxCoin(stage);
+
+	SCOREMANAGER.Save();
 }
